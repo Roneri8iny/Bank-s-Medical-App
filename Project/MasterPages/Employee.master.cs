@@ -11,4 +11,12 @@ public partial class MasterPages_Employee : System.Web.UI.MasterPage
     {
 
     }
+    //Updated the sign out button
+    protected void SignOutButton_Click(object sender, EventArgs e)
+    {
+        Session.Clear();
+        Session.Abandon();
+
+        Response.Redirect("../Pages/Login.aspx");
+    }
 }

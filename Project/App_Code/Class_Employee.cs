@@ -26,7 +26,7 @@ public class Class_Employee
             obj.SlotID = SlotID;
             obj.EmployeeID = EmployeeID;
             obj.Diagnosis = "";
-            obj.ApStatus = false;
+            //obj.ApStatus = false;
 
 
             db.Appointments.InsertOnSubmit(obj);

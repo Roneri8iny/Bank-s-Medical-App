@@ -64,16 +64,9 @@
                                         <span>History</span>
                                     </a>
                                 </li>
-                                <!-- 
-                                    <li class="sidebar-item  ">
-                                    <a href="form-layout.html" class='sidebar-link'>
-                                        <i class="bi bi-person-fill"></i>
-                                        <span>Profile</span>
-                                    </a>
-                                </li>
-                                    -->
-                                <div class="sidebar-footer d-flex justify-content-center align-items-end me-3" style="margin-top:10px;">
-                                    <a href="#" class="btn btn-outline-danger w-50 ">Sign Out</a>
+                                <!-- Updated the Sign out button-->
+                                <div class="sidebar-footer d-flex justify-content-center align-items-end me-3" style="margin-top: 10px;">
+                                    <asp:Button ID="SignOutButton" runat="server" Text="Sign Out" OnClick="SignOutButton_Click" CssClass="btn btn-outline-danger w-50" />
                                 </div>
                             </ul>
                         </div>

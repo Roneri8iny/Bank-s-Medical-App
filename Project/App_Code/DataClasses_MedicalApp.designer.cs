@@ -32,9 +32,6 @@ public partial class DataClasses_MedicalAppDataContext : System.Data.Linq.DataCo
   partial void InsertAppointment(Appointment instance);
   partial void UpdateAppointment(Appointment instance);
   partial void DeleteAppointment(Appointment instance);
-  partial void InsertTimetable(Timetable instance);
-  partial void UpdateTimetable(Timetable instance);
-  partial void DeleteTimetable(Timetable instance);
   partial void InsertDepartment(Department instance);
   partial void UpdateDepartment(Department instance);
   partial void DeleteDepartment(Department instance);
@@ -71,6 +68,9 @@ public partial class DataClasses_MedicalAppDataContext : System.Data.Linq.DataCo
   partial void InsertTest(Test instance);
   partial void UpdateTest(Test instance);
   partial void DeleteTest(Test instance);
+  partial void InsertTimetable(Timetable instance);
+  partial void UpdateTimetable(Timetable instance);
+  partial void DeleteTimetable(Timetable instance);
   #endregion
 	
 	public DataClasses_MedicalAppDataContext() : 
@@ -108,14 +108,6 @@ public partial class DataClasses_MedicalAppDataContext : System.Data.Linq.DataCo
 		get
 		{
 			return this.GetTable<Appointment>();
-		}
-	}
-	
-	public System.Data.Linq.Table<Timetable> Timetables
-	{
-		get
-		{
-			return this.GetTable<Timetable>();
 		}
 	}
 	
@@ -214,6 +206,14 @@ public partial class DataClasses_MedicalAppDataContext : System.Data.Linq.DataCo
 			return this.GetTable<Test>();
 		}
 	}
+	
+	public System.Data.Linq.Table<Timetable> Timetables
+	{
+		get
+		{
+			return this.GetTable<Timetable>();
+		}
+	}
 }
 
 [global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Appointments")]
@@ -228,21 +228,25 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 	
 	private System.Nullable<int> _EmployeeID;
 	
-	private bool _ApStatus;
+	private string _ApStatus;
 	
 	private string _Diagnosis;
 	
 	private System.Nullable<int> _FinanceID;
 	
+	private System.Nullable<System.DateTime> _SLDStart;
+	
+	private System.Nullable<System.DateTime> _SLDEnd;
+	
 	private EntitySet<LabReport> _LabReports;
 	
 	private EntitySet<Prescription> _Prescriptions;
 	
-	private EntityRef<Timetable> _Timetable;
-	
 	private EntityRef<Employee> _Employee;
 	
 	private EntityRef<Finance> _Finance;
+	
+	private EntityRef<Timetable> _Timetable;
 	
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -254,21 +258,25 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
     partial void OnSlotIDChanged();
     partial void OnEmployeeIDChanging(System.Nullable<int> value);
     partial void OnEmployeeIDChanged();
-    partial void OnApStatusChanging(bool value);
+    partial void OnApStatusChanging(string value);
     partial void OnApStatusChanged();
     partial void OnDiagnosisChanging(string value);
     partial void OnDiagnosisChanged();
     partial void OnFinanceIDChanging(System.Nullable<int> value);
     partial void OnFinanceIDChanged();
+    partial void OnSLDStartChanging(System.Nullable<System.DateTime> value);
+    partial void OnSLDStartChanged();
+    partial void OnSLDEndChanging(System.Nullable<System.DateTime> value);
+    partial void OnSLDEndChanged();
     #endregion
 	
 	public Appointment()
 	{
 		this._LabReports = new EntitySet<LabReport>(new Action<LabReport>(this.attach_LabReports), new Action<LabReport>(this.detach_LabReports));
 		this._Prescriptions = new EntitySet<Prescription>(new Action<Prescription>(this.attach_Prescriptions), new Action<Prescription>(this.detach_Prescriptions));
-		this._Timetable = default(EntityRef<Timetable>);
 		this._Employee = default(EntityRef<Employee>);
 		this._Finance = default(EntityRef<Finance>);
+		this._Timetable = default(EntityRef<Timetable>);
 		OnCreated();
 	}
 	
@@ -340,8 +348,8 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApStatus", DbType="Bit NOT NULL")]
-	public bool ApStatus
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApStatus", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+	public string ApStatus
 	{
 		get
 		{
@@ -404,6 +412,46 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SLDStart", DbType="Date")]
+	public System.Nullable<System.DateTime> SLDStart
+	{
+		get
+		{
+			return this._SLDStart;
+		}
+		set
+		{
+			if ((this._SLDStart != value))
+			{
+				this.OnSLDStartChanging(value);
+				this.SendPropertyChanging();
+				this._SLDStart = value;
+				this.SendPropertyChanged("SLDStart");
+				this.OnSLDStartChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SLDEnd", DbType="Date")]
+	public System.Nullable<System.DateTime> SLDEnd
+	{
+		get
+		{
+			return this._SLDEnd;
+		}
+		set
+		{
+			if ((this._SLDEnd != value))
+			{
+				this.OnSLDEndChanging(value);
+				this.SendPropertyChanging();
+				this._SLDEnd = value;
+				this.SendPropertyChanged("SLDEnd");
+				this.OnSLDEndChanged();
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Appointment_LabReport", Storage="_LabReports", ThisKey="AppointmentID", OtherKey="AppointmentID")]
 	public EntitySet<LabReport> LabReports
 	{
@@ -427,40 +475,6 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 		set
 		{
 			this._Prescriptions.Assign(value);
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Timetable_Appointment", Storage="_Timetable", ThisKey="SlotID", OtherKey="SlotID", IsForeignKey=true)]
-	public Timetable Timetable
-	{
-		get
-		{
-			return this._Timetable.Entity;
-		}
-		set
-		{
-			Timetable previousValue = this._Timetable.Entity;
-			if (((previousValue != value) 
-						|| (this._Timetable.HasLoadedOrAssignedValue == false)))
-			{
-				this.SendPropertyChanging();
-				if ((previousValue != null))
-				{
-					this._Timetable.Entity = null;
-					previousValue.Appointments.Remove(this);
-				}
-				this._Timetable.Entity = value;
-				if ((value != null))
-				{
-					value.Appointments.Add(this);
-					this._SlotID = value.SlotID;
-				}
-				else
-				{
-					this._SlotID = default(Nullable<int>);
-				}
-				this.SendPropertyChanged("Timetable");
-			}
 		}
 	}
 	
@@ -532,6 +546,40 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Timetable_Appointment", Storage="_Timetable", ThisKey="SlotID", OtherKey="SlotID", IsForeignKey=true)]
+	public Timetable Timetable
+	{
+		get
+		{
+			return this._Timetable.Entity;
+		}
+		set
+		{
+			Timetable previousValue = this._Timetable.Entity;
+			if (((previousValue != value) 
+						|| (this._Timetable.HasLoadedOrAssignedValue == false)))
+			{
+				this.SendPropertyChanging();
+				if ((previousValue != null))
+				{
+					this._Timetable.Entity = null;
+					previousValue.Appointments.Remove(this);
+				}
+				this._Timetable.Entity = value;
+				if ((value != null))
+				{
+					value.Appointments.Add(this);
+					this._SlotID = value.SlotID;
+				}
+				else
+				{
+					this._SlotID = default(Nullable<int>);
+				}
+				this.SendPropertyChanged("Timetable");
+			}
+		}
+	}
+	
 	public event PropertyChangingEventHandler PropertyChanging;
 	
 	public event PropertyChangedEventHandler PropertyChanged;
@@ -574,233 +622,6 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 	{
 		this.SendPropertyChanging();
 		entity.Appointment = null;
-	}
-}
-
-[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Timetable")]
-public partial class Timetable : INotifyPropertyChanging, INotifyPropertyChanged
-{
-	
-	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-	
-	private int _SlotID;
-	
-	private System.Nullable<int> _DoctorID;
-	
-	private string _TTDay;
-	
-	private System.TimeSpan _StartTime;
-	
-	private System.TimeSpan _EndTime;
-	
-	private EntitySet<Appointment> _Appointments;
-	
-	private EntityRef<Doctor> _Doctor;
-	
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnSlotIDChanging(int value);
-    partial void OnSlotIDChanged();
-    partial void OnDoctorIDChanging(System.Nullable<int> value);
-    partial void OnDoctorIDChanged();
-    partial void OnTTDayChanging(string value);
-    partial void OnTTDayChanged();
-    partial void OnStartTimeChanging(System.TimeSpan value);
-    partial void OnStartTimeChanged();
-    partial void OnEndTimeChanging(System.TimeSpan value);
-    partial void OnEndTimeChanged();
-    #endregion
-	
-	public Timetable()
-	{
-		this._Appointments = new EntitySet<Appointment>(new Action<Appointment>(this.attach_Appointments), new Action<Appointment>(this.detach_Appointments));
-		this._Doctor = default(EntityRef<Doctor>);
-		OnCreated();
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SlotID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-	public int SlotID
-	{
-		get
-		{
-			return this._SlotID;
-		}
-		set
-		{
-			if ((this._SlotID != value))
-			{
-				this.OnSlotIDChanging(value);
-				this.SendPropertyChanging();
-				this._SlotID = value;
-				this.SendPropertyChanged("SlotID");
-				this.OnSlotIDChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DoctorID", DbType="Int")]
-	public System.Nullable<int> DoctorID
-	{
-		get
-		{
-			return this._DoctorID;
-		}
-		set
-		{
-			if ((this._DoctorID != value))
-			{
-				if (this._Doctor.HasLoadedOrAssignedValue)
-				{
-					throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				}
-				this.OnDoctorIDChanging(value);
-				this.SendPropertyChanging();
-				this._DoctorID = value;
-				this.SendPropertyChanged("DoctorID");
-				this.OnDoctorIDChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TTDay", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-	public string TTDay
-	{
-		get
-		{
-			return this._TTDay;
-		}
-		set
-		{
-			if ((this._TTDay != value))
-			{
-				this.OnTTDayChanging(value);
-				this.SendPropertyChanging();
-				this._TTDay = value;
-				this.SendPropertyChanged("TTDay");
-				this.OnTTDayChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartTime", DbType="Time NOT NULL")]
-	public System.TimeSpan StartTime
-	{
-		get
-		{
-			return this._StartTime;
-		}
-		set
-		{
-			if ((this._StartTime != value))
-			{
-				this.OnStartTimeChanging(value);
-				this.SendPropertyChanging();
-				this._StartTime = value;
-				this.SendPropertyChanged("StartTime");
-				this.OnStartTimeChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndTime", DbType="Time NOT NULL")]
-	public System.TimeSpan EndTime
-	{
-		get
-		{
-			return this._EndTime;
-		}
-		set
-		{
-			if ((this._EndTime != value))
-			{
-				this.OnEndTimeChanging(value);
-				this.SendPropertyChanging();
-				this._EndTime = value;
-				this.SendPropertyChanged("EndTime");
-				this.OnEndTimeChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Timetable_Appointment", Storage="_Appointments", ThisKey="SlotID", OtherKey="SlotID")]
-	public EntitySet<Appointment> Appointments
-	{
-		get
-		{
-			return this._Appointments;
-		}
-		set
-		{
-			this._Appointments.Assign(value);
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Doctor_Timetable", Storage="_Doctor", ThisKey="DoctorID", OtherKey="DoctorID", IsForeignKey=true)]
-	public Doctor Doctor
-	{
-		get
-		{
-			return this._Doctor.Entity;
-		}
-		set
-		{
-			Doctor previousValue = this._Doctor.Entity;
-			if (((previousValue != value) 
-						|| (this._Doctor.HasLoadedOrAssignedValue == false)))
-			{
-				this.SendPropertyChanging();
-				if ((previousValue != null))
-				{
-					this._Doctor.Entity = null;
-					previousValue.Timetables.Remove(this);
-				}
-				this._Doctor.Entity = value;
-				if ((value != null))
-				{
-					value.Timetables.Add(this);
-					this._DoctorID = value.DoctorID;
-				}
-				else
-				{
-					this._DoctorID = default(Nullable<int>);
-				}
-				this.SendPropertyChanged("Doctor");
-			}
-		}
-	}
-	
-	public event PropertyChangingEventHandler PropertyChanging;
-	
-	public event PropertyChangedEventHandler PropertyChanged;
-	
-	protected virtual void SendPropertyChanging()
-	{
-		if ((this.PropertyChanging != null))
-		{
-			this.PropertyChanging(this, emptyChangingEventArgs);
-		}
-	}
-	
-	protected virtual void SendPropertyChanged(String propertyName)
-	{
-		if ((this.PropertyChanged != null))
-		{
-			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-		}
-	}
-	
-	private void attach_Appointments(Appointment entity)
-	{
-		this.SendPropertyChanging();
-		entity.Timetable = this;
-	}
-	
-	private void detach_Appointments(Appointment entity)
-	{
-		this.SendPropertyChanging();
-		entity.Timetable = null;
 	}
 }
 
@@ -1382,7 +1203,7 @@ public partial class Employee : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
 	public string Email
 	{
 		get
@@ -1402,7 +1223,7 @@ public partial class Employee : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(100)")]
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
 	public string Password
 	{
 		get
@@ -1640,7 +1461,7 @@ public partial class LabReport : INotifyPropertyChanging, INotifyPropertyChanged
 	
 	private System.Nullable<int> _AppointmentID;
 	
-	private bool _PayStatus;
+	private System.Nullable<bool> _PayStatus;
 	
 	private string _LabName;
 	
@@ -1658,7 +1479,7 @@ public partial class LabReport : INotifyPropertyChanging, INotifyPropertyChanged
     partial void OnReportIDChanged();
     partial void OnAppointmentIDChanging(System.Nullable<int> value);
     partial void OnAppointmentIDChanged();
-    partial void OnPayStatusChanging(bool value);
+    partial void OnPayStatusChanging(System.Nullable<bool> value);
     partial void OnPayStatusChanged();
     partial void OnLabNameChanging(string value);
     partial void OnLabNameChanged();
@@ -1717,8 +1538,8 @@ public partial class LabReport : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayStatus", DbType="Bit NOT NULL")]
-	public bool PayStatus
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayStatus", DbType="Bit")]
+	public System.Nullable<bool> PayStatus
 	{
 		get
 		{
@@ -1869,7 +1690,7 @@ public partial class LabReportsDetail : INotifyPropertyChanging, INotifyProperty
 	
 	private System.Nullable<int> _TestID;
 	
-	private bool _FinancialApprovalStatus;
+	private System.Nullable<bool> _FinancialApprovalStatus;
 	
 	private string _ResultPDF;
 	
@@ -1887,7 +1708,7 @@ public partial class LabReportsDetail : INotifyPropertyChanging, INotifyProperty
     partial void OnReportIDChanged();
     partial void OnTestIDChanging(System.Nullable<int> value);
     partial void OnTestIDChanged();
-    partial void OnFinancialApprovalStatusChanging(bool value);
+    partial void OnFinancialApprovalStatusChanging(System.Nullable<bool> value);
     partial void OnFinancialApprovalStatusChanged();
     partial void OnResultPDFChanging(string value);
     partial void OnResultPDFChanged();
@@ -1968,8 +1789,8 @@ public partial class LabReportsDetail : INotifyPropertyChanging, INotifyProperty
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinancialApprovalStatus", DbType="Bit NOT NULL")]
-	public bool FinancialApprovalStatus
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinancialApprovalStatus", DbType="Bit")]
+	public System.Nullable<bool> FinancialApprovalStatus
 	{
 		get
 		{
@@ -2754,7 +2575,7 @@ public partial class Prescription : INotifyPropertyChanging, INotifyPropertyChan
 	
 	private System.Nullable<int> _AppointmentID;
 	
-	private bool _PayStatus;
+	private System.Nullable<bool> _PayStatus;
 	
 	private EntitySet<PrescriptionsDetail> _PrescriptionsDetails;
 	
@@ -2768,7 +2589,7 @@ public partial class Prescription : INotifyPropertyChanging, INotifyPropertyChan
     partial void OnPrescriptionIDChanged();
     partial void OnAppointmentIDChanging(System.Nullable<int> value);
     partial void OnAppointmentIDChanged();
-    partial void OnPayStatusChanging(bool value);
+    partial void OnPayStatusChanging(System.Nullable<bool> value);
     partial void OnPayStatusChanged();
     #endregion
 	
@@ -2823,8 +2644,8 @@ public partial class Prescription : INotifyPropertyChanging, INotifyPropertyChan
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayStatus", DbType="Bit NOT NULL")]
-	public bool PayStatus
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayStatus", DbType="Bit")]
+	public System.Nullable<bool> PayStatus
 	{
 		get
 		{
@@ -2933,7 +2754,7 @@ public partial class PrescriptionsDetail : INotifyPropertyChanging, INotifyPrope
 	
 	private System.Nullable<int> _PrescriptionID;
 	
-	private bool _FinanceApprovalStatus;
+	private System.Nullable<bool> _FinanceApprovalStatus;
 	
 	private int _Quantity;
 	
@@ -2955,7 +2776,7 @@ public partial class PrescriptionsDetail : INotifyPropertyChanging, INotifyPrope
     partial void OnDetailIDChanged();
     partial void OnPrescriptionIDChanging(System.Nullable<int> value);
     partial void OnPrescriptionIDChanged();
-    partial void OnFinanceApprovalStatusChanging(bool value);
+    partial void OnFinanceApprovalStatusChanging(System.Nullable<bool> value);
     partial void OnFinanceApprovalStatusChanged();
     partial void OnQuantityChanging(int value);
     partial void OnQuantityChanged();
@@ -3018,8 +2839,8 @@ public partial class PrescriptionsDetail : INotifyPropertyChanging, INotifyPrope
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinanceApprovalStatus", DbType="Bit NOT NULL")]
-	public bool FinanceApprovalStatus
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinanceApprovalStatus", DbType="Bit")]
+	public System.Nullable<bool> FinanceApprovalStatus
 	{
 		get
 		{
@@ -3346,6 +3167,233 @@ public partial class Test : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		this.SendPropertyChanging();
 		entity.Test = null;
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Timetable")]
+public partial class Timetable : INotifyPropertyChanging, INotifyPropertyChanged
+{
+	
+	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+	
+	private int _SlotID;
+	
+	private System.Nullable<int> _DoctorID;
+	
+	private string _TTDay;
+	
+	private System.TimeSpan _StartTime;
+	
+	private System.TimeSpan _EndTime;
+	
+	private EntitySet<Appointment> _Appointments;
+	
+	private EntityRef<Doctor> _Doctor;
+	
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSlotIDChanging(int value);
+    partial void OnSlotIDChanged();
+    partial void OnDoctorIDChanging(System.Nullable<int> value);
+    partial void OnDoctorIDChanged();
+    partial void OnTTDayChanging(string value);
+    partial void OnTTDayChanged();
+    partial void OnStartTimeChanging(System.TimeSpan value);
+    partial void OnStartTimeChanged();
+    partial void OnEndTimeChanging(System.TimeSpan value);
+    partial void OnEndTimeChanged();
+    #endregion
+	
+	public Timetable()
+	{
+		this._Appointments = new EntitySet<Appointment>(new Action<Appointment>(this.attach_Appointments), new Action<Appointment>(this.detach_Appointments));
+		this._Doctor = default(EntityRef<Doctor>);
+		OnCreated();
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SlotID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+	public int SlotID
+	{
+		get
+		{
+			return this._SlotID;
+		}
+		set
+		{
+			if ((this._SlotID != value))
+			{
+				this.OnSlotIDChanging(value);
+				this.SendPropertyChanging();
+				this._SlotID = value;
+				this.SendPropertyChanged("SlotID");
+				this.OnSlotIDChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DoctorID", DbType="Int")]
+	public System.Nullable<int> DoctorID
+	{
+		get
+		{
+			return this._DoctorID;
+		}
+		set
+		{
+			if ((this._DoctorID != value))
+			{
+				if (this._Doctor.HasLoadedOrAssignedValue)
+				{
+					throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				}
+				this.OnDoctorIDChanging(value);
+				this.SendPropertyChanging();
+				this._DoctorID = value;
+				this.SendPropertyChanged("DoctorID");
+				this.OnDoctorIDChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TTDay", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+	public string TTDay
+	{
+		get
+		{
+			return this._TTDay;
+		}
+		set
+		{
+			if ((this._TTDay != value))
+			{
+				this.OnTTDayChanging(value);
+				this.SendPropertyChanging();
+				this._TTDay = value;
+				this.SendPropertyChanged("TTDay");
+				this.OnTTDayChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartTime", DbType="Time NOT NULL")]
+	public System.TimeSpan StartTime
+	{
+		get
+		{
+			return this._StartTime;
+		}
+		set
+		{
+			if ((this._StartTime != value))
+			{
+				this.OnStartTimeChanging(value);
+				this.SendPropertyChanging();
+				this._StartTime = value;
+				this.SendPropertyChanged("StartTime");
+				this.OnStartTimeChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndTime", DbType="Time NOT NULL")]
+	public System.TimeSpan EndTime
+	{
+		get
+		{
+			return this._EndTime;
+		}
+		set
+		{
+			if ((this._EndTime != value))
+			{
+				this.OnEndTimeChanging(value);
+				this.SendPropertyChanging();
+				this._EndTime = value;
+				this.SendPropertyChanged("EndTime");
+				this.OnEndTimeChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Timetable_Appointment", Storage="_Appointments", ThisKey="SlotID", OtherKey="SlotID")]
+	public EntitySet<Appointment> Appointments
+	{
+		get
+		{
+			return this._Appointments;
+		}
+		set
+		{
+			this._Appointments.Assign(value);
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Doctor_Timetable", Storage="_Doctor", ThisKey="DoctorID", OtherKey="DoctorID", IsForeignKey=true)]
+	public Doctor Doctor
+	{
+		get
+		{
+			return this._Doctor.Entity;
+		}
+		set
+		{
+			Doctor previousValue = this._Doctor.Entity;
+			if (((previousValue != value) 
+						|| (this._Doctor.HasLoadedOrAssignedValue == false)))
+			{
+				this.SendPropertyChanging();
+				if ((previousValue != null))
+				{
+					this._Doctor.Entity = null;
+					previousValue.Timetables.Remove(this);
+				}
+				this._Doctor.Entity = value;
+				if ((value != null))
+				{
+					value.Timetables.Add(this);
+					this._DoctorID = value.DoctorID;
+				}
+				else
+				{
+					this._DoctorID = default(Nullable<int>);
+				}
+				this.SendPropertyChanged("Doctor");
+			}
+		}
+	}
+	
+	public event PropertyChangingEventHandler PropertyChanging;
+	
+	public event PropertyChangedEventHandler PropertyChanged;
+	
+	protected virtual void SendPropertyChanging()
+	{
+		if ((this.PropertyChanging != null))
+		{
+			this.PropertyChanging(this, emptyChangingEventArgs);
+		}
+	}
+	
+	protected virtual void SendPropertyChanged(String propertyName)
+	{
+		if ((this.PropertyChanged != null))
+		{
+			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+	
+	private void attach_Appointments(Appointment entity)
+	{
+		this.SendPropertyChanging();
+		entity.Timetable = this;
+	}
+	
+	private void detach_Appointments(Appointment entity)
+	{
+		this.SendPropertyChanging();
+		entity.Timetable = null;
 	}
 }
 #pragma warning restore 1591

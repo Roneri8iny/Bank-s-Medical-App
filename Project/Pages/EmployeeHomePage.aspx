@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/Employee.master" AutoEventWireup="true" CodeFile="HomePage.aspx.cs" Inherits="Pages_HomePage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/Employee.master" AutoEventWireup="true" CodeFile="EmployeeHomePage.aspx.cs" Inherits="Pages_HomePage" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
@@ -26,20 +26,20 @@
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <asp:Label ID="EmpName" runat="server" Text="Name" style="font-size: 25px;"></asp:Label><br />
-                                            <asp:TextBox ID="Name" runat="server" Text="Jane Eyre" Enabled="false" style="font-size: 20px; width: 70%;"></asp:TextBox>
+                                            <asp:Label ID="EmpNameLabel" runat="server" Text="Name" style="font-size: 25px;"></asp:Label><br />
+                                            <asp:TextBox ID="EmpName" runat="server" Text="" Enabled="false" style="font-size: 20px; width: 70%;"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <asp:Label ID="EmpID" runat="server" Text="Medical ID" style="font-size: 25px;"></asp:Label><br />
-                                            <asp:TextBox ID="ID" runat="server" Text="123456789" Enabled="false" style="font-size: 20px; width: 70%;"></asp:TextBox>
+                                            <asp:Label ID="EmpIDLabel" runat="server" Text="Medical ID" style="font-size: 25px;"></asp:Label><br />
+                                            <asp:TextBox ID="EmpID" runat="server" Text="" Enabled="false" style="font-size: 20px; width: 70%;"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <asp:Label ID="EmpEmail" runat="server" Text="Email" style="font-size: 25px;"></asp:Label><br />
-                                            <asp:TextBox ID="Email" runat="server" Text="JaneEyre123@gmail.com" Enabled="false" style="font-size: 20px; width: 70%;"></asp:TextBox>
+                                            <asp:Label ID="EmpEmailLabel" runat="server" Text="Email" style="font-size: 25px;"></asp:Label><br />
+                                            <asp:TextBox ID="EmpEmail" runat="server" Text="" Enabled="false" style="font-size: 20px; width: 70%;"></asp:TextBox>
                                         </div>
                                     </div>
                                 </div>

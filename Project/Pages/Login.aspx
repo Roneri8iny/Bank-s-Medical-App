@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/EmployeeLogin.master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Pages_EmployeeLoginPage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/Login.master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Pages_EmployeeLoginPage" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
@@ -18,8 +18,8 @@
                     <div>
                         <div class="form-group position-relative mb-4">
                             <div class="btn-group dropdown me-1 mb-1">
-                                <asp:Label ID="AccountType" runat="server" Text="Account Type" CssClass="btn btn-primary"></asp:Label>
-                                <asp:DropDownList ID="DropDownList1" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                <asp:Label ID="AccountTypeLabel" runat="server" Text="Account Type" CssClass="btn btn-primary"></asp:Label>
+                                <asp:DropDownList ID="AccountType" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                     data-reference="parent">
                                     <asp:ListItem Text="---" Value="---"></asp:ListItem>
@@ -39,8 +39,7 @@
                             </div>
                         </div>
                         <div class="form-group position-relative has-icon-left mb-4">
-                            <asp:TextBox ID="Password" runat="server" CssClass="form-control form-control-xl" Placeholder="Password"></asp:TextBox>
-
+                            <asp:TextBox ID="Password" runat="server" CssClass="form-control form-control-xl" Placeholder="Password" TextMode="Password"></asp:TextBox>
                             <div class="form-control-icon">
                                 <i class="bi bi-shield-lock"></i>
                             </div>
