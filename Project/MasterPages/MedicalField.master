@@ -1,0 +1,159 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MedicalField.master.cs" Inherits="MasterPages_MedicalField" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <!-- Meta tags for character encoding and viewport scaling -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medical Field Home Page</title>
+
+    <!-- Preconnect to improve font loading performance -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+    <!-- Linking external CSS files for fonts and styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="../assets/vendors/iconly/bold.css" />
+    <link rel="stylesheet" href="../assets/vendors/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="../assets/css/app.css" />
+
+    <!-- Favicon for the website -->
+    <link rel="shortcut icon" href="../assets/images/favicon.svg" type="image/x-icon" />
+
+    <!-- Placeholder for additional head content from child pages -->
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <div id="app">
+                <div id="sidebar" class="active">
+                    <div class="sidebar-wrapper active">
+                        <div class="sidebar-header">
+                            <!-- Sidebar header with toggle button -->
+                            <div class="d-flex justify-content-between">
+                                <div class="Name">
+                                    <h2>NBE
+                                        <br />
+                                        Medical Field
+                                        <br />
+                                    </h2>
+                                </div>
+                                <div class="toggler">
+                                    <a href="#" class="sidebar-hideJohn d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-menu">
+                            <ul class="menu">
+                                <!-- Placeholder for sidebar title -->
+                                <li class="sidebar-title"></li>
+
+                                <!-- Home Page link -->
+                                <li class="sidebar-item active" id="Home-Page">
+                                    <a href="../pages/MedicalHome.aspx" class="sidebar-link">
+                                        <i class="bi bi-grid-fill"></i>
+                                        <span>Home Page</span>
+                                    </a>
+                                </li>
+
+                                <!-- Time Table Management link -->
+                                <li class="sidebar-item" id="Time-Table">
+                                    <a href="../pages/TimeTable.aspx" class="sidebar-link">
+                                        <i class="bi bi-grid-fill"></i>
+                                        <span>Time Table Management</span>
+                                    </a>
+                                </li>
+
+                                <!-- Account Management section  -->
+                                <li class="sidebar-title">Account Management</li>
+
+                                <!-- New Doctor Account link -->
+                                <li class="sidebar-item" id="Doctor-Account">
+                                    <a href="../pages/NewAccount.aspx" class="sidebar-link">
+                                        <i class="bi bi-grid-fill"></i>
+                                        <span>New Doctor Account</span>
+                                    </a>
+                                </li>
+
+                                <!-- Manage Accounts link -->
+                                <li class="sidebar-item" id="Manage-Accounts">
+                                    <a href="../pages/AccountManagement.aspx" class="sidebar-link">
+                                        <i class="bi bi-grid-fill"></i>
+                                        <span>Manage Accounts</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Sidebar toggle button -->
+                        <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+                        <!--  Sign Out Button -->
+                        <div class="sidebar-footer d-flex justify-content-center align-items-end me-3" style="margin-top: 50px; justify-content: space-around">
+                            <a href="#" class="btn btn-outline-danger w-50 ">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="main">
+                    <!-- Burger button for mobile view -->
+                    <header class="mb-3">
+                        <a href="#" class="burger-btn d-block d-xl-none">
+                            <i class="bi bi-justify fs-3"></i>
+                        </a>
+                    </header>
+
+                    <!-- Page header placeholder -->
+                    <div class="page-heading">
+                        <asp:ContentPlaceHolder ID="PageHeader" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+
+                    <!-- Main page content placeholder -->
+                    <div class="page-content">
+                        <section class="row">
+                            <asp:ContentPlaceHolder ID="Body" runat="server">
+                            </asp:ContentPlaceHolder>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- External JavaScript files -->
+    <script src="../assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/vendors/apexcharts/apexcharts.js"></script>
+    <script src="../assets/js/pages/dashboard.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <!-- Placeholder for additional scripts from child pages -->
+    <asp:ContentPlaceHolder ID="Script" runat="server">
+        <script>
+            // Function to set the active class
+            function setActiveLink() {
+                // Get the current URL path
+                var currentPath = window.location.pathname;
+
+                // Loop through all sidebar items
+                document.querySelectorAll('.sidebar-item').forEach(function (item) {
+                    // Remove active class from all items
+                    item.classList.remove('active');
+
+                    // Check if the item's link matches the current path
+                    if (item.querySelector('a').getAttribute('href') === currentPath) {
+                        // Add active class to the matching item
+                        item.classList.add('active');
+                    }
+                });
+            }
+
+            // Call the function when the page loads
+            window.onload = setActiveLink;
+        </script>
+    </asp:ContentPlaceHolder>
+</body>
+</html>

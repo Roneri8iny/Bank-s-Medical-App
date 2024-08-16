@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Bank Medical DB" Class="NewAccountDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.Appointments" Member="Appointments">
+    <Type Name="Appointment">
+      <Column Name="AppointmentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SlotID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EmployeeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ApStatus" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Diagnosis" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="FinanceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Appointment_LabReport" Member="LabReports" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="LabReport" />
+      <Association Name="Appointment_Prescription" Member="Prescriptions" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="Prescription" />
+      <Association Name="Timetable_Appointment" Member="Timetable" ThisKey="SlotID" OtherKey="SlotID" Type="Timetable" IsForeignKey="true" />
+      <Association Name="Employee_Appointment" Member="Employee" ThisKey="EmployeeID" OtherKey="EmployeeID" Type="Employee" IsForeignKey="true" />
+      <Association Name="Finance_Appointment" Member="Finance" ThisKey="FinanceID" OtherKey="FinanceID" Type="Finance" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Timetable" Member="Timetables">
+    <Type Name="Timetable">
+      <Column Name="SlotID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DoctorID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TTDay" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StartTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="EndTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Association Name="Timetable_Appointment" Member="Appointments" ThisKey="SlotID" OtherKey="SlotID" Type="Appointment" />
+      <Association Name="Doctor_Timetable" Member="Doctor" ThisKey="DoctorID" OtherKey="DoctorID" Type="Doctor" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Departments" Member="Departments">
+    <Type Name="Department">
+      <Column Name="DepartmentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DepartmentName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Department_Doctor" Member="Doctors" ThisKey="DepartmentID" OtherKey="DepartmentID" Type="Doctor" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Doctor" Member="Doctors">
+    <Type Name="Doctor">
+      <Column Name="DoctorID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DepartmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MFID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Username" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="DoctorName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Position" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="DoctorPassword" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Mobile" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Association Name="Doctor_Timetable" Member="Timetables" ThisKey="DoctorID" OtherKey="DoctorID" Type="Timetable" />
+      <Association Name="Department_Doctor" Member="Department" ThisKey="DepartmentID" OtherKey="DepartmentID" Type="Department" IsForeignKey="true" />
+      <Association Name="MedicalField_Doctor" Member="MedicalField" ThisKey="MFID" OtherKey="MFID" Type="MedicalField" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Employees" Member="Employees">
+    <Type Name="Employee">
+      <Column Name="EmployeeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Photo" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployeeName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Employee_Appointment" Member="Appointments" ThisKey="EmployeeID" OtherKey="EmployeeID" Type="Appointment" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Finance" Member="Finances">
+    <Type Name="Finance">
+      <Column Name="FinanceID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FinancePassword" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="FinanceName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Finance_Appointment" Member="Appointments" ThisKey="FinanceID" OtherKey="FinanceID" Type="Appointment" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LabReports" Member="LabReports">
+    <Type Name="LabReport">
+      <Column Name="ReportID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AppointmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PayStatus" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LabName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ReportDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="LabReport_LabReportsDetail" Member="LabReportsDetails" ThisKey="ReportID" OtherKey="ReportID" Type="LabReportsDetail" />
+      <Association Name="Appointment_LabReport" Member="Appointment" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="Appointment" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LabReportsDetails" Member="LabReportsDetails">
+    <Type Name="LabReportsDetail">
+      <Column Name="DetailID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ReportID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TestID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FinancialApprovalStatus" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ResultPDF" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Association Name="LabReport_LabReportsDetail" Member="LabReport" ThisKey="ReportID" OtherKey="ReportID" Type="LabReport" IsForeignKey="true" />
+      <Association Name="Test_LabReportsDetail" Member="Test" ThisKey="TestID" OtherKey="TestID" Type="Test" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MedicalField" Member="MedicalFields">
+    <Type Name="MedicalField">
+      <Column Name="MFID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MMID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Username" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MFName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MFPassword" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Hotline" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="MFAddress" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MFType" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="MedicalField_Doctor" Member="Doctors" ThisKey="MFID" OtherKey="MFID" Type="Doctor" />
+      <Association Name="MiddleMan_MedicalField" Member="MiddleMan" ThisKey="MMID" OtherKey="MMID" Type="MiddleMan" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Medicines" Member="Medicines">
+    <Type Name="Medicine">
+      <Column Name="MedicineID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MedicineName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Association Name="Medicine_PrescriptionsDetail" Member="PrescriptionsDetails" ThisKey="MedicineID" OtherKey="MedicineID" Type="PrescriptionsDetail" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MiddleMan" Member="MiddleMans">
+    <Type Name="MiddleMan">
+      <Column Name="MMID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="MMName" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MMPassword" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="MiddleMan_MedicalField" Member="MedicalFields" ThisKey="MMID" OtherKey="MMID" Type="MedicalField" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Prescriptions" Member="Prescriptions">
+    <Type Name="Prescription">
+      <Column Name="PrescriptionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AppointmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PayStatus" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Prescription_PrescriptionsDetail" Member="PrescriptionsDetails" ThisKey="PrescriptionID" OtherKey="PrescriptionID" Type="PrescriptionsDetail" />
+      <Association Name="Appointment_Prescription" Member="Appointment" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="Appointment" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PrescriptionsDetails" Member="PrescriptionsDetails">
+    <Type Name="PrescriptionsDetail">
+      <Column Name="DetailID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PrescriptionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FinanceApprovalStatus" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Frequency" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="MedicineID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Prescription_PrescriptionsDetail" Member="Prescription" ThisKey="PrescriptionID" OtherKey="PrescriptionID" Type="Prescription" IsForeignKey="true" />
+      <Association Name="Medicine_PrescriptionsDetail" Member="Medicine" ThisKey="MedicineID" OtherKey="MedicineID" Type="Medicine" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Tests" Member="Tests">
+    <Type Name="Test">
+      <Column Name="TestID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TestName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Association Name="Test_LabReportsDetail" Member="LabReportsDetails" ThisKey="TestID" OtherKey="TestID" Type="LabReportsDetail" />
+    </Type>
+  </Table>
+</Database>
