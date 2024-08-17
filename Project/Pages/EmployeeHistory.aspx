@@ -14,6 +14,7 @@
     <section id="multiple-column-form">
         <div class="row match-height">
             <div class="col-12">
+                <!--Past Appointments-->
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Your Appointments</h4>
@@ -55,6 +56,7 @@
                         </div>
                     </div>
                 </div>
+                <!--Past Lab Reports-->
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Your Lab Reports</h4>
@@ -92,6 +94,7 @@
                         </div>
                     </div>
                 </div>
+                <!--Past Prescriptions-->
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Your Prescriptions</h4>
@@ -106,7 +109,6 @@
                                     <asp:Label ID="Label43" runat="server" Text="Doctor:" CssClass="mb-1" Style="display: block;"></asp:Label>
                                     <asp:Label ID="Label44" runat="server" Text="Department:" CssClass="mb-1" Style="display: block;"></asp:Label>
                                     <div class="modal-primary me-1 mb-1 d-flex justify-content-end">
-                                        <!-- Button trigger for primary themes modal -->
                                         <asp:Button
                                             ID="btnPrimary"
                                             runat="server"
@@ -114,7 +116,6 @@
                                             CssClass="btn btn-outline-primary"
                                             OnClientClick="var myModal = new bootstrap.Modal(document.getElementById('primary')); myModal.show(); return false;" />
 
-                                        <!--primary theme Modal -->
                                         <div class="modal fade text-left" id="primary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                                                 <div class="modal-content">
@@ -142,7 +143,6 @@
                                     <asp:Label ID="Label34" runat="server" Text="Doctor:" CssClass="mb-1" Style="display: block;"></asp:Label>
                                     <asp:Label ID="Label35" runat="server" Text="Department:" CssClass="mb-1" Style="display: block;"></asp:Label>
                                     <div class="modal-primary me-1 mb-1 d-flex justify-content-end">
-                                        <!-- Button trigger for primary themes modal -->
                                         <asp:Button
                                             ID="Button1"
                                             runat="server"
@@ -150,7 +150,6 @@
                                             CssClass="btn btn-outline-primary"
                                             OnClientClick="var myModal = new bootstrap.Modal(document.getElementById('primary')); myModal.show(); return false;" />
 
-                                        <!--primary theme Modal -->
                                         <div class="modal fade text-left" id="primary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                                                 <div class="modal-content">
@@ -178,7 +177,6 @@
                                     <asp:Label ID="Label38" runat="server" Text="Doctor:" CssClass="mb-1" Style="display: block;"></asp:Label>
                                     <asp:Label ID="Label39" runat="server" Text="Department:" CssClass="mb-1" Style="display: block;"></asp:Label>
                                     <div class="modal-primary me-1 mb-1 d-flex justify-content-end">
-                                        <!-- Button trigger for primary themes modal -->
                                         <asp:Button
                                             ID="Button3"
                                             runat="server"
@@ -186,7 +184,6 @@
                                             CssClass="btn btn-outline-primary"
                                             OnClientClick="var myModal = new bootstrap.Modal(document.getElementById('primary')); myModal.show(); return false;" />
 
-                                        <!--primary theme Modal -->
                                         <div class="modal fade text-left" id="primary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                                                 <div class="modal-content">

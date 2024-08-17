@@ -22,72 +22,49 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <div class="btn-group dropdown me-1 mb-1">
-                                                <asp:Label ID="Label1" runat="server" Text="Medical Field" CssClass="btn btn-primary"></asp:Label>
-                                                <asp:DropDownList ID="DropDownList1" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                                <!--Medical Field Dropdown List-->
+                                                <asp:DropDownList ID="MedicalFields" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split"
                                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                    data-reference="parent">
-                                                    <asp:ListItem Text="---" Value="---"></asp:ListItem>
-                                                    <asp:ListItem Text="Hospital" Value="Hospital"></asp:ListItem>
-                                                    <asp:ListItem Text="Clinic" Value="Clinic"></asp:ListItem>
-                                                    <asp:ListItem Text="Lab" Value="Lab"></asp:ListItem>
+                                                    data-reference="parent" AutoPostBack="true" OnSelectedIndexChanged="MedicalFields_SelectedIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <div class="btn-group dropdown me-1 mb-1">
-                                                <asp:Label ID="Label2" runat="server" Text="Departments" CssClass="btn btn-primary"></asp:Label>
-                                                <asp:DropDownList ID="DropDownList2" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split"
-                                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                    data-reference="parent">
-                                                    <asp:ListItem Text="---" Value="---"></asp:ListItem>
-                                                    <asp:ListItem Text="Department 1" Value="Department 1"></asp:ListItem>
-                                                    <asp:ListItem Text="Department 2" Value="Department 2"></asp:ListItem>
-                                                    <asp:ListItem Text="Department 3" Value="Department 3"></asp:ListItem>
-                                                </asp:DropDownList>
+                                        <asp:Panel ID="DepartmentsPanel" runat="server">
+                                            <div class="form-group">
+                                                <div class="btn-group dropdown me-1 mb-1">
+                                                    <!--Departments Dropdown List-->
+                                                    <asp:DropDownList ID="Departments" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                        data-reference="parent">
+                                                    </asp:DropDownList>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </asp:Panel>
                                     </div>
                                     <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <p>
-                                                Available slots
-                                            </p>
-                                            <div class="list-group">
-                                                <span class="list-group-item">
-                                                    <asp:Label ID="Label3" runat="server" Text="Doctor X" CssClass="mb-1" Style="font-size: 20px; color: #25396f; font-weight: bold; display: block;"></asp:Label>
+                                        <asp:Panel ID="AvailableSlotsPanel" runat="server">
+                                            <!--Available Doctors List-->
+                                            <div class="form-group">
+                                                <p>
+                                                    Available slots
+                                                </p>
+                                                <div class="list-group" id="">
+                                                    <span class="list-group-item">
+                                                        <asp:Label ID="DoctorName" runat="server" Text="Doctor X" CssClass="mb-1" Style="font-size: 20px; color: #25396f; font-weight: bold; display: block;"></asp:Label>
 
-                                                    <asp:Label ID="Label4" runat="server" Text="Price: $$" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label5" runat="server" Text="Sun 12:00pm to 2:00 pm" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label6" runat="server" Text="Wed 2:00pm to 4:00 pm" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <div class="d-flex w-100 justify-content-end">
-                                                        <asp:Button ID="RequestButton" runat="server" Text="Request" CssClass="btn btn-primary rounded-pill" />
-                                                    </div>
-                                                </span>
-                                                <span class="list-group-item">
-                                                    <asp:Label ID="Label7" runat="server" Text="Doctor Y" CssClass="mb-1" Style="font-size: 20px; color: #25396f; font-weight: bold; display: block;"></asp:Label>
+                                                        <asp:Label ID="Price" runat="server" Text="Price: $$" CssClass="mb-1" Style="display: block;"></asp:Label>
+                                                        <asp:Label ID="StartTime" runat="server" Text="Sun 12:00pm to 2:00 pm" CssClass="mb-1" Style="display: block;"></asp:Label>
+                                                        <asp:Label ID="EndTime" runat="server" Text="Wed 2:00pm to 4:00 pm" CssClass="mb-1" Style="display: block;"></asp:Label>
+                                                        <div class="d-flex w-100 justify-content-end">
+                                                            <asp:Button ID="RequestButton" runat="server" Text="Request" CssClass="btn btn-primary rounded-pill" />
+                                                        </div>
+                                                    </span>
 
-                                                    <asp:Label ID="Label8" runat="server" Text="Price: $$" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label9" runat="server" Text="Sun 12:00pm to 2:00 pm" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label10" runat="server" Text="Wed 2:00pm to 4:00 pm" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <div class="d-flex w-100 justify-content-end">
-                                                        <asp:Button ID="Button1" runat="server" Text="Request" CssClass="btn btn-primary rounded-pill" />
-                                                    </div>
-                                                </span>
-                                                <span class="list-group-item">
-                                                    <asp:Label ID="Label11" runat="server" Text="Doctor Z" CssClass="mb-1" Style="font-size: 20px; color: #25396f; font-weight: bold; display: block;"></asp:Label>
-
-                                                    <asp:Label ID="Label12" runat="server" Text="Price: $$" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label13" runat="server" Text="Sun 12:00pm to 2:00 pm" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label14" runat="server" Text="Wed 2:00pm to 4:00 pm" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <div class="d-flex w-100 justify-content-end">
-                                                        <asp:Button ID="Button2" runat="server" Text="Request" CssClass="btn btn-primary rounded-pill" />
-                                                    </div>
-                                                </span>
-
+                                                </div>
                                             </div>
-                                        </div>
+                                        </asp:Panel>
                                     </div>
                                 </div>
                             </form>

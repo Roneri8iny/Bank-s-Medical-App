@@ -20,11 +20,13 @@
                     <div class="card-content">
                         <div class="card-body">
                             <form class="form">
+                                <!--Profile Picture-->
                                 <div class="form-group">
                                     <asp:Image ID="EmpImage" runat="server" ImageUrl="../assets/images/samples/architecture1.jpg" Width="200px" Style="border-radius: 15px;"/>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 col-12">
+                                        <!--Personal Data-->
                                         <div class="form-group">
                                             <asp:Label ID="EmpNameLabel" runat="server" Text="Name" style="font-size: 25px;"></asp:Label><br />
                                             <asp:TextBox ID="EmpName" runat="server" Text="" Enabled="false" style="font-size: 20px; width: 70%;"></asp:TextBox>

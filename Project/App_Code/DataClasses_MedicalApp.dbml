@@ -5,7 +5,7 @@
       <Column Name="AppointmentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="SlotID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="EmployeeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ApStatus" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ApStatus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Diagnosis" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="FinanceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SLDStart" Type="System.DateTime" DbType="Date" CanBeNull="true" />
@@ -63,7 +63,7 @@
     <Type Name="LabReport">
       <Column Name="ReportID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="AppointmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PayStatus" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PayStatus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="LabName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="ReportDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Association Name="LabReport_LabReportsDetail" Member="LabReportsDetails" ThisKey="ReportID" OtherKey="ReportID" Type="LabReportsDetail" />
@@ -75,7 +75,7 @@
       <Column Name="DetailID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="ReportID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="TestID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="FinancialApprovalStatus" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FinancialApprovalStatus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ResultPDF" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
       <Association Name="LabReport_LabReportsDetail" Member="LabReport" ThisKey="ReportID" OtherKey="ReportID" Type="LabReport" IsForeignKey="true" />
       <Association Name="Test_LabReportsDetail" Member="Test" ThisKey="TestID" OtherKey="TestID" Type="Test" IsForeignKey="true" />
@@ -118,7 +118,7 @@
     <Type Name="Prescription">
       <Column Name="PrescriptionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="AppointmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PayStatus" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PayStatus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Prescription_PrescriptionsDetail" Member="PrescriptionsDetails" ThisKey="PrescriptionID" OtherKey="PrescriptionID" Type="PrescriptionsDetail" />
       <Association Name="Appointment_Prescription" Member="Appointment" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="Appointment" IsForeignKey="true" />
     </Type>
@@ -127,7 +127,7 @@
     <Type Name="PrescriptionsDetail">
       <Column Name="DetailID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="PrescriptionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="FinanceApprovalStatus" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FinanceApprovalStatus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Frequency" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Notes" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />

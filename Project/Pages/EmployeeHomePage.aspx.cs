@@ -12,13 +12,13 @@ public partial class Pages_HomePage : System.Web.UI.Page
         //Fill the home Page
         if (!IsPostBack)
         {
-            var account = Session["EmpAccount"] as Employee;
-            if (account != null)
+            var EmpAccount = Session["EmpAccount"] as Employee;
+            if (EmpAccount != null)
             {
-                EmpImage.ImageUrl = account.Photo; 
-                EmpName.Text = account.EmployeeName;
-                EmpID.Text = account.EmployeeID.ToString();
-                EmpEmail.Text = account.Email;
+                EmpImage.ImageUrl = EmpAccount.Photo;
+                EmpName.Text = EmpAccount.EmployeeName;
+                EmpID.Text = EmpAccount.EmployeeID.ToString();
+                EmpEmail.Text = EmpAccount.Email;
             }
             else
             {

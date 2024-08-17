@@ -36,30 +36,31 @@
                                 </div>
                             </div>
                         </div>
+                        <!--Side Bar-->
                         <div class="sidebar-menu">
                             <ul class="menu">
                                 <li class="sidebar-title">Menu</li>
 
                                 <li class="sidebar-item ">
-                                    <a href="../Pages/HomePage.aspx" class='sidebar-link'>
+                                    <a href="../Pages/EmployeeHomePage.aspx" class='sidebar-link'>
                                         <i class="bi bi-grid-fill"></i>
                                         <span>Home</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item  ">
-                                    <a href="../Pages/AppointmentRequest.aspx" class='sidebar-link'>
+                                    <a href="../Pages/EmployeeAppointmentRequest.aspx" class='sidebar-link'>
                                         <i class="bi bi-file-earmark-medical-fill"></i>
                                         <span>Appointment Request</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item  ">
-                                    <a href="../Pages/MedicineRequest.aspx" class='sidebar-link'>
+                                    <a href="../Pages/EmployeeMedicineRequest.aspx" class='sidebar-link'>
                                         <i class="bi bi-file-earmark-medical-fill"></i>
                                         <span>Medicine Request</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item  ">
-                                    <a href="../Pages/History.aspx" class='sidebar-link'>
+                                    <a href="../Pages/EmployeeHistory.aspx" class='sidebar-link'>
                                         <i class="bi bi-collection-fill"></i>
                                         <span>History</span>
                                     </a>

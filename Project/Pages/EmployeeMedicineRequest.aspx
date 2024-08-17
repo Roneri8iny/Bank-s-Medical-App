@@ -22,6 +22,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <p>Prescriptions</p>
+                                            <!--Monthly Prescriptions List-->
                                             <div class="list-group">
                                                 <span class="list-group-item">
                                                     <asp:Label ID="Label3" runat="server" Text="Prescription 1" CssClass="mb-1" Style="font-size: 20px; color: #25396f; font-weight: bold; display: block;"></asp:Label>

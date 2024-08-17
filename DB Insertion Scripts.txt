@@ -1,0 +1,194 @@
+-- Middle Men Insertion
+
+INSERT INTO MiddleMan (Username, MMName, Email, MMPassword)
+VALUES ('mmjohn', 'John Doe', 'john.doe@example.com', 'pass1234');
+
+INSERT INTO MiddleMan (Username, MMName, Email, MMPassword)
+VALUES ('mmjane', 'Jane Smith', 'jane.smith@example.com', 'securepass5678');
+
+INSERT INTO MiddleMan (Username, MMName, Email, MMPassword)
+VALUES ('mmbob', 'Bob Johnson', 'bob.johnson@example.com', 'mypassword7890');
+
+-- Medical Fields Insertion
+
+INSERT INTO MedicalField (MMID, Username, MFName, Email, MFPassword, Hotline, MFAddress, MFType)
+VALUES (1, 'mfclinic1', 'City Clinic', 'clinic1@example.com', 'clinicpass123', 1234567890, '123 Main St', 'General');
+
+INSERT INTO MedicalField (MMID, Username, MFName, Email, MFPassword, Hotline, MFAddress, MFType)
+VALUES (2, 'mfclinic2', 'Central Hospital', 'clinic2@example.com', 'hospitalpass456', 2345678901, '456 Elm St', 'Specialized');
+
+INSERT INTO MedicalField (MMID, Username, MFName, Email, MFPassword, Hotline, MFAddress, MFType)
+VALUES (3, 'mfclinic3', 'Community Health', 'clinic3@example.com', 'healthpass789', 3456789012, '789 Oak St', 'Pediatric');
+
+
+INSERT INTO MedicalField (MMID, Username, MFName, Email, MFPassword, Hotline, MFAddress, MFType)
+VALUES (3, 'alfalab012', 'Alfa Lab', 'Lab1@example.com', 'alfalab789', 357862149, '789 Oak St', 'Lab');
+
+-- Doctors Insertion
+
+INSERT INTO Doctor (DepartmentID, Username, Price, DoctorName, Position, DoctorPassword, Mobile, MFID)
+VALUES (3, 'drallen', 250.00, 'Dr. Allen', 'Surgeon', 'securepass1', 9876543210, 1);
+
+INSERT INTO Doctor (DepartmentID, Username, Price, DoctorName, Position, DoctorPassword, Mobile, MFID)
+VALUES (2, 'drbaker', 180.50, 'Dr. Baker', 'Pediatrician', 'securepass2', 8765432109, 2);
+
+INSERT INTO Doctor (DepartmentID, Username, Price, DoctorName, Position, DoctorPassword, Mobile, MFID)
+VALUES (1, 'drclark', 220.75, 'Dr. Clark', 'Cardiologist', 'securepass3', 7654321098, 3);
+
+UPDATE Doctor
+SET Position = 'Specialized'
+WHERE DoctorID = 7 ;
+
+UPDATE Doctor
+SET Position = 'Specialized'
+WHERE DoctorID = 9;
+
+UPDATE Doctor
+SET Position = 'Analysis'
+WHERE DoctorID = 8;
+
+-- Departments Insertion
+
+INSERT INTO Departments (DepartmentName)
+VALUES ('Cardiology');
+
+INSERT INTO Departments (DepartmentName)
+VALUES ('Pediatrics');
+
+INSERT INTO Departments (DepartmentName)
+VALUES ('Orthopedics');
+
+-- Finance Insertion
+
+INSERT INTO Finance(FinanceName, FinancePassword, Username)
+VALUES ('Ahmed', 'pass123', 'finAhmed');
+
+INSERT INTO Finance(FinanceName, FinancePassword, Username)
+VALUES ('Mohamed', 'pass456', 'finMohamed');
+
+INSERT INTO Finance(FinanceName, FinancePassword, Username)
+VALUES ('Sara', 'pass789', 'finSara');
+
+-- Employees Insertion
+
+INSERT INTO Employees(EmployeeName, Email, Password, Photo)
+VALUES ('Noor', 'noor@gmail.com', 'no0r123', 'noor.png');
+
+INSERT INTO Employees(EmployeeName, Email, Password, Photo)
+VALUES ('Omar', 'omar@gmail.com', 'omar123', 'omar.png');
+
+INSERT INTO Employees(EmployeeName, Email, Password, Photo)
+VALUES ('Sally', 'sally@gmail.com', 'sally123', 'sally.png');
+
+
+-- Time Table Insertion
+
+INSERT INTO Timetable(DoctorID, TTDay, StartTime, EndTime)
+VALUES (7, 'Sun', '15:00:00', '18:00:00');
+
+INSERT INTO Timetable(DoctorID, TTDay, StartTime, EndTime)
+VALUES (7, 'Mon', '18:00:00', '19:00:00');
+
+INSERT INTO Timetable(DoctorID, TTDay, StartTime, EndTime)
+VALUES (8, 'Sun', '15:00:00', '18:00:00');
+
+INSERT INTO Timetable(DoctorID, TTDay, StartTime, EndTime)
+VALUES (8, 'Tue', '15:00:00', '18:00:00');
+
+INSERT INTO Timetable(DoctorID, TTDay, StartTime, EndTime)
+VALUES (9, 'Mon', '15:00:00', '18:00:00');
+
+INSERT INTO Timetable(DoctorID, TTDay, StartTime, EndTime)
+VALUES (9, 'Wed', '18:00:00', '20:00:00');
+
+
+-- Appointments Insertion
+
+INSERT INTO Appointments(SlotID, EmployeeID, FinanceID, Diagnosis, ApStatus)
+VALUES (1, 1, 1, 'Has the Flu', 1);
+
+INSERT INTO Appointments(SlotID, EmployeeID, FinanceID, Diagnosis, ApStatus)
+VALUES (2, 2, 2, 'Has Corona', 1);
+
+
+INSERT INTO Appointments(SlotID, EmployeeID, FinanceID, Diagnosis, ApStatus)
+VALUES (3, 3, 3, 'Has the Flu', 1);
+
+INSERT INTO Appointments(SlotID, EmployeeID, FinanceID, Diagnosis, ApStatus)
+VALUES (4, 1, 1, 'Has the Flu', 1);
+
+
+INSERT INTO Appointments(SlotID, EmployeeID, FinanceID, Diagnosis, ApStatus)
+VALUES (5, 2, 2, 'Has the Flu', 1);
+
+INSERT INTO Appointments(SlotID, EmployeeID, FinanceID, Diagnosis, ApStatus)
+VALUES (6, 3, 3, 'Has the Flu', 1);
+
+--UPDATE Appointments
+--SET ApStatus = 1;
+
+-- Lab Reports Insertion
+
+INSERT INTO LabReports (AppointmentID, PayStatus, LabName, ReportDate)
+VALUES (1, 1, 'Alpha Labs', '2024-08-15');
+
+INSERT INTO LabReports (AppointmentID, PayStatus, LabName, ReportDate)
+VALUES (2, 1, 'Alpha Labs', '2024-08-14');
+
+INSERT INTO LabReports (AppointmentID, PayStatus, LabName, ReportDate)
+VALUES (3, 1, 'Alpha Labs', '2024-08-13');
+
+-- Tests Insertion 
+INSERT INTO Tests(TestName, Price)
+VALUES ('CBC', 500);
+
+INSERT INTO Tests(TestName, Price)
+VALUES ('Vitamin D', 1000);
+
+INSERT INTO Tests(TestName, Price)
+VALUES ('HAB1C', 400);
+
+-- Lab Reports Details Insertion
+
+INSERT INTO LabReportsDetails(ReportID, ResultPDF, FinancialApprovalStatus, TestID)
+VALUES (1, 'cbc.pdf',1 , 1);
+
+INSERT INTO LabReportsDetails(ReportID, ResultPDF, FinancialApprovalStatus, TestID)
+VALUES (2, 'vitD.pdf',1 ,2);
+
+INSERT INTO LabReportsDetails(ReportID, ResultPDF, FinancialApprovalStatus, TestID)
+VALUES (3, 'ha1c.pdf',1 ,3);
+
+
+
+-- Prescriptions Insertion
+
+INSERT INTO Prescriptions(AppointmentID, PayStatus)
+VALUES (1, 1);
+
+INSERT INTO Prescriptions(AppointmentID, PayStatus)
+VALUES (2, 1);
+
+INSERT INTO Prescriptions(AppointmentID, PayStatus)
+VALUES (3, 1);
+
+-- Medicines Insertion 
+INSERT INTO Medicines(MedicineName, Price)
+VALUES ('Panadol', 500);
+
+INSERT INTO Medicines(MedicineName, Price)
+VALUES ('Vitamin D', 1000);
+
+INSERT INTO Medicines(MedicineName, Price)
+VALUES ('Limitless Vitamins', 400);
+
+-- Prescriptions Details Insertion
+
+INSERT INTO PrescriptionsDetails (MedicineID, PrescriptionID, FinanceApprovalStatus, Frequency,Quantity, Notes)
+VALUES (1, 1,1,2,3 ,'Before Meals');
+
+INSERT INTO PrescriptionsDetails (MedicineID, PrescriptionID, FinanceApprovalStatus, Frequency,Quantity, Notes)
+VALUES (2,2,1,3, 7, 'After Meals');
+
+INSERT INTO PrescriptionsDetails (MedicineID, PrescriptionID, FinanceApprovalStatus, Frequency,Quantity, Notes)
+VALUES (3,3,1,4,8, 'Between Meals');

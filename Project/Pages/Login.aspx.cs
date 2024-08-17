@@ -11,12 +11,12 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
     }
     protected void LoginButton_Click(object sender, EventArgs e)
     {
         try
         {
+            //Check for empty fields
             string username = Username.Text.Trim();
             string password = Password.Text.Trim();
             string selectedAccountType = AccountType.SelectedValue;
@@ -25,14 +25,11 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
             {
                 error_div.Visible = true;
                 lbl_error.Text = "Please fill in all fields before logging in.";
-
-                Username.Text = "";
-                Password.Text = "";
-                AccountType.SelectedIndex = 0; 
+                ClearFields();
                 return; 
             }
-
-            var account = obj_login.CheckUserValidity(Username.Text.Trim(), Password.Text.Trim() , selectedAccountType);
+            //Check if account exists
+            var account = obj_login.CheckUserValidity(username, password, selectedAccountType);
             if(account != null)
             {
                 error_div.Visible = false;
@@ -70,12 +67,10 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
             {
                 error_div.Visible = true;
                 lbl_error.Text = "Invalid credentials! Please try again.";
-                Username.Text = "";
-                Password.Text = "";
-                AccountType.SelectedIndex = 0; 
+                ClearFields();
             }
 
-            ///Forgot Password ????????????????
+            ///Forgot Password and Password Hashing????????????????
 
         }
         catch (Exception)
@@ -83,5 +78,11 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
             
             throw;
         }
+    }
+    private void ClearFields()
+    {
+        Username.Text = "";
+        Password.Text = "";
+        AccountType.SelectedIndex = 0;
     }
 }
