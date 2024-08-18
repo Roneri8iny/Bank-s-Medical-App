@@ -1,34 +1,78 @@
 ﻿using System;
-using System.Activities.Expressions;
-using System.Collections.Generic;
-using System.EnterpriseServices;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 public partial class Pages_NewAccount : System.Web.UI.Page
 {
+    // Assuming you're using a LINQ to SQL DataContext or Entity Framework DbContext
     NewAccountDataClassesDataContext db = new NewAccountDataClassesDataContext("");
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!IsPostBack)
+        {
+            // Populate departments dropdown list
+            BindDepartments();
+        }
+    }
+
+    private void BindDepartments()
+    {
+        try
+        {
+            // Fetch departments from the database
+            var departments = db.Departments.ToList();
+
+            // Bind departments to the dropdown list
+            ddl_Departments.DataSource = departments;
+            ddl_Departments.DataTextField = "DepartmentName"; // Replace with the actual name field in your database
+            ddl_Departments.DataValueField = "DepartmentID";  // Replace with the actual ID field in your database
+            ddl_Departments.DataBind();
+
+            // Optionally add a "Select Department" option
+            ddl_Departments.Items.Insert(0, new ListItem("Select Department", "-1"));
+        }
+        catch (Exception ex)
+        {
+            // Handle any exceptions that occur during data binding
+            // Log the error and optionally show a message to the user
+            Console.WriteLine("Error binding departments: " + ex.Message);
+        }
     }
 
     protected void btn_addDoctor_Click(object sender, EventArgs e)
     {
-        Doctor doctor_obj = new Doctor();
-        doctor_obj.DoctorName = txt_doctor_name.Text;
-        doctor_obj.Price = Convert.ToDecimal(txt_price.Text);
-        doctor_obj.Username = username.Text;
-        doctor_obj.DoctorPassword = password.Text;
-        doctor_obj.Mobile = Convert.ToInt64(txt_mobile.Text);
-        doctor_obj.Position = ddl_postion.SelectedItem.Text;
-        doctor_obj.DepartmentID = Convert.ToInt32(ddl_Departments.SelectedValue);
-        doctor_obj.MFID = 3;
+        try
+        {
+            // Create a new doctor object
+            Doctor doctor_obj = new Doctor
+            {
+                DoctorName = txt_doctor_name.Text,
+                Price = Convert.ToDecimal(txt_price.Text),
+                Username = username.Text,
+                DoctorPassword = password.Text,
+                Mobile = Convert.ToInt64(txt_mobile.Text),
+                Position = ddl_postion.SelectedItem.Text,
+                DepartmentID = Convert.ToInt32(ddl_Departments.SelectedValue), // Get the selected department ID
+                MFID = 3 // Replace with actual logic to assign MFID as needed
+            };
 
-        
-        db.Doctors.InsertOnSubmit(doctor_obj);
-        db.SubmitChanges();
+            // Insert the new doctor into the database
+            db.Doctors.InsertOnSubmit(doctor_obj);
+            db.SubmitChanges();
+
+            // Optionally, show a success message or clear the form fields
+            // Example: Display a success message using Toastify
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "Toastify({ text: 'Doctor added successfully!', duration: 3000 }).showToast();", true);
+        }
+        catch (Exception ex)
+        {
+            // Handle any exceptions that occur during doctor insertion
+            // Log the error and optionally show a message to the user
+            Console.WriteLine("Error adding doctor: " + ex.Message);
+            // Example: Display an error message using Toastify
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "Toastify({ text: 'Error adding doctor. Please try again.', duration: 3000, backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)' }).showToast();", true);
+        }
     }
 }

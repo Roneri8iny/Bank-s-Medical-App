@@ -15,7 +15,7 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Doctors Account Details</h4>
-            </div>  
+            </div>
             <div class="card-content">
                 <div class="card-body">
                     <!-- Form starts here -->
@@ -131,7 +131,6 @@
                                             <asp:DropDownList ID="ddl_Departments" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split"
                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                                 data-reference="parent">
-                                                <asp:ListItem Text="Surgery" Value="1"></asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
                                         <div class="form-control-icon">

@@ -59,8 +59,9 @@ public partial class Pages_MedicalFieldLoginPage : System.Web.UI.Page
                         Response.Redirect("MedicalField.aspx");
                         break;
                     case "Medical Field":
+                        // Assuming MedicalFieldHomePage.aspx is where you want to go for medical field users
                         Session["MedicalFieldAccount"] = account;
-                        Response.Redirect("MedicalFieldHomePage.aspx");
+                        Response.Redirect("MedicalHome.aspx");
                         break;
                     case "Finance":
                         Session["FinanceAccount"] = account;
@@ -88,4 +89,5 @@ public partial class Pages_MedicalFieldLoginPage : System.Web.UI.Page
             error_div.Visible = true;
         }
     }
+
 }

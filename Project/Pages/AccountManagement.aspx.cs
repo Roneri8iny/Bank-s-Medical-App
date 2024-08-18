@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -13,7 +11,32 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            // Populate dropdowns or other initialization tasks if needed
+            // Populate departments dropdown list
+            BindDepartments();
+        }
+    }
+
+    private void BindDepartments()
+    {
+        try
+        {
+            // Fetch departments from the database
+            var departments = db.Departments.ToList();
+
+            // Bind departments to the dropdown list
+            ddlDepartments.DataSource = departments;
+            ddlDepartments.DataTextField = "DepartmentName"; // Replace with the actual name field in your database
+            ddlDepartments.DataValueField = "DepartmentID";  // Replace with the actual ID field in your database
+            ddlDepartments.DataBind();
+
+            // Optionally add a "Select Department" option
+            ddlDepartments.Items.Insert(0, new ListItem("Select Department", "-1"));
+        }
+        catch (Exception ex)
+        {
+            // Handle any exceptions that occur during data binding
+            // Log the error and optionally show a message to the user
+            Console.WriteLine("Error binding departments: " + ex.Message);
         }
     }
 
@@ -31,16 +54,16 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
             txtDoctorName.Text = doctor.DoctorName;
             txtMobile.Text = doctor.Mobile.ToString();
             txtPrice.Text = doctor.Price.ToString();
-            ddlPosition.SelectedValue = doctor.Position.ToString(); 
+            ddlPosition.SelectedValue = doctor.Position.ToString();
             ddlDepartments.SelectedValue = doctor.DepartmentID.ToString();
 
-            pnlAccountForm.Visible = true;
+            //pnlAccountForm.Visible = true;
         }
         else
         {
             // Show error message if doctor is not found
             ScriptManager.RegisterStartupScript(this, GetType(), "showToast", "showErrorMessage('Doctor not found.');", true);
-            pnlAccountForm.Visible = false;
+            //pnlAccountForm.Visible = true;
         }
     }
 
@@ -48,6 +71,7 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
     {
         string username = txtUsername.Text.Trim();
 
+        // Fetch the doctor record based on the username
         var doctor = db.Doctors.SingleOrDefault(d => d.Username == username);
 
         if (doctor != null)
@@ -58,41 +82,45 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
                 if (string.IsNullOrEmpty(txtDoctorName.Text) ||
                     string.IsNullOrEmpty(txtPrice.Text) ||
                     string.IsNullOrEmpty(txtMobile.Text) ||
-                    ddlPosition.SelectedIndex == 0 ||
                     ddlDepartments.SelectedIndex == 0)
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "showToast", "showErrorMessage('Please fill in all required fields.');", true);
                     return;
                 }
 
-                // Update doctor details
-                doctor.DoctorName = txtDoctorName.Text;
+                // Update doctor details only if changed
+                if (doctor.DoctorName != txtDoctorName.Text)
+                    doctor.DoctorName = txtDoctorName.Text;
 
                 decimal price;
-                if (decimal.TryParse(txtPrice.Text, out price))
+                if (decimal.TryParse(txtPrice.Text, out price) && doctor.Price != price)
                 {
                     doctor.Price = price;
                 }
-                else
+                else if (!decimal.TryParse(txtPrice.Text, out price))
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "showToast", "showErrorMessage('Please enter a valid price.');", true);
                     return;
                 }
 
                 long mobile;
-                if (long.TryParse(txtMobile.Text, out mobile))
+                if (long.TryParse(txtMobile.Text, out mobile) && doctor.Mobile != mobile)
                 {
                     doctor.Mobile = mobile;
                 }
-                else
+                else if (!long.TryParse(txtMobile.Text, out mobile))
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "showToast", "showErrorMessage('Please enter a valid mobile number.');", true);
                     return;
                 }
 
-                doctor.Position = ddlPosition.SelectedItem.Text;
-                doctor.DepartmentID = Convert.ToInt32(ddlDepartments.SelectedValue);
+                if (doctor.Position != ddlPosition.SelectedItem.Text)
+                    doctor.Position = ddlPosition.SelectedItem.Text;
 
+                if (doctor.DepartmentID != Convert.ToInt32(ddlDepartments.SelectedValue))
+                    doctor.DepartmentID = Convert.ToInt32(ddlDepartments.SelectedValue);
+
+                // Submit changes to the database
                 db.SubmitChanges();
 
                 ScriptManager.RegisterStartupScript(this, GetType(), "showToast", "showSuccessMessage('Doctor updated successfully.');", true);
@@ -109,16 +137,19 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
         }
     }
 
+
     protected void btnDelete_Click(object sender, EventArgs e)
     {
         string username = txtUsername.Text.Trim();
 
+        // Fetch the doctor record based on the username
         var doctor = db.Doctors.SingleOrDefault(d => d.Username == username);
 
         if (doctor != null)
         {
             try
             {
+                // Delete the doctor record from the database
                 db.Doctors.DeleteOnSubmit(doctor);
                 db.SubmitChanges();
 
@@ -139,6 +170,7 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
         }
     }
 
+
     private void ClearForm()
     {
         txtUsername.Text = string.Empty;
@@ -148,6 +180,6 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
         txtPrice.Text = string.Empty;
         ddlPosition.SelectedIndex = 0;
         ddlDepartments.SelectedIndex = 0;
-        pnlAccountForm.Visible = false;
+        //pnlAccountForm.Visible = true;
     }
 }
