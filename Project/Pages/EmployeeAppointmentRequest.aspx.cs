@@ -8,7 +8,6 @@ using System.Web.UI.WebControls;
 public partial class Pages_EmployeeHome : System.Web.UI.Page
 {
     Class_Employee employee = new Class_Employee();
-
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -16,6 +15,12 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
             PopulateMedicalFields();
             DepartmentsPanel.Visible = false;
             AvailableSlotsPanel.Visible = false;
+        }
+
+        var EmpAccount = Session["EmpAccount"] as Employee;
+        if (EmpAccount == null)
+        {
+            Response.Redirect("Login.aspx");
         }
     }
 
@@ -49,10 +54,22 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
         {
             PopulateDepartmentsByMedicalField(MFID);
             DepartmentsPanel.Visible = true; // Show the departments panel
+            AvailableLabsPanel.Visible = false;
+
+        }
+        else if (selectedField != "0" && !check)
+        {
+            employee.GetLabs(MFID , LabHotline , LabAddress , LabEmail);
+            AvailableLabsPanel.Visible = true;
+            DepartmentsPanel.Visible = false;
+            AvailableSlotsPanel.Visible = false;
+
         }
         else
         {
-            DepartmentsPanel.Visible = false; // Hide departments panel if default option is selected
+            DepartmentsPanel.Visible = false; 
+            AvailableSlotsPanel.Visible = false;
+            AvailableLabsPanel.Visible = false;
         }
     }
     public void PopulateDepartmentsByMedicalField(int medicalFieldID)
@@ -71,6 +88,71 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
         catch (Exception ex)
         {
             // Handle exceptions
+            throw ex;
+        }
+    }
+    public void Departments_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string selectedDepartment = Departments.SelectedValue;
+
+        if (selectedDepartment != "0")
+        {
+            int departmentID = employee.GetDepartmentID(selectedDepartment);
+
+            // Populate available slots and doctor information
+            PopulateDoctorDetails(departmentID);
+
+            AvailableSlotsPanel.Visible = true;
+        }
+        else
+        {
+            AvailableSlotsPanel.Visible = false;
+        }
+    }
+
+    public void PopulateDoctorDetails(int departmentID)
+    {
+        try
+        {
+            employee.GetDoctorsByDepartment(SlotsRpt, departmentID);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+    protected void AppRequestButton_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "Manar();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "Success;", true);
+
+            //RequestButton.Enabled = false;
+            //requestSuccess_div.Visible = true;  // Shows the success message
+            //requestSuccess.Text = "Request Done";
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+    protected void ViewButton_Click(object sender, EventArgs e)
+    {
+        PopulateLabReports();
+        RequestedLabReportsPanel.Visible = true;
+    }
+
+    public void PopulateLabReports()
+    {
+        try
+        {
+            var EmpAccount = Session["EmpAccount"] as Employee;
+            int empID = EmpAccount.EmployeeID;
+            employee.GetLabReportsbyAppointment(LabReportsRpt, empID);
+        }
+        catch (Exception ex)
+        {
             throw ex;
         }
     }

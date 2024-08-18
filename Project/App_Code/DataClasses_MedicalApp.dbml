@@ -10,8 +10,8 @@
       <Column Name="FinanceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SLDStart" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="SLDEnd" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="AppointmentDtae" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Association Name="Appointment_LabReport" Member="LabReports" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="LabReport" />
-      <Association Name="Appointment_Prescription" Member="Prescriptions" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="Prescription" />
       <Association Name="Employee_Appointment" Member="Employee" ThisKey="EmployeeID" OtherKey="EmployeeID" Type="Employee" IsForeignKey="true" />
       <Association Name="Finance_Appointment" Member="Finance" ThisKey="FinanceID" OtherKey="FinanceID" Type="Finance" IsForeignKey="true" />
       <Association Name="Timetable_Appointment" Member="Timetable" ThisKey="SlotID" OtherKey="SlotID" Type="Timetable" IsForeignKey="true" />
@@ -22,6 +22,16 @@
       <Column Name="DepartmentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="DepartmentName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Association Name="Department_Doctor" Member="Doctors" ThisKey="DepartmentID" OtherKey="DepartmentID" Type="Doctor" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Employees" Member="Employees">
+    <Type Name="Employee">
+      <Column Name="EmployeeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Photo" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployeeName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Employee_Appointment" Member="Appointments" ThisKey="EmployeeID" OtherKey="EmployeeID" Type="Appointment" />
     </Type>
   </Table>
   <Table Name="dbo.Doctor" Member="Doctors">
@@ -38,16 +48,6 @@
       <Association Name="Doctor_Timetable" Member="Timetables" ThisKey="DoctorID" OtherKey="DoctorID" Type="Timetable" />
       <Association Name="Department_Doctor" Member="Department" ThisKey="DepartmentID" OtherKey="DepartmentID" Type="Department" IsForeignKey="true" />
       <Association Name="MedicalField_Doctor" Member="MedicalField" ThisKey="MFID" OtherKey="MFID" Type="MedicalField" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Employees" Member="Employees">
-    <Type Name="Employee">
-      <Column Name="EmployeeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Photo" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="EmployeeName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="Email" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Password" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Association Name="Employee_Appointment" Member="Appointments" ThisKey="EmployeeID" OtherKey="EmployeeID" Type="Appointment" />
     </Type>
   </Table>
   <Table Name="dbo.Finance" Member="Finances">
@@ -120,7 +120,6 @@
       <Column Name="AppointmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PayStatus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Prescription_PrescriptionsDetail" Member="PrescriptionsDetails" ThisKey="PrescriptionID" OtherKey="PrescriptionID" Type="PrescriptionsDetail" />
-      <Association Name="Appointment_Prescription" Member="Appointment" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="Appointment" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.PrescriptionsDetails" Member="PrescriptionsDetails">

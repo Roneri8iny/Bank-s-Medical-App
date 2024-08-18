@@ -11,6 +11,7 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+
     }
     protected void LoginButton_Click(object sender, EventArgs e)
     {
@@ -68,9 +69,9 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
                 error_div.Visible = true;
                 lbl_error.Text = "Invalid credentials! Please try again.";
                 ClearFields();
+                
             }
-
-            ///Forgot Password and Password Hashing????????????????
+            ///Forgot Password and Password Hashing and strong password policy????????????????
 
         }
         catch (Exception)
@@ -81,8 +82,8 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
     }
     private void ClearFields()
     {
-        Username.Text = "";
-        Password.Text = "";
+        Username.Text = string.Empty;
+        Password.Text = string.Empty;
         AccountType.SelectedIndex = 0;
     }
 }

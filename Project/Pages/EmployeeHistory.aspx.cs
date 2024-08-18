@@ -9,6 +9,11 @@ public partial class Pages_History : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        var EmpAccount = Session["EmpAccount"] as Employee;
+        if (EmpAccount == null)
+        {
+            Response.Redirect("Login.aspx");
+        }
 
     }
 }
