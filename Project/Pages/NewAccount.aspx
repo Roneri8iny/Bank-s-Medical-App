@@ -15,7 +15,7 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Doctors Account Details</h4>
-            </div>
+            </div>  
             <div class="card-content">
                 <div class="card-body">
                     <!-- Form starts here -->
@@ -49,44 +49,6 @@
                                             </div>
                                             <div class="invalid-feedback">
                                                 Please enter a valid price (e.g., 100 or 99.99).
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> 
-
-                                <!-- Position Dropdown -->
-                                <div class="col-12">
-                                    <div class="form-group has-icon-left">
-                                        <label for="postion">Position</label>
-                                        <div class="position-relative">
-                                            <asp:DropDownList runat="server" ID="ddl_postion">
-                                                <asp:ListItem Text="Specialized Doctor" Value="1"/>
-                                                <asp:ListItem Text="Pharmacy Doctor" Value="2"/>
-                                                <asp:ListItem Text="Analysis Doctor" Value="3"/>
-                                            </asp:DropDownList>                                        
-                                            <div class="form-control-icon">
-                                                <i class="bi bi-briefcase-medical"></i>
-                                            </div>
-                                            <div class="invalid-feedback">
-                                                Please select a position.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Medical Department Field -->
-                                <div class="col-12">
-                                    <div class="form-group has-icon-left">
-                                        <label for="medical-department">Medical Department</label>
-                                        <div class="position-relative">
-                                            <asp:DropDownList runat="server" ID="ddl_Departments">
-                                                <asp:ListItem Text="Surgery" Value="1"/>
-                                            </asp:DropDownList>
-                                            <div class="form-control-icon">
-                                                <i class="bi bi-hospital"></i>
-                                            </div>
-                                            <div class="invalid-feedback">
-                                                Please select a medical department.
                                             </div>
                                         </div>
                                     </div>
@@ -139,10 +101,51 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Position Field -->
+                                <div class="col-12">
+                                    <div class="form-group position-relative mb-4">
+                                        <div class="btn-group dropdown me-1 mb-1">
+                                            <asp:Label ID="PositionLabel" runat="server" Text="Position" CssClass="btn btn-primary"></asp:Label>
+                                            <asp:DropDownList ID="ddl_postion" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                data-reference="parent">
+                                                <asp:ListItem Text="Specialized Doctor" Value="1"></asp:ListItem>
+                                                <asp:ListItem Text="Pharmacy Doctor" Value="2"></asp:ListItem>
+                                                <asp:ListItem Text="Analysis Doctor" Value="3"></asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                        <div class="form-control-icon">
+                                            <i class="bi bi-briefcase-medical"></i>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select a position.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Medical Department Field -->
+                                <div class="col-12">
+                                    <div class="form-group position-relative mb-4">
+                                        <div class="btn-group dropdown me-1 mb-1">
+                                            <asp:Label ID="DepartmentLabel" runat="server" Text="Medical Department" CssClass="btn btn-primary"></asp:Label>
+                                            <asp:DropDownList ID="ddl_Departments" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                data-reference="parent">
+                                                <asp:ListItem Text="Surgery" Value="1"></asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                        <div class="form-control-icon">
+                                            <i class="bi bi-hospital"></i>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select a medical department.
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <!-- Submit and Reset Buttons -->
                                 <div class="col-12 d-flex justify-content-end">
-                                    <asp:Button ID="btn_addDoctor" runat="server" CssClass="btn btn-primary me-1 mb-1" Text="Add Doctor" OnClick="btn_addDoctor_Click"/>
+                                    <asp:Button ID="btn_addDoctor" runat="server" CssClass="btn btn-primary me-1 mb-1" Text="Add Doctor" OnClick="btn_addDoctor_Click" />
                                     <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
                                 </div>
                             </div>
@@ -156,8 +159,32 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="Script" runat="Server">
-    <!-- Script for handling Bootstrap form validation -->
+    <!-- Include SweetAlert and Toastify scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
     <script>
+        function showSuccessToast(message) {
+            Toastify({
+                text: message,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#4fbe87",
+            }).showToast();
+        }
+
+        function showErrorToast(message) {
+            Toastify({
+                text: message,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#e74c3c",
+            }).showToast();
+        }
+
+        // Form validation script
         (function () {
             'use strict'
             var forms = document.querySelectorAll('.needs-validation')
@@ -176,3 +203,4 @@
         })()
     </script>
 </asp:Content>
+

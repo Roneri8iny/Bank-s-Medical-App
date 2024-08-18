@@ -14,7 +14,7 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                Time Table Management
+                <h4 class="card-title">Time Table Management</h4>
             </div>
             <div class="card-body">
                 <!-- Form for adding new rows -->
@@ -24,224 +24,116 @@
                         <asp:TextBox ID="txt_doctorName" CssClass="form-control" runat="server" placeholder="Doctor's Name" />
                     </div>
                     <div class="form-group">
-                        <label>Sunday</label>
-                        <div class="d-flex">
-                            <asp:TextBox ID="sundayStart" CssClass="form-control mr-2" runat="server" TextMode="Time" placeholder="Start Time" />
-                            <asp:TextBox ID="sundayEnd" CssClass="form-control" runat="server" TextMode="Time" placeholder="End Time" />
-                        </div>
+                        <label for="day-select">Select Day</label>
+                        <asp:DropDownList ID="ddl_days" CssClass="form-control" runat="server">
+                            <asp:ListItem Value="Sunday">Sunday</asp:ListItem>
+                            <asp:ListItem Value="Monday">Monday</asp:ListItem>
+                            <asp:ListItem Value="Tuesday">Tuesday</asp:ListItem>
+                            <asp:ListItem Value="Wednesday">Wednesday</asp:ListItem>
+                            <asp:ListItem Value="Thursday">Thursday</asp:ListItem>
+                            <asp:ListItem Value="Friday">Friday</asp:ListItem>
+                            <asp:ListItem Value="Saturday">Saturday</asp:ListItem>
+                        </asp:DropDownList>
                     </div>
                     <div class="form-group">
-                        <label>Monday</label>
-                        <div class="d-flex">
-                            <asp:TextBox ID="mondayStart" CssClass="form-control mr-2" runat="server" TextMode="Time" placeholder="Start Time" />
-                            <asp:TextBox ID="mondayEnd" CssClass="form-control" runat="server" TextMode="Time" placeholder="End Time" />
-                        </div>
+                        <label for="start-time">Start Time</label>
+                        <asp:TextBox ID="txt_startTime" CssClass="form-control" runat="server" TextMode="SingleLine" placeholder="Start Time 00:00:00" />
                     </div>
                     <div class="form-group">
-                        <label>Tuesday</label>
-                        <div class="d-flex">
-                            <asp:TextBox ID="tuesdayStart" CssClass="form-control mr-2" runat="server" TextMode="Time" placeholder="Start Time" />
-                            <asp:TextBox ID="tuesdayEnd" CssClass="form-control" runat="server" TextMode="Time" placeholder="End Time" />
-                        </div>
+                        <label for="end-time">End Time</label>
+                        <asp:TextBox ID="txt_endTime" CssClass="form-control" runat="server" TextMode="SingleLine" placeholder="End Time 00:00:00" />
                     </div>
-                    <div class="form-group">
-                        <label>Wednesday</label>
-                        <div class="d-flex">
-                            <asp:TextBox ID="wednesdayStart" CssClass="form-control mr-2" runat="server" TextMode="Time" placeholder="Start Time" />
-                            <asp:TextBox ID="wednesdayEnd" CssClass="form-control" runat="server" TextMode="Time" placeholder="End Time" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Thursday</label>
-                        <div class="d-flex">
-                            <asp:TextBox ID="thursdayStart" CssClass="form-control mr-2" runat="server" TextMode="Time" placeholder="Start Time" />
-                            <asp:TextBox ID="thursdayEnd" CssClass="form-control" runat="server" TextMode="Time" placeholder="End Time" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Friday</label>
-                        <div class="d-flex">
-                            <asp:TextBox ID="fridayStart" CssClass="form-control mr-2" runat="server" TextMode="Time" placeholder="Start Time" />
-                            <asp:TextBox ID="fridayEnd" CssClass="form-control" runat="server" TextMode="Time" placeholder="End Time" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Saturday</label>
-                        <div class="d-flex">
-                            <asp:TextBox ID="saturdayStart" CssClass="form-control mr-2" runat="server" TextMode="Time" placeholder="Start Time" />
-                            <asp:TextBox ID="saturdayEnd" CssClass="form-control" runat="server" TextMode="Time" placeholder="End Time" />
-                        </div>
-                    </div>
-                    <asp:Button ID="addRow" CssClass="btn btn-primary" runat="server" Text="Add"  />
+                    <asp:Button ID="addRow" CssClass="btn btn-success mt-2 mb-3 " runat="server" Text="     Add     " />
                 </asp:Panel>
-
                 <!-- Data Table -->
-                <asp:GridView ID="timeTableGrid" CssClass="table table-striped" runat="server" AutoGenerateColumns="False">
+                <asp:GridView ID="timeTableGrid" CssClass="table table-striped" runat="server" AutoGenerateColumns="False" ShowHeaderWhenEmpty="True" DataKeyNames="SlotID">
                     <Columns>
-                        <asp:BoundField DataField="ID" HeaderText="ID" />
-                        <asp:BoundField DataField="Department" HeaderText="Department" />
-                        <asp:BoundField DataField="DoctorName" HeaderText="Doctor's Name" />
-                        <asp:BoundField DataField="Sunday" HeaderText="Sunday" />
-                        <asp:BoundField DataField="Monday" HeaderText="Monday" />
-                        <asp:BoundField DataField="Tuesday" HeaderText="Tuesday" />
-                        <asp:BoundField DataField="Wednesday" HeaderText="Wednesday" />
-                        <asp:BoundField DataField="Thursday" HeaderText="Thursday" />
-                        <asp:BoundField DataField="Friday" HeaderText="Friday" />
-                        <asp:BoundField DataField="Saturday" HeaderText="Saturday" />
-                        <asp:BoundField DataField="Price" HeaderText="Price" />
+                        <asp:BoundField DataField="DoctorID" HeaderText="DoctorID" />
+                        <asp:BoundField DataField="DoctorName" HeaderText="Doctor Name" />
+                        <asp:BoundField DataField="TTDay" HeaderText="Day" />
+                        <asp:BoundField DataField="StartTime" HeaderText="From" />
+                        <asp:BoundField DataField="EndTime" HeaderText="To" />
                         <asp:TemplateField HeaderText="Actions">
                             <ItemTemplate>
-                                <asp:Button ID="editRow" CssClass="btn btn-warning btn-sm" runat="server" Text="Edit" CommandName="Edit" />
-                                <asp:Button ID="deleteRow" CssClass="btn btn-danger btn-sm" runat="server" Text="Delete" CommandName="Delete" />
+                                <asp:Button ID="editRow" CssClass="btn btn-info btn-sm " runat="server" Text="Edit" CommandName="Edit" />
+                                <asp:Button ID="deleteRow" CssClass="btn btn-danger btn-sm " runat="server" Text="Delete" CommandName="Delete" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
 
-                <!-- Save and Cancel Buttons -->
-                <div class="mt-3">
-                    <asp:Button ID="saveChanges" CssClass="btn btn-success" runat="server" Text="Save Changes" />
-                    <asp:Button ID="cancelChanges" CssClass="btn btn-secondary" runat="server" Text="Cancel" />
-                </div>
             </div>
         </div>
     </section>
 </asp:Content>
 
-<asp:Content ID="Content3" ContentPlaceHolderID="Script" runat="Server">
+<asp:Content ID="Content5" ContentPlaceHolderID="Script" runat="Server">
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const addRowButton = document.getElementById('add-row');
-            const tableBody = document.querySelector('#table1 tbody');
+            const addRowButton = document.getElementById('<%= addRow.ClientID %>');
 
-            addRowButton.addEventListener('click', function () {
-                const doctorName = document.getElementById('doctor-name').value;
-                const department = document.getElementById('department').value;
+            addRowButton.addEventListener('click', function (e) {
+                e.preventDefault();
 
-                const sundayStart = document.getElementById('sunday-start').value;
-                const sundayEnd = document.getElementById('sunday-end').value;
-                const mondayStart = document.getElementById('monday-start').value;
-                const mondayEnd = document.getElementById('monday-end').value;
-                const tuesdayStart = document.getElementById('tuesday-start').value;
-                const tuesdayEnd = document.getElementById('tuesday-end').value;
-                const wednesdayStart = document.getElementById('wednesday-start').value;
-                const wednesdayEnd = document.getElementById('wednesday-end').value;
-                const thursdayStart = document.getElementById('thursday-start').value;
-                const thursdayEnd = document.getElementById('thursday-end').value;
-                const fridayStart = document.getElementById('friday-start').value;
-                const fridayEnd = document.getElementById('friday-end').value;
-                const saturdayStart = document.getElementById('saturday-start').value;
-                const saturdayEnd = document.getElementById('saturday-end').value;
+                const doctorName = document.getElementById('<%= txt_doctorName.ClientID %>').value;
+                const day = document.getElementById('<%= ddl_days.ClientID %>').value;
+                const startTime = document.getElementById('<%= txt_startTime.ClientID %>').value;
+                const endTime = document.getElementById('<%= txt_endTime.ClientID %>').value;
 
-                // Create a new row
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-        <td></td>
-        <td>${department}</td>
-        <td>${doctorName}</td>
-        <td>${sundayStart} - ${sundayEnd}</td>
-        <td>${mondayStart} - ${mondayEnd}</td>
-        <td>${tuesdayStart} - ${tuesdayEnd}</td>
-        <td>${wednesdayStart} - ${wednesdayEnd}</td>
-        <td>${thursdayStart} - ${thursdayEnd}</td>
-        <td>${fridayStart} - ${fridayEnd}</td>
-        <td>${saturdayStart} - ${saturdayEnd}</td>
-        <td>999$</td>
-        <td>
-            <button class="btn btn-warning btn-sm edit-row">Edit</button>
-            <button class="btn btn-danger btn-sm delete-row">Delete</button>
-        </td>
-    `;
-                tableBody.appendChild(newRow);
-
-                // Clear the form
-                document.getElementById('timeTableForm').reset();
-
-                // Show success message
-                Toastify({
-                    text: "Row added successfully!",
-                    duration: 3000,
-                    gravity: "top",
-                    position: "right",
-                    backgroundColor: "#4fbe87",
-                }).showToast();
-            });
-
-            tableBody.addEventListener('click', function (event) {
-                if (event.target.classList.contains('edit-row')) {
-                    const row = event.target.closest('tr');
-                    const cells = row.querySelectorAll('td');
-
-                    // Populate form with row data for editing
-                    document.getElementById('doctor-name').value = cells[2].textContent;
-
-                    // Populate the form for each day
-                    const sundayTimes = cells[3].textContent.split(' - ');
-                    document.getElementById('sunday-start').value = sundayTimes[0];
-                    document.getElementById('sunday-end').value = sundayTimes[1];
-
-                    const mondayTimes = cells[4].textContent.split(' - ');
-                    document.getElementById('monday-start').value = mondayTimes[0];
-                    document.getElementById('monday-end').value = mondayTimes[1];
-
-                    const tuesdayTimes = cells[5].textContent.split(' - ');
-                    document.getElementById('tuesday-start').value = tuesdayTimes[0];
-                    document.getElementById('tuesday-end').value = tuesdayTimes[1];
-
-                    const wednesdayTimes = cells[6].textContent.split(' - ');
-                    document.getElementById('wednesday-start').value = wednesdayTimes[0];
-                    document.getElementById('wednesday-end').value = wednesdayTimes[1];
-
-                    const thursdayTimes = cells[7].textContent.split(' - ');
-                    document.getElementById('thursday-start').value = thursdayTimes[0];
-                    document.getElementById('thursday-end').value = thursdayTimes[1];
-
-                    const fridayTimes = cells[8].textContent.split(' - ');
-                    document.getElementById('friday-start').value = fridayTimes[0];
-                    document.getElementById('friday-end').value = fridayTimes[1];
-
-                    const saturdayTimes = cells[9].textContent.split(' - ');
-                    document.getElementById('saturday-start').value = saturdayTimes[0];
-                    document.getElementById('saturday-end').value = saturdayTimes[1];
-
-                    // Remove row from table
-                    row.remove();
-                }
-
-                if (event.target.classList.contains('delete-row')) {
-                    const row = event.target.closest('tr');
-                    row.remove();
-
-                    // Show success message
+                if (!doctorName) {
                     Toastify({
-                        text: "Row deleted successfully!",
+                        text: "Doctor's Name is required.",
                         duration: 3000,
-                        gravity: "top",
-                        position: "right",
-                        backgroundColor: "#e74c3c",
+                        backgroundColor: "linear-gradient(to right, #FF0000, #FFAAAA)"
                     }).showToast();
+                    return;
                 }
-            });
 
-            document.getElementById('save-changes').addEventListener('click', function () {
-                Toastify({
-                    text: "Changes saved successfully!",
-                    duration: 3000,
-                    gravity: "top",
-                    position: "right",
-                    backgroundColor: "#4fbe87",
-                }).showToast();
-            });
+                if (!startTime || !endTime) {
+                    Toastify({
+                        text: "Start and End Time are required.",
+                        duration: 3000,
+                        backgroundColor: "linear-gradient(to right, #FF0000, #FFAAAA)"
+                    }).showToast();
+                    return;
+                }
 
-            document.getElementById('cancel-changes').addEventListener('click', function () {
-                document.getElementById('timeTableForm').reset();
-                Toastify({
-                    text: "Changes cancelled!",
-                    duration: 3000,
-                    gravity: "top",
-                    position: "right",
-                    backgroundColor: "#e74c3c",
-                }).showToast();
+                // Call the server-side method to add the row
+                fetch('TimeTable.aspx/AddRow', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        doctorName,
+                        day,
+                        startTime,
+                        endTime
+                    })
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result) {
+                            Toastify({
+                                text: "Row added successfully.",
+                                duration: 3000,
+                                backgroundColor: "linear-gradient(to right, #00FF00, #AAFFAA)"
+                            }).showToast();
+                            location.reload(); // Reload to show the updated data
+                        } else {
+                            Toastify({
+                                text: "Failed to add row.",
+                                duration: 3000,
+                                backgroundColor: "linear-gradient(to right, #FF0000, #FFAAAA)"
+                            }).showToast();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Toastify({
+                            text: "An error occurred.",
+                            duration: 3000,
+                            backgroundColor: "linear-gradient(to right, #FF0000, #FFAAAA)"
+                        }).showToast();
+                    });
             });
         });
     </script>

@@ -61,7 +61,7 @@
                                 </li>
 
                                 <!-- Time Table Management link -->
-                                <li class="sidebar-item" id="Time-Table">
+                                <li class="sidebar-item active" id="Time-Table">
                                     <a href="../pages/TimeTable.aspx" class="sidebar-link">
                                         <i class="bi bi-grid-fill"></i>
                                         <span>Time Table Management</span>
@@ -72,7 +72,7 @@
                                 <li class="sidebar-title">Account Management</li>
 
                                 <!-- New Doctor Account link -->
-                                <li class="sidebar-item" id="Doctor-Account">
+                                <li class="sidebar-item active" id="Doctor-Account">
                                     <a href="../pages/NewAccount.aspx" class="sidebar-link">
                                         <i class="bi bi-grid-fill"></i>
                                         <span>New Doctor Account</span>
@@ -80,10 +80,10 @@
                                 </li>
 
                                 <!-- Manage Accounts link -->
-                                <li class="sidebar-item" id="Manage-Accounts">
+                                <li class="sidebar-item active" id="Manage-Accounts">
                                     <a href="../pages/AccountManagement.aspx" class="sidebar-link">
                                         <i class="bi bi-grid-fill"></i>
-                                        <span>Manage Accounts</span>
+                                        <span>Manage Doctors Accounts</span>
                                     </a>
                                 </li>
                             </ul>
@@ -137,16 +137,22 @@
             function setActiveLink() {
                 // Get the current URL path
                 var currentPath = window.location.pathname;
+                console.log("Current Path: " + currentPath); // Debugging
 
                 // Loop through all sidebar items
                 document.querySelectorAll('.sidebar-item').forEach(function (item) {
                     // Remove active class from all items
                     item.classList.remove('active');
 
+                    // Get the href of the sidebar link
+                    var linkPath = item.querySelector('a').getAttribute('href');
+                    console.log("Link Path: " + linkPath); // Debugging
+
                     // Check if the item's link matches the current path
-                    if (item.querySelector('a').getAttribute('href') === currentPath) {
+                    if (linkPath === currentPath || currentPath.includes(linkPath)) {
                         // Add active class to the matching item
                         item.classList.add('active');
+                        console.log("Active Class Added: " + linkPath); // Debugging
                     }
                 });
             }
@@ -155,5 +161,6 @@
             window.onload = setActiveLink;
         </script>
     </asp:ContentPlaceHolder>
+
 </body>
 </html>

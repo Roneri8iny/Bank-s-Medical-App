@@ -2,15 +2,13 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Medical Field Home Page showcasing doctors, appointments, and profile statistics.">
-    <meta name="keywords" content="medical, doctors, appointments, healthcare">
-    <meta name="author" content="Your Name">
-    
+    <meta name="description" content="Medical Field Home Page showcasing doctors, appointments, and profile statistics." />
+    <meta name="keywords" content="medical, doctors, appointments, healthcare" />
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="PageHeader" runat="Server">
     <!-- Page heading -->
-    <h3 class="mt-4 mb-4">Medical Field Home Page</h3>
+    <h3 class="mt-4 mb-4 text-center">Medical Field Home Page</h3>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Body" runat="Server">
@@ -20,65 +18,38 @@
     </div>
 
     <div class="page-content">
-        <section class="row">
-            <div class="col-12 col-lg-9">
-                <div class="row">
-                    <!-- Card: Doctors Available -->
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                        <div class="card">
-                            <div class="card-body d-flex align-items-center">
-                                <div class="stats-icon bg-purple text-white rounded-circle p-3 me-3" aria-label="Doctors Available">
-                                    <i class="iconly-boldShow" role="img" aria-hidden="true"></i>
-                                </div>
-                                <div>
-                                    <h6 class="text-muted font-semibold">Doctors Available</h6>
-                                    <h6 class="font-extrabold mb-0">120</h6>
-                                </div>
-                            </div>
+        <section class="row justify-content-center">
+            <!-- Card: Doctors Available -->
+            <div class="col-12 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="stats-icon bg-purple text-white rounded-circle p-3 me-3" aria-label="Doctors Available">
+                            <i class="iconly-boldShow" role="img" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-muted font-semibold">Doctors Available</h4>
+                            <asp:Label ID="lblDoctorsAvailable" runat="server" Text="120" CssClass="font-extrabold mb-0 fs-3"></asp:Label>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Card: Appointments Today -->
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                        <div class="card">
-                            <div class="card-body d-flex align-items-center">
-                                <div class="stats-icon bg-green text-white rounded-circle p-3 me-3" aria-label="Appointments Today">
-                                    <i class="iconly-boldAdd-User" role="img" aria-hidden="true"></i>
-                                </div>
-                                <div>
-                                    <h6 class="text-muted font-semibold">Appointments Today</h6>
-                                    <h6 class="font-extrabold mb-0">42</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Medical Field Profile -->
-                    <div class="col-12 col-lg-3 mb-4">
-                        <div class="card">
-                            <div class="card-body d-flex align-items-center">
-                                <div class="avatar avatar-xl me-3">
-                                    <!-- Profile Image (placeholder) -->
-                                    <!-- <img src="path_to_profile_image.jpg" alt="John Duck's Profile Image" class="rounded-circle"> -->
-                                </div>
-                                <div>
-                                    <h5 class="font-bold mb-1">John Duck</h5>
-                                    <h6 class="text-muted mb-0">Head of Medical Field</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Profile Visit Statistics -->
-                    <div class="col-12 mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Profile Visit</h4>
-                            </div>
-                            <div class="card-body">
-                                <div id="chart-profile-visit"></div>
-                            </div>
-                        </div>
+            <!-- Medical Field Profile -->
+            <div class="col-12 col-md-8 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="font-bold mb-3">Medical Field Profile</h3>
+                        <asp:Label ID="lblProfileName" runat="server" Text="Egypt Air" CssClass="font-bold mb-1 fs-4"></asp:Label>
+                        <br />
+                        <asp:Label ID="lblProfileTitle" runat="server" Text="Medical Field" CssClass="text-muted mb-2 fs-5"></asp:Label>
+                        <hr />
+                        <asp:Label ID="lblUsername" runat="server" Text="Username: med_user" CssClass="text-muted mb-1 fs-5"></asp:Label>
+                        <br />
+                        <asp:Label ID="lblEmail" runat="server" Text="Email: medfield@egyptair.com" CssClass="text-muted mb-1 fs-5"></asp:Label>
+                        <br />
+                        <asp:Label ID="lblHotline" runat="server" Text="Hotline: +20212345678" CssClass="text-muted mb-1 fs-5"></asp:Label>
+                        <br />
+                        <asp:Label ID="lblAddress" runat="server" Text="Address: Cairo, Egypt" CssClass="text-muted mb-1 fs-5"></asp:Label>
                     </div>
                 </div>
             </div>
