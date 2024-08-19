@@ -12,18 +12,18 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Previous Lab Reports</h4>
+                        <h4 class="card-title">Previous Prescriptions</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body">
                             <div class="list-group">
 
-                                <asp:Repeater ID="rpt_labReportDetails" runat="server">
+                                <asp:Repeater ID="TestDetailsRepeater" runat="server">
                                     <ItemTemplate>
                                         <span class="list-group-item">
-                                            <asp:Label ID="lbl_status" runat="server" Text='<%# Eval("testName", "Tset Name: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
-                                            <asp:Label ID="lbl_diagnosis" runat="server" Text='<%# Eval("ResultPDF", "Result PDF: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
-                                            <iframe src="D:\Javabeans.101.pdf" width="100%" height="600px" style="border: none;"></iframe>
+                                            <asp:Label ID="lbl_prescription" runat="server" Text='<%# Eval("TestName", "Test Name: {0}") %>' CssClass="mb-1" Style="font-size: 20px; color: #25396f; font-weight: bold; display: block;"></asp:Label>
+                                            
+                                            <iframe src='<%# "../assets/pdfs/" + Eval("ResultPDF") %>' width="100%" height="600px" style="border: none;" style="border: #08679f;"></iframe>
                                         </span>
                                     </ItemTemplate>
                                 </asp:Repeater>

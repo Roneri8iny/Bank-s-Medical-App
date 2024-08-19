@@ -18,12 +18,16 @@
                         <div class="card-body">
                             <div class="list-group">
 
-                                <asp:Repeater ID="rpt_labReportDetails" runat="server">
+                                <asp:Repeater ID="PrescriptionDetailsRepeater" runat="server" >
                                     <ItemTemplate>
                                         <span class="list-group-item">
-                                            <asp:Label ID="lbl_status" runat="server" Text='<%# Eval("testName", "Tset Name: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
-                                            <asp:Label ID="lbl_diagnosis" runat="server" Text='<%# Eval("ResultPDF", "Result PDF: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
-                                            <iframe src="D:\Javabeans.101.pdf" width="100%" height="600px" style="border: none;"></iframe>
+                                            <asp:Label ID="lbl_prescription" runat="server" Text='<%# Eval("MedicineName", "Medicine Name: {0}") %>' CssClass="mb-1" Style="font-size: 20px; color: #25396f; font-weight: bold; display: block;"></asp:Label>
+
+                                            <asp:Label ID="lbl_status" runat="server" Text='<%# Eval("Quantity", "Medicine Quantity: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
+                                            <asp:Label ID="lbl_diagnosis" runat="server" Text='<%# Eval("Frequency", "Medicine Frequency: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
+                                            <asp:Label ID="Label1" runat="server" Text='<%# Eval("Notes", "Notes: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
+                                            <!--%-- <iframe src="D:\Javabeans.101.pdf" width="100%" height="600px" style="border: none;"></iframe> --%-->
+                                            
                                         </span>
                                     </ItemTemplate>
                                 </asp:Repeater>

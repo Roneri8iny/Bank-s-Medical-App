@@ -5,6 +5,15 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+
+public class AppointmentEmployee
+{
+    public int EmployeeID { get; set; }
+    public string EmployeeName { get; set; }
+    public string Email { get; set; }
+    public int AppointmentID { get; set; }
+}
+
 public partial class Pages_Appointments : System.Web.UI.Page
 {
     Class_Appointments obj = new Class_Appointments();
@@ -30,17 +39,24 @@ public partial class Pages_Appointments : System.Web.UI.Page
             listOfAppointments.AddRange(obj.getAppointment(slot.SlotID));
         }
 
-        List<Employee> listOfEmployees = new List<Employee>();
+        List<AppointmentEmployee> listOfAppointmentEmployees = new List<AppointmentEmployee>();
 
         foreach (var appointment in listOfAppointments)
         {
             var employee = obj.getEmployeeInfo(Convert.ToInt32(appointment.EmployeeID));
             if (employee != null)
             {
-                listOfEmployees.Add(employee);
+                listOfAppointmentEmployees.Add(new AppointmentEmployee
+                {
+                    EmployeeID = employee.EmployeeID,
+                    EmployeeName = employee.EmployeeName,
+                    Email = employee.Email,
+                    AppointmentID = appointment.AppointmentID
+                });
             }
         }
-        AppointmentsRepeater.DataSource = listOfEmployees;
+
+        AppointmentsRepeater.DataSource = listOfAppointmentEmployees;
         AppointmentsRepeater.DataBind();
     } 
 
@@ -49,10 +65,14 @@ public partial class Pages_Appointments : System.Web.UI.Page
         if (e.CommandName == "ViewDetails")
         {
             // Get the EmployeeID from CommandArgument
-            int employeeID = Convert.ToInt32(e.CommandArgument);
+            //int employeeID = Convert.ToInt32(e.CommandArgument);
+            string[] ids = e.CommandArgument.ToString().Split(',');
+            int employeeID = Convert.ToInt32(ids[0]);
+            int appointmentID = Convert.ToInt32(ids[1]);
 
             // Redirect to the AppointmentDetails page with the EmployeeID as a query string parameter
             Session["Employee_ID"] = employeeID;
+            Session["Appointment_ID"] = appointmentID;
             //Response.Redirect("Home Page.aspx");
             string url = "Appointment Details.aspx";
             Response.Redirect(url);

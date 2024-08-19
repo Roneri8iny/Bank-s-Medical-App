@@ -75,7 +75,7 @@
                                                                     </div>
                                                                     <div class="card-content">
                                                                         <div class="card-body">
-                                                                            <form class="form form-vertical">
+                                                                            <div class="form form-vertical">
                                                                                 <div class="form-body">
                                                                                     <div class="row">
                                                                                         <!-- Medicine Name Dropdown -->
@@ -85,9 +85,7 @@
                                                                                                 <div class="btn-group mb-1">
                                                                                                     <div class="dropdown">
                                                                                                         <asp:DropDownList ID="ddlMedicines" runat="server" CssClass="btn btn-primary dropdown-toggle me-1">
-                                                                                                            <asp:ListItem Value="1">Medicine 1</asp:ListItem>
-                                                                                                            <asp:ListItem Value="2">Medicine 2</asp:ListItem>
-                                                                                                            <asp:ListItem Value="3">Medicine 3</asp:ListItem>
+                                                                                                            
                                                                                                         </asp:DropDownList>
                                                                                                     </div>
                                                                                                 </div>
@@ -120,11 +118,11 @@
 
                                                                                         <!-- Submit Button -->
                                                                                         <div class="col-12 d-flex justify-content-start">
-                                                                                            <asp:Button ID="SubmitButton" runat="server" Text="Submit" CssClass="btn btn-primary me-1 mb-1" />
+                                                                                            <asp:Button ID="SubmitButton" runat="server" Text="Submit" CssClass="btn btn-primary me-1 mb-1" OnClick="SubmitButton_Click"/>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </form>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -140,56 +138,29 @@
                                                                 </div>
                                                                 <div class="card-content">
                                                                     <div class="card-body">
-                                                                        <asp:Table ID="PrescriptionTable" runat="server" CssClass="table table-striped">
-                                                                            <asp:TableHeaderRow>
-                                                                                <asp:TableHeaderCell>Medicine Name</asp:TableHeaderCell>
-                                                                                <asp:TableHeaderCell>Quantity</asp:TableHeaderCell>
-                                                                                <asp:TableHeaderCell>Frequency</asp:TableHeaderCell>
-                                                                            </asp:TableHeaderRow>
+                                                                        <table class="table table-hover mb-0">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Medicine Name</th>
+                                                                                    <th>Quantity</th>
+                                                                                    <th>Frequency</th>
+                                                                                    <th>Notes</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <asp:Repeater ID="MedicinesRepeater" runat="server" >
+                                                                                    <ItemTemplate>
+                                                                                        <tr>
+                                                                                            <td class="text-bold-500"><%# Eval("MedicineName") %></td>
+                                                                                            <td><%# Eval("Quantity") %></td>
+                                                                                            <td><%# Eval("Frequency") %></td>
+                                                                                            <td> <%# Eval("Notes") %></td>
+                                                                                        </tr>
+                                                                                    </ItemTemplate>
+                                                                                </asp:Repeater>
 
-                                                                            
-                                                                            <asp:TableRow>
-                                                                                <asp:TableCell>Medicine 1</asp:TableCell>
-                                                                                <asp:TableCell>2</asp:TableCell>
-                                                                                <asp:TableCell>Twice Daily</asp:TableCell>
-                                                                            </asp:TableRow>
-
-                                                                            
-                                                                            <asp:TableRow>
-                                                                                <asp:TableCell>Medicine 1</asp:TableCell>
-                                                                                <asp:TableCell>2</asp:TableCell>
-                                                                                <asp:TableCell>Twice Daily</asp:TableCell>
-                                                                            </asp:TableRow>
-
-                                                                            
-                                                                            <asp:TableRow>
-                                                                                <asp:TableCell>Medicine 1</asp:TableCell>
-                                                                                <asp:TableCell>2</asp:TableCell>
-                                                                                <asp:TableCell>Twice Daily</asp:TableCell>
-                                                                            </asp:TableRow>
-
-                                                                            
-                                                                            <asp:TableRow>
-                                                                                <asp:TableCell>Medicine 1</asp:TableCell>
-                                                                                <asp:TableCell>2</asp:TableCell>
-                                                                                <asp:TableCell>Twice Daily</asp:TableCell>
-                                                                            </asp:TableRow>
-
-                                                                            
-                                                                            <asp:TableRow>
-                                                                                <asp:TableCell>Medicine 1</asp:TableCell>
-                                                                                <asp:TableCell>2</asp:TableCell>
-                                                                                <asp:TableCell>Twice Daily</asp:TableCell>
-                                                                            </asp:TableRow>
-
-                                                                            
-                                                                            <asp:TableRow>
-                                                                                <asp:TableCell>Medicine 1</asp:TableCell>
-                                                                                <asp:TableCell>2</asp:TableCell>
-                                                                                <asp:TableCell>Twice Daily</asp:TableCell>
-                                                                            </asp:TableRow>
-
-                                                                        </asp:Table>
+                                                                            </tbody>
+                                                                        </table>
 
                                                                     </div>
                                                                 </div>
@@ -219,7 +190,7 @@
                                             <!-- Form Column -->
                                             <div class="col-md-6 col-12">
                                                 <!-- Basic Vertical form layout section start -->
-                                                <section id="basic-vertical-layouts2">
+                                                <section id="basic-vertical-layouts3">
                                                     <div class="card" style="padding-left: 0px;">
                                                         <div class="card-header">
                                                             <h4 class="card-title">Request Lab Tests</h4>
@@ -235,10 +206,8 @@
                                                                                     <label for="DropdownButton" style="padding-right: 150px">Test Name</label>
                                                                                     <div class="btn-group mb-1">
                                                                                         <div class="dropdown">
-                                                                                            <asp:DropDownList ID="DropDownList3" runat="server" CssClass="btn btn-primary dropdown-toggle me-1">
-                                                                                                <asp:ListItem Value="1">Test 1</asp:ListItem>
-                                                                                                <asp:ListItem Value="2">Test 2</asp:ListItem>
-                                                                                                <asp:ListItem Value="3">Test 3</asp:ListItem>
+                                                                                            <asp:DropDownList ID="ddlTests" runat="server" CssClass="btn btn-primary dropdown-toggle me-1">
+                                                                                                
                                                                                             </asp:DropDownList>
                                                                                         </div>
                                                                                     </div>
@@ -249,7 +218,7 @@
 
                                                                             <!-- Submit Button -->
                                                                             <div class="col-12 d-flex justify-content-start">
-                                                                                <asp:Button ID="Button4" runat="server" Text="Submit" CssClass="btn btn-primary me-1 mb-1" />
+                                                                                <asp:Button ID="Button4" runat="server" Text="Submit" CssClass="btn btn-primary me-1 mb-1" OnClick="Button4_Click"/>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -269,47 +238,25 @@
                                                     </div>
                                                     <div class="card-content">
                                                         <div class="card-body">
-                                                            <asp:Table ID="Table2" runat="server" CssClass="table table-striped">
-                                                                <asp:TableHeaderRow>
-                                                                    <asp:TableHeaderCell>Test 1</asp:TableHeaderCell>
-                                                                </asp:TableHeaderRow>
-
-                                                                <asp:TableRow>
-                                                                    <asp:TableCell>Test 1</asp:TableCell>
-
-                                                                </asp:TableRow>
-
-                                                                            
-                                                                            <asp:TableRow>
-                                                                                <asp:TableCell>Test 1</asp:TableCell>
+                                                            <table class="table table-hover mb-0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Test Name</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <asp:Repeater ID="TestsRepeater" runat="server">
+                                                                        <ItemTemplate>
+                                                                            <tr>
                                                                                 
-                                                                            </asp:TableRow>
 
-                                                                            
-                                                                            <asp:TableRow>
-                                                                                <asp:TableCell>Test 1</asp:TableCell>
-                                                                                
-                                                                            </asp:TableRow>
+                                                                                <td><%# Eval("TestName") %></td>
+                                                                            </tr>
+                                                                        </ItemTemplate>
+                                                                    </asp:Repeater>
 
-                                                                            
-                                                                            <asp:TableRow>
-                                                                                <asp:TableCell>Test 1</asp:TableCell>
-                                                                                
-                                                                            </asp:TableRow>
-
-                                                                            
-                                                                            <asp:TableRow>
-                                                                                <asp:TableCell>Test 1</asp:TableCell>
-                                                                                
-                                                                            </asp:TableRow>
-
-                                                                            
-                                                                            <asp:TableRow>
-                                                                                <asp:TableCell>Test 1</asp:TableCell>
-                                                                                
-                                                                            </asp:TableRow>
-
-                                                                        </asp:Table>
+                                                                </tbody>
+                                                                        </table>
 
                                                                     </div>
                                                                 </div>
@@ -334,7 +281,7 @@
 
                             <div class="card-body">
                                 <div class="card-body">
-                                    <div id="LabTests" class="container-fluid">
+                                    <div id="LabTests2" class="container-fluid">
                                         <div class="row">
                                             <!-- Form Column -->
                                             <div class="col-md-6 col-12">
@@ -352,29 +299,29 @@
                                                                             <!-- Sick Leave Reason Text Box -->
                                                                             <div class="col-12">
                                                                                 <div class="form-group">
-                                                                                    <asp:Label ID="Label1" runat="server" AssociatedControlID="TextBoxQuantity" Text="Sick Leave Reason"></asp:Label>
-                                                                                    <asp:TextBox ID="TextBox1" runat="server" class="form-control"></asp:TextBox>
+                                                                                    <asp:Label ID="Label1" runat="server" AssociatedControlID="TextBoxSLCount" Text="Sick Leave Reason"></asp:Label>
+                                                                                    <asp:TextBox ID="TextBoxSLCount" runat="server" class="form-control"></asp:TextBox>
                                                                                 </div>
                                                                             </div>
 
                                                                             <div class="col-12">
                                                                                 <div class="form-group">
-                                                                                    <asp:Label ID="Label2" runat="server" AssociatedControlID="TextBoxQuantity" Text="Choose Start Day" style="padding-right: 70px;"></asp:Label>
-                                                                                    <asp:TextBox ID="txtDate" runat="server" TextMode="Date"></asp:TextBox>
+                                                                                    <asp:Label ID="Label2" runat="server" AssociatedControlID="TextBoxStart" Text="Choose Start Day" style="padding-right: 70px;"></asp:Label>
+                                                                                    <asp:TextBox ID="TextBoxStart" runat="server" TextMode="Date"></asp:TextBox>
                                                                                 </div>
                                                                             </div>
 
                                                                             <div class="col-12">
                                                                                 <div class="form-group">
-                                                                                    <asp:Label ID="Label3" runat="server" AssociatedControlID="TextBoxQuantity" Text="Choose End Day" style="padding-right: 78px;"></asp:Label>
-                                                                                    <asp:TextBox ID="TextBox2" runat="server" TextMode="Date"></asp:TextBox>
+                                                                                    <asp:Label ID="Label3" runat="server" AssociatedControlID="TextBoxEnd" Text="Choose End Day" style="padding-right: 78px;"></asp:Label>
+                                                                                    <asp:TextBox ID="TextBoxEnd" runat="server" TextMode="Date"></asp:TextBox>
                                                                                 </div>
                                                                             </div>
 
 
-                                                                            <!-- Submit Button -->
+                                                                            <!-- Finish Button -->
                                                                             <div class="col-12 d-flex justify-content-start">
-                                                                                <asp:Button ID="Button1" runat="server" Text="Submit" CssClass="btn btn-primary me-1 mb-1" style="margin-top: 50px;"/>
+                                                                                <asp:Button ID="FinishButton" runat="server" Text="Submit" CssClass="btn btn-primary me-1 mb-1" style="margin-top: 50px;" OnClick="FinishButton_Click"/>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -410,4 +357,3 @@
         autoResizeTextarea();
 </script>
 </asp:Content>
-
