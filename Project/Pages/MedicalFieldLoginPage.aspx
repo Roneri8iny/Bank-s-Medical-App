@@ -24,9 +24,10 @@
 
                     <div>
                         <div class="form-group position-relative mb-4">
-                            <div class="btn-group dropdown me-1 mb-1">
-                                <asp:Label ID="AccountTypeLabel" runat="server" Text="Account Type" CssClass="btn btn-primary"></asp:Label>
-                                <asp:DropDownList ID="AccountType" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                            <asp:Label ID="AccountTypeLabel" runat="server" Text="Account Type" ></asp:Label>
+                            <br />
+                            <div class="btn-group mb-1">
+                                <asp:DropDownList ID="AccountType" runat="server" CssClass="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                                     <asp:ListItem Text="---" Value="---"></asp:ListItem>
                                     <asp:ListItem Text="Employee" Value="Employee"></asp:ListItem>
                                     <asp:ListItem Text="Doctor" Value="Doctor"></asp:ListItem>

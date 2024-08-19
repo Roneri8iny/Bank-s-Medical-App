@@ -20,8 +20,8 @@
                 <!-- Form for adding new rows -->
                 <asp:Panel ID="timeTableForm" runat="server">
                     <div class="form-group">
-                        <label for="doctor-name">Doctor's Name</label>
-                        <asp:TextBox ID="txt_doctorName" CssClass="form-control" runat="server" placeholder="Doctor's Name" />
+                        <label for="doctor-name">Doctor's UserName</label>
+                        <asp:TextBox ID="txt_doctorName" CssClass="form-control" runat="server" placeholder="Doctor's UserName" />
                     </div>
                     <div class="form-group">
                         <label for="day-select">Select Day</label>

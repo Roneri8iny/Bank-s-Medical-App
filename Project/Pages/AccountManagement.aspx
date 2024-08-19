@@ -145,9 +145,10 @@
                         <div class="form-group">
                             <div class="col-12">
                                 <div class="form-group position-relative mb-4">
-                                    <div class="btn-group dropdown me-1 mb-1">
-                                        <asp:Label ID="lblPosition" runat="server" Text="Position" CssClass="btn btn-primary"></asp:Label>
-                                        <asp:DropDownList ID="ddlPosition" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                    <asp:Label ID="lblPosition" runat="server" Text="Position"></asp:Label>
+                                    <br />
+                                    <div class="btn-group mb-1">
+                                        <asp:DropDownList ID="ddlPosition" runat="server" CssClass="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                                             <asp:ListItem Text="Specialized Doctor" Value="Specialized Doctor"></asp:ListItem>
                                             <asp:ListItem Text="Pharmacy Doctor" Value="Pharmacy Doctor"></asp:ListItem>
@@ -169,9 +170,10 @@
                         <div class="form-group">
                             <div class="col-12">
                                 <div class="form-group position-relative mb-4">
-                                    <div class="btn-group dropdown me-1 mb-1">
-                                        <asp:Label ID="lblDepartment" runat="server" Text="Medical Department" CssClass="btn btn-primary"></asp:Label>
-                                        <asp:DropDownList ID="ddlDepartments" runat="server" CssClass="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                    <asp:Label ID="lblDepartment" runat="server" Text="Medical Department"></asp:Label>
+                                    <br />
+                                    <div class="btn-group mb-1">
+                                        <asp:DropDownList ID="ddlDepartments" runat="server" CssClass="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                                             <asp:ListItem Text="Surgery" Value="1"></asp:ListItem>
                                         </asp:DropDownList>
