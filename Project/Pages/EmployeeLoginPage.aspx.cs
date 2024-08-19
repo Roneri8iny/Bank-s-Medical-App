@@ -17,22 +17,63 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
     {
         try
         {
-            var doc = obj_login.CheckUserValidity(Username.Text.Trim(), Password.Text.Trim());
-            if(doc != null)
+            //Check for empty fields
+            string username = Username.Text.Trim();
+            string password = Password.Text.Trim();
+            string selectedAccountType = AccountType.SelectedValue;
+
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || selectedAccountType == "---")
+            {
+                error_div.Visible = true;
+                lbl_error.Text = "Please fill in all fields before logging in.";
+                ClearFields();
+                return; 
+            }
+            //Check if account exists
+            var account = obj_login.CheckUserValidity(username, password, selectedAccountType);
+            if(account != null)
             {
                 error_div.Visible = false;
-                success_div.Visible = true;
-                lbl_success.Text = "Successfully logged in";
-                Session["Doctor_ID"] = doc.DoctorID;
-                //Response.Redirect("Home Page.aspx");
-                string url = "Home Page.aspx";
-                Response.Redirect(url);
+                //success_div.Visible = true;
+                //lbl_success.Text = "Successfully logged in";
+
+                switch (selectedAccountType)
+                {
+                    case "Employee":
+                        Session["EmpAccount"] = account;
+                        Response.Redirect("EmployeeHomePage.aspx");
+                        break;
+                    case "Doctor":
+                        Session["DoctorAccount"] = account;
+                        Response.Redirect("Home Page.aspx");
+                        break;
+                    case "Lab Doctor":
+                        Session["LabDoctorAccount"] = account;
+                        Response.Redirect("AnalysisDocHomePage.aspx");
+                        break;
+                    case "Middle Man":
+                        Response.Redirect("MiddleManHomePage.aspx");
+                        break;
+                    case "Medical Field":
+                        Response.Redirect("MedicalFieldHomePage.aspx");
+                        break;
+                    case "Finance":
+                        Response.Redirect("FinanceHomePage.aspx");
+                        break;
+                    default:
+                        lbl_error.Text = "Unknown account type";
+                        error_div.Visible = true;
+                        break;
+                }
             }
             else
             {
                 error_div.Visible = true;
-                lbl_error.Text = "Wrong Username Or Password ! Please try Again";
+                lbl_error.Text = "Invalid credentials! Please try again.";
+                //ClearFields();
+                
             }
+            ///Forgot Password and Password Hashing and strong password policy????????????????
 
         }
         catch (Exception)
@@ -41,4 +82,11 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
             throw;
         }
     }
+    private void ClearFields()
+    {
+        Username.Text = string.Empty;
+        Password.Text = string.Empty;
+        AccountType.SelectedIndex = 0;
+    }
+    
 }

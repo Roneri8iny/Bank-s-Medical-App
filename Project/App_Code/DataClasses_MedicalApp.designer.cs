@@ -228,7 +228,7 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 	
 	private System.Nullable<int> _EmployeeID;
 	
-	private bool _ApStatus;
+	private int _ApStatus;
 	
 	private string _Diagnosis;
 	
@@ -238,9 +238,9 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 	
 	private System.Nullable<System.DateTime> _SLDEndd;
 	
-	private EntitySet<LabReport> _LabReports;
+	private System.Nullable<System.DateTime> _AppointmentDate;
 	
-	private EntitySet<Prescription> _Prescriptions;
+	private EntitySet<LabReport> _LabReports;
 	
 	private EntityRef<Timetable> _Timetable;
 	
@@ -258,7 +258,7 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
     partial void OnSlotIDChanged();
     partial void OnEmployeeIDChanging(System.Nullable<int> value);
     partial void OnEmployeeIDChanged();
-    partial void OnApStatusChanging(bool value);
+    partial void OnApStatusChanging(int value);
     partial void OnApStatusChanged();
     partial void OnDiagnosisChanging(string value);
     partial void OnDiagnosisChanged();
@@ -268,12 +268,13 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
     partial void OnSLDStartChanged();
     partial void OnSLDEnddChanging(System.Nullable<System.DateTime> value);
     partial void OnSLDEnddChanged();
+    partial void OnAppointmentDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnAppointmentDateChanged();
     #endregion
 	
 	public Appointment()
 	{
 		this._LabReports = new EntitySet<LabReport>(new Action<LabReport>(this.attach_LabReports), new Action<LabReport>(this.detach_LabReports));
-		this._Prescriptions = new EntitySet<Prescription>(new Action<Prescription>(this.attach_Prescriptions), new Action<Prescription>(this.detach_Prescriptions));
 		this._Timetable = default(EntityRef<Timetable>);
 		this._Employee = default(EntityRef<Employee>);
 		this._Finance = default(EntityRef<Finance>);
@@ -348,8 +349,8 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApStatus", DbType="Bit NOT NULL")]
-	public bool ApStatus
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApStatus", DbType="Int NOT NULL")]
+	public int ApStatus
 	{
 		get
 		{
@@ -452,6 +453,26 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AppointmentDate", DbType="Date")]
+	public System.Nullable<System.DateTime> AppointmentDate
+	{
+		get
+		{
+			return this._AppointmentDate;
+		}
+		set
+		{
+			if ((this._AppointmentDate != value))
+			{
+				this.OnAppointmentDateChanging(value);
+				this.SendPropertyChanging();
+				this._AppointmentDate = value;
+				this.SendPropertyChanged("AppointmentDate");
+				this.OnAppointmentDateChanged();
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Appointment_LabReport", Storage="_LabReports", ThisKey="AppointmentID", OtherKey="AppointmentID")]
 	public EntitySet<LabReport> LabReports
 	{
@@ -462,19 +483,6 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 		set
 		{
 			this._LabReports.Assign(value);
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Appointment_Prescription", Storage="_Prescriptions", ThisKey="AppointmentID", OtherKey="AppointmentID")]
-	public EntitySet<Prescription> Prescriptions
-	{
-		get
-		{
-			return this._Prescriptions;
-		}
-		set
-		{
-			this._Prescriptions.Assign(value);
 		}
 	}
 	
@@ -607,18 +615,6 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 	}
 	
 	private void detach_LabReports(LabReport entity)
-	{
-		this.SendPropertyChanging();
-		entity.Appointment = null;
-	}
-	
-	private void attach_Prescriptions(Prescription entity)
-	{
-		this.SendPropertyChanging();
-		entity.Appointment = this;
-	}
-	
-	private void detach_Prescriptions(Prescription entity)
 	{
 		this.SendPropertyChanging();
 		entity.Appointment = null;
@@ -1524,9 +1520,9 @@ public partial class Finance : INotifyPropertyChanging, INotifyPropertyChanged
 	
 	private int _FinanceID;
 	
-	private string _FinancePassword;
-	
 	private string _FinanceName;
+	
+	private string _FinancePassword;
 	
 	private string _Username;
 	
@@ -1538,10 +1534,10 @@ public partial class Finance : INotifyPropertyChanging, INotifyPropertyChanged
     partial void OnCreated();
     partial void OnFinanceIDChanging(int value);
     partial void OnFinanceIDChanged();
-    partial void OnFinancePasswordChanging(string value);
-    partial void OnFinancePasswordChanged();
     partial void OnFinanceNameChanging(string value);
     partial void OnFinanceNameChanged();
+    partial void OnFinancePasswordChanging(string value);
+    partial void OnFinancePasswordChanged();
     partial void OnUsernameChanging(string value);
     partial void OnUsernameChanged();
     #endregion
@@ -1572,26 +1568,6 @@ public partial class Finance : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinancePassword", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-	public string FinancePassword
-	{
-		get
-		{
-			return this._FinancePassword;
-		}
-		set
-		{
-			if ((this._FinancePassword != value))
-			{
-				this.OnFinancePasswordChanging(value);
-				this.SendPropertyChanging();
-				this._FinancePassword = value;
-				this.SendPropertyChanged("FinancePassword");
-				this.OnFinancePasswordChanged();
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinanceName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
 	public string FinanceName
 	{
@@ -1608,6 +1584,26 @@ public partial class Finance : INotifyPropertyChanging, INotifyPropertyChanged
 				this._FinanceName = value;
 				this.SendPropertyChanged("FinanceName");
 				this.OnFinanceNameChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinancePassword", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+	public string FinancePassword
+	{
+		get
+		{
+			return this._FinancePassword;
+		}
+		set
+		{
+			if ((this._FinancePassword != value))
+			{
+				this.OnFinancePasswordChanging(value);
+				this.SendPropertyChanging();
+				this._FinancePassword = value;
+				this.SendPropertyChanged("FinancePassword");
+				this.OnFinancePasswordChanged();
 			}
 		}
 	}
@@ -1688,7 +1684,7 @@ public partial class LabReport : INotifyPropertyChanging, INotifyPropertyChanged
 	
 	private System.Nullable<int> _AppointmentID;
 	
-	private bool _PayStatus;
+	private int _PayStatus;
 	
 	private string _LabName;
 	
@@ -1706,7 +1702,7 @@ public partial class LabReport : INotifyPropertyChanging, INotifyPropertyChanged
     partial void OnReportIDChanged();
     partial void OnAppointmentIDChanging(System.Nullable<int> value);
     partial void OnAppointmentIDChanged();
-    partial void OnPayStatusChanging(bool value);
+    partial void OnPayStatusChanging(int value);
     partial void OnPayStatusChanged();
     partial void OnLabNameChanging(string value);
     partial void OnLabNameChanged();
@@ -1765,8 +1761,8 @@ public partial class LabReport : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayStatus", DbType="Bit NOT NULL")]
-	public bool PayStatus
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayStatus", DbType="Int NOT NULL")]
+	public int PayStatus
 	{
 		get
 		{
@@ -1917,7 +1913,7 @@ public partial class LabReportsDetail : INotifyPropertyChanging, INotifyProperty
 	
 	private System.Nullable<int> _TestID;
 	
-	private bool _FinancialApprovalStatus;
+	private int _FinancialApprovalStatus;
 	
 	private string _ResultPDF;
 	
@@ -1935,7 +1931,7 @@ public partial class LabReportsDetail : INotifyPropertyChanging, INotifyProperty
     partial void OnReportIDChanged();
     partial void OnTestIDChanging(System.Nullable<int> value);
     partial void OnTestIDChanged();
-    partial void OnFinancialApprovalStatusChanging(bool value);
+    partial void OnFinancialApprovalStatusChanging(int value);
     partial void OnFinancialApprovalStatusChanged();
     partial void OnResultPDFChanging(string value);
     partial void OnResultPDFChanged();
@@ -2016,8 +2012,8 @@ public partial class LabReportsDetail : INotifyPropertyChanging, INotifyProperty
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinancialApprovalStatus", DbType="Bit NOT NULL")]
-	public bool FinancialApprovalStatus
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinancialApprovalStatus", DbType="Int NOT NULL")]
+	public int FinancialApprovalStatus
 	{
 		get
 		{
@@ -2802,11 +2798,13 @@ public partial class Prescription : INotifyPropertyChanging, INotifyPropertyChan
 	
 	private System.Nullable<int> _AppointmentID;
 	
-	private bool _PayStatus;
+	private int _PayStatus;
+	
+	private bool _Monthly;
+	
+	private System.Nullable<System.DateTime> _SupplyDate;
 	
 	private EntitySet<PrescriptionsDetail> _PrescriptionsDetails;
-	
-	private EntityRef<Appointment> _Appointment;
 	
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2816,14 +2814,17 @@ public partial class Prescription : INotifyPropertyChanging, INotifyPropertyChan
     partial void OnPrescriptionIDChanged();
     partial void OnAppointmentIDChanging(System.Nullable<int> value);
     partial void OnAppointmentIDChanged();
-    partial void OnPayStatusChanging(bool value);
+    partial void OnPayStatusChanging(int value);
     partial void OnPayStatusChanged();
+    partial void OnMonthlyChanging(bool value);
+    partial void OnMonthlyChanged();
+    partial void OnSupplyDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnSupplyDateChanged();
     #endregion
 	
 	public Prescription()
 	{
 		this._PrescriptionsDetails = new EntitySet<PrescriptionsDetail>(new Action<PrescriptionsDetail>(this.attach_PrescriptionsDetails), new Action<PrescriptionsDetail>(this.detach_PrescriptionsDetails));
-		this._Appointment = default(EntityRef<Appointment>);
 		OnCreated();
 	}
 	
@@ -2858,10 +2859,6 @@ public partial class Prescription : INotifyPropertyChanging, INotifyPropertyChan
 		{
 			if ((this._AppointmentID != value))
 			{
-				if (this._Appointment.HasLoadedOrAssignedValue)
-				{
-					throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				}
 				this.OnAppointmentIDChanging(value);
 				this.SendPropertyChanging();
 				this._AppointmentID = value;
@@ -2871,8 +2868,8 @@ public partial class Prescription : INotifyPropertyChanging, INotifyPropertyChan
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayStatus", DbType="Bit NOT NULL")]
-	public bool PayStatus
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayStatus", DbType="Int NOT NULL")]
+	public int PayStatus
 	{
 		get
 		{
@@ -2891,6 +2888,46 @@ public partial class Prescription : INotifyPropertyChanging, INotifyPropertyChan
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Monthly", DbType="Bit NOT NULL")]
+	public bool Monthly
+	{
+		get
+		{
+			return this._Monthly;
+		}
+		set
+		{
+			if ((this._Monthly != value))
+			{
+				this.OnMonthlyChanging(value);
+				this.SendPropertyChanging();
+				this._Monthly = value;
+				this.SendPropertyChanged("Monthly");
+				this.OnMonthlyChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SupplyDate", DbType="Date")]
+	public System.Nullable<System.DateTime> SupplyDate
+	{
+		get
+		{
+			return this._SupplyDate;
+		}
+		set
+		{
+			if ((this._SupplyDate != value))
+			{
+				this.OnSupplyDateChanging(value);
+				this.SendPropertyChanging();
+				this._SupplyDate = value;
+				this.SendPropertyChanged("SupplyDate");
+				this.OnSupplyDateChanged();
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Prescription_PrescriptionsDetail", Storage="_PrescriptionsDetails", ThisKey="PrescriptionID", OtherKey="PrescriptionID")]
 	public EntitySet<PrescriptionsDetail> PrescriptionsDetails
 	{
@@ -2901,40 +2938,6 @@ public partial class Prescription : INotifyPropertyChanging, INotifyPropertyChan
 		set
 		{
 			this._PrescriptionsDetails.Assign(value);
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Appointment_Prescription", Storage="_Appointment", ThisKey="AppointmentID", OtherKey="AppointmentID", IsForeignKey=true)]
-	public Appointment Appointment
-	{
-		get
-		{
-			return this._Appointment.Entity;
-		}
-		set
-		{
-			Appointment previousValue = this._Appointment.Entity;
-			if (((previousValue != value) 
-						|| (this._Appointment.HasLoadedOrAssignedValue == false)))
-			{
-				this.SendPropertyChanging();
-				if ((previousValue != null))
-				{
-					this._Appointment.Entity = null;
-					previousValue.Prescriptions.Remove(this);
-				}
-				this._Appointment.Entity = value;
-				if ((value != null))
-				{
-					value.Prescriptions.Add(this);
-					this._AppointmentID = value.AppointmentID;
-				}
-				else
-				{
-					this._AppointmentID = default(Nullable<int>);
-				}
-				this.SendPropertyChanged("Appointment");
-			}
 		}
 	}
 	
@@ -2981,7 +2984,7 @@ public partial class PrescriptionsDetail : INotifyPropertyChanging, INotifyPrope
 	
 	private System.Nullable<int> _PrescriptionID;
 	
-	private bool _FinanceApprovalStatus;
+	private int _FinanceApprovalStatus;
 	
 	private int _Quantity;
 	
@@ -3003,7 +3006,7 @@ public partial class PrescriptionsDetail : INotifyPropertyChanging, INotifyPrope
     partial void OnDetailIDChanged();
     partial void OnPrescriptionIDChanging(System.Nullable<int> value);
     partial void OnPrescriptionIDChanged();
-    partial void OnFinanceApprovalStatusChanging(bool value);
+    partial void OnFinanceApprovalStatusChanging(int value);
     partial void OnFinanceApprovalStatusChanged();
     partial void OnQuantityChanging(int value);
     partial void OnQuantityChanged();
@@ -3066,8 +3069,8 @@ public partial class PrescriptionsDetail : INotifyPropertyChanging, INotifyPrope
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinanceApprovalStatus", DbType="Bit NOT NULL")]
-	public bool FinanceApprovalStatus
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinanceApprovalStatus", DbType="Int NOT NULL")]
+	public int FinanceApprovalStatus
 	{
 		get
 		{

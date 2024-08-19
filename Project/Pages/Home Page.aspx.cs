@@ -21,7 +21,8 @@ public partial class Pages_Home_Page : System.Web.UI.Page
 
     public void FillUserProfile()
     {
-        int docID = Convert.ToInt32(Session["Doctor_ID"]);
+        var DoctorAccount = Session["DoctorAccount"] as Doctor;
+        int docID = DoctorAccount.DoctorID;
         Doctor doc = docInfo.RetrieveDoctorInfo(docID);
         DoctorName.InnerText = doc.DoctorName;
         DoctorUsername.InnerText = "Username: " + doc.Username;

@@ -20,14 +20,14 @@
                                     <div class="card-content">
                                         
                                         <div class="card-body">
-                                            <h4 class="card-title">Doctor Name</h4>
-                                            <p class="card-text">
+                                             <h4 id="DoctorName" runat="server" class="card-title">Doctor Name</h4>
+                                            <p id="DoctorDept" runat="server" class="card-text">
                                                 Doctor's Department</p>
-                                            <p class="card-text">
+                                            <p id="DoctorUsername" runat="server" class="card-text">
                                                 Doctor's Username</p>
-                                            <p class="card-text">
+                                            <p id="DoctorPos" runat="server" class="card-text">
                                                 Doctor's Position</p>
-                                            <p class="card-text">
+                                            <p id="DoctorMobile" runat="server" class="card-text">
                                                 Doctor's Mobile</p>
                                         </div>
                                     </div>
