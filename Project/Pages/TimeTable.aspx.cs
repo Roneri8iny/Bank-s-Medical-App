@@ -3,18 +3,22 @@ using System.Data; // Importing System.Data namespace for data manipulation
 using System.Data.SqlClient; // Importing System.Data.SqlClient namespace for SQL Server operations
 using System.Web.UI; // Importing System.Web.UI namespace for ASP.NET Web Forms
 using System.Configuration; // Importing System.Configuration namespace for configuration management
-using System.Web.Services; // Importing System.Web.Services namespace for web services
+using System.Web.Services;
+using System.Web.UI.WebControls;
+using System.Linq; // Importing System.Web.Services namespace for web services
 
 public partial class Pages_TimeTable : System.Web.UI.Page
 {
-    private string connectionString; // Variable to store the connection string for the database
+    public string connectionString; // Variable to store the connection string for the database
+    NewAccountDataClassesDataContext db = new NewAccountDataClassesDataContext("");
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        connectionString = ConfigurationManager.ConnectionStrings["Bank_Medical_DBConnectionString"].ConnectionString;
         if (!IsPostBack)
         {
             // Retrieve connection string from Web.config
-            connectionString = ConfigurationManager.ConnectionStrings["Bank_Medical_DBConnectionString"].ConnectionString;
+           
             BindTimeTableGrid(); // Bind the data to the grid on initial page load
         }
     }
@@ -48,48 +52,7 @@ public partial class Pages_TimeTable : System.Web.UI.Page
         return dt; // Return the populated DataTable
     }
 
-    [WebMethod]
-    public static bool AddRow(string doctorName, string day, string startTime, string endTime)
-    {
-        string connectionString = ConfigurationManager.ConnectionStrings["Bank_Medical_DBConnectionString"].ConnectionString; // Retrieve connection string
 
-        try
-        {
-            // Get DoctorID based on DoctorName
-            int doctorId = GetDoctorID(doctorName); // Get the DoctorID for the given doctor name
-
-            if (doctorId == 0) // Check if DoctorID is valid
-                return false; // Return false if DoctorID is not found
-
-            if (IsTimeSlotExisting(doctorId, day, startTime, endTime, connectionString)) // Check if the time slot already exists
-                return false; // Return false if the time slot exists
-
-            using (SqlConnection conn = new SqlConnection(connectionString)) // Create a new SQL connection
-            {
-                string query = @"
-                    INSERT INTO TimeTable (DoctorID, TTDay, StartTime, EndTime)
-                    VALUES (@DoctorID, @TTDay, @StartTime, @EndTime)"; // SQL query to insert a new row into TimeTable
-
-                using (SqlCommand cmd = new SqlCommand(query, conn)) // Create a SQL command with the query and connection
-                {
-                    // Add parameters to prevent SQL injection
-                    cmd.Parameters.AddWithValue("@DoctorID", doctorId);
-                    cmd.Parameters.AddWithValue("@TTDay", day);
-                    cmd.Parameters.AddWithValue("@StartTime", startTime);
-                    cmd.Parameters.AddWithValue("@EndTime", endTime);
-
-                    conn.Open(); // Open the SQL connection
-                    int rowsAffected = cmd.ExecuteNonQuery(); // Execute the command and get the number of rows affected
-                    return rowsAffected > 0; // Return true if the row was inserted successfully
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            // Log exception (logging code not included)
-            return false; // Return false if there was an exception
-        }
-    }
 
     private static int GetDoctorID(string doctorName)
     {
@@ -115,7 +78,7 @@ public partial class Pages_TimeTable : System.Web.UI.Page
         return doctorID; // Return the DoctorID
     }
 
-    private static bool IsTimeSlotExisting(int doctorId, string day, string startTime, string endTime, string connectionString)
+    private static bool IsTimeSlotExisting(int doctorId, string day, TimeSpan startTime, TimeSpan endTime, string connectionString)
     {
         using (SqlConnection conn = new SqlConnection(connectionString)) // Create a new SQL connection
         {
@@ -140,5 +103,67 @@ public partial class Pages_TimeTable : System.Web.UI.Page
                 return count > 0; // Return true if the slot exists
             }
         }
+    }
+
+
+    protected void deleteRow_Click(object sender, EventArgs e)
+    {
+        GridViewRow row = (GridViewRow) (sender as Control).Parent.Parent;
+        int ID = row.RowIndex;
+        int Final = int.Parse(timeTableGrid.DataKeys[ID].Value.ToString());
+
+         var Time = db.Timetables.SingleOrDefault(d => d.SlotID == Final);
+
+        if (Time != null)
+        {
+            try
+            {
+                db.Timetables.DeleteOnSubmit(Time);
+                db.SubmitChanges();
+              
+
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Doctor deleted successfully.');", true);
+                
+            }
+            catch (Exception ex)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('An error occurred while deleting the doctor.');", true);
+            }
+        }
+        else
+        {
+           // ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Doctor not found.');", true);
+        }
+        BindTimeTableGrid();
+    }
+
+    protected void addRow_Click(object sender, EventArgs e)
+    {
+
+        bool check = IsTimeSlotExisting(GetDoctorID(txt_doctorName.Text.Trim()), ddl_days.SelectedValue, TimeSpan.Parse(txt_startTime.Text.ToString()), TimeSpan.Parse(txt_endTime.Text.ToString()), connectionString);
+
+        if (!check)
+        {
+            Timetable Time = new Timetable();
+            Time.DoctorID = GetDoctorID(txt_doctorName.Text.Trim());
+
+            Time.TTDay = ddl_days.SelectedValue;
+
+            TimeSpan StartTime = TimeSpan.Parse(txt_startTime.Text.ToString());
+            Time.StartTime = StartTime;
+
+            TimeSpan EndTime = TimeSpan.Parse(txt_endTime.Text.ToString());
+            Time.EndTime = EndTime;
+
+
+            db.Timetables.InsertOnSubmit(Time);
+            db.SubmitChanges();
+            BindTimeTableGrid();
+
+        }
+        else { 
+        
+        }
+       
     }
 }

@@ -1,22 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 /// <summary>
-/// Summary description for LoginData
+/// Summary description for Class_Login
 /// </summary>
-public class LoginData
+public class Class_Login
 {
-    NewAccountDataClassesDataContext db;
+    NewAccountDataClassesDataContext db = new NewAccountDataClassesDataContext("");
 
-    public LoginData()
+    public Class_Login()
     {
-        // Initialize the database context with the correct connection string
-        NewAccountDataClassesDataContext db = new NewAccountDataClassesDataContext("");
-
+        //
+        // TODO: Add constructor logic here
+        //
     }
 
-    // Function to check user validity
-    public object CheckUserValidity(string userName, string password, string accountType)
+    //Function Read////
+    public Object CheckUserValidity(string UserName, string Password, string accountType)
     {
         try
         {
@@ -24,43 +26,41 @@ public class LoginData
             {
                 case "Employee":
                     return (from tbl in db.Employees
-                            where tbl.EmployeeName == userName
-                            && tbl.Password == password  // Ensure password is being checked
+                            where tbl.EmployeeName == UserName
+                            && tbl.Password == Password
                             select tbl).FirstOrDefault();
-
                 case "Doctor":
                     return (from tbl in db.Doctors
-                            where tbl.DoctorName == userName
-                            && tbl.DoctorPassword == password
+                            where tbl.DoctorName == UserName
+                            && tbl.DoctorPassword == Password
                             select tbl).FirstOrDefault();
-
+                //case  "Lab Doctor"
                 case "Middle Man":
                     return (from tbl in db.MiddleMans
-                            where tbl.MMName == userName
-                            && tbl.MMPassword == password
+                            where tbl.MMName == UserName
+                            && tbl.MMPassword == Password
                             select tbl).FirstOrDefault();
-
                 case "Medical Field":
                     return (from tbl in db.MedicalFields
-                            where tbl.MFName == userName
-                            && tbl.MFPassword == password
+                            where tbl.Username == UserName
+                            && tbl.MFPassword == Password
                             select tbl).FirstOrDefault();
-
                 case "Finance":
                     return (from tbl in db.Finances
-                            where tbl.FinanceName == userName
-                            && tbl.FinancePassword == password
+                            where tbl.FinanceName == UserName
+                            && tbl.FinancePassword == Password
                             select tbl).FirstOrDefault();
-
                 default:
                     return null;
             }
+
+
         }
         catch (Exception ex)
         {
-            // Log the exception details for debugging purposes
-            // For example: LogError(ex);
-            throw new ApplicationException("An error occurred while checking user validity.", ex);
+
+            throw ex;
         }
     }
+
 }

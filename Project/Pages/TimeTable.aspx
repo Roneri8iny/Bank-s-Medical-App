@@ -43,7 +43,7 @@
                         <label for="end-time">End Time</label>
                         <asp:TextBox ID="txt_endTime" CssClass="form-control" runat="server" TextMode="SingleLine" placeholder="End Time 00:00:00" />
                     </div>
-                    <asp:Button ID="addRow" CssClass="btn btn-success mt-2 mb-3 " runat="server" Text="     Add     " />
+                    <asp:Button ID="addRow" CssClass="btn btn-success mt-2 mb-3 " runat="server" Text="     Add     " onClick="addRow_Click" />
                 </asp:Panel>
                 <!-- Data Table -->
                 <asp:GridView ID="timeTableGrid" CssClass="table table-striped" runat="server" AutoGenerateColumns="False" ShowHeaderWhenEmpty="True" DataKeyNames="SlotID">
@@ -55,13 +55,11 @@
                         <asp:BoundField DataField="EndTime" HeaderText="To" />
                         <asp:TemplateField HeaderText="Actions">
                             <ItemTemplate>
-                                <asp:Button ID="editRow" CssClass="btn btn-info btn-sm " runat="server" Text="Edit" CommandName="Edit" />
-                                <asp:Button ID="deleteRow" CssClass="btn btn-danger btn-sm " runat="server" Text="Delete" CommandName="Delete" />
+                                <asp:Button ID="deleteRow" CssClass="btn btn-danger btn-sm" runat="server" Text="Delete"  onClick="deleteRow_Click" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
-
             </div>
         </div>
     </section>
@@ -69,72 +67,6 @@
 
 <asp:Content ID="Content5" ContentPlaceHolderID="Script" runat="Server">
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const addRowButton = document.getElementById('<%= addRow.ClientID %>');
-
-            addRowButton.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                const doctorName = document.getElementById('<%= txt_doctorName.ClientID %>').value;
-                const day = document.getElementById('<%= ddl_days.ClientID %>').value;
-                const startTime = document.getElementById('<%= txt_startTime.ClientID %>').value;
-                const endTime = document.getElementById('<%= txt_endTime.ClientID %>').value;
-
-                if (!doctorName) {
-                    Toastify({
-                        text: "Doctor's Name is required.",
-                        duration: 3000,
-                        backgroundColor: "linear-gradient(to right, #FF0000, #FFAAAA)"
-                    }).showToast();
-                    return;
-                }
-
-                if (!startTime || !endTime) {
-                    Toastify({
-                        text: "Start and End Time are required.",
-                        duration: 3000,
-                        backgroundColor: "linear-gradient(to right, #FF0000, #FFAAAA)"
-                    }).showToast();
-                    return;
-                }
-
-                // Call the server-side method to add the row
-                fetch('TimeTable.aspx/AddRow', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        doctorName,
-                        day,
-                        startTime,
-                        endTime
-                    })
-                })
-                    .then(response => response.json())
-                    .then(result => {
-                        if (result) {
-                            Toastify({
-                                text: "Row added successfully.",
-                                duration: 3000,
-                                backgroundColor: "linear-gradient(to right, #00FF00, #AAFFAA)"
-                            }).showToast();
-                            location.reload(); // Reload to show the updated data
-                        } else {
-                            Toastify({
-                                text: "Failed to add row.",
-                                duration: 3000,
-                                backgroundColor: "linear-gradient(to right, #FF0000, #FFAAAA)"
-                            }).showToast();
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        Toastify({
-                            text: "An error occurred.",
-                            duration: 3000,
-                            backgroundColor: "linear-gradient(to right, #FF0000, #FFAAAA)"
-                        }).showToast();
-                    });
-            });
-        });
+        
     </script>
 </asp:Content>

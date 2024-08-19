@@ -2,8 +2,6 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <!-- Head Section Content -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <link rel="stylesheet" href="../assets/css/time-table.css" />
 </asp:Content>
 
@@ -203,41 +201,4 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="Script" runat="Server">
-    <!-- Script Section -->
-   <!-- <script>
-        // Show success message using Toastify
-        function showSuccessMessage(message) {
-            Toastify({
-                text: message,
-                duration: 3000,
-                gravity: "top", // `top` or `bottom`
-                position: "right", // `left`, `center` or `right`
-                backgroundColor: "#4fbe87"
-            }).showToast();
-        }
-
-        // Show error message using Toastify
-        function showErrorMessage(message) {
-            Toastify({
-                text: message,
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "#ff6b6b"
-            }).showToast();
-        }
-
-        // Attach event handlers to buttons
-        ////////////document.getElementById('<%= btnUpdate.ClientID %>').addEventListener('click', function (event) {
-            event.preventDefault(); // Prevent default form submission
-            showSuccessMessage("Account updated successfully.");
-            // Optionally, add logic to handle form submission here
-        });
-
-        ////////////document.getElementById('<%= btnDelete.ClientID %>').addEventListener('click', function (event) {
-            event.preventDefault(); // Prevent default form submission
-            showErrorMessage("Account deleted successfully.");
-            // Optionally, add logic to handle form submission here
-        });
-    </script> -->
 </asp:Content>

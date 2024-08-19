@@ -4,7 +4,6 @@
 </asp:ContentPlaceHolder>
 
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="UTF-8">
@@ -15,14 +14,12 @@
     <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/app.css">
     <link rel="stylesheet" href="../assets/css/pages/auth.css">
-    <asp:ContentPlaceHolder ID="head" runat="server">
-    </asp:ContentPlaceHolder>
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:ContentPlaceHolder ID="Body" runat="server">
-            </asp:ContentPlaceHolder>
+            <asp:ContentPlaceHolder ID="Body" runat="server"></asp:ContentPlaceHolder>
         </div>
     </form>
 </body>

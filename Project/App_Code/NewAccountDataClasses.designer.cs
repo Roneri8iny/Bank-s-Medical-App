@@ -2006,7 +2006,7 @@ public partial class LabReportsDetail : INotifyPropertyChanging, INotifyProperty
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResultPDF", DbType="NVarChar(300) NOT NULL", CanBeNull=false)]
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResultPDF", DbType="NVarChar(300)")]
 	public string ResultPDF
 	{
 		get

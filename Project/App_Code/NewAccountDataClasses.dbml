@@ -85,7 +85,7 @@
       <Column Name="ReportID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="TestID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="FinancialApprovalStatus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ResultPDF" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="ResultPDF" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
       <Association Name="LabReport_LabReportsDetail" Member="LabReport" ThisKey="ReportID" OtherKey="ReportID" Type="LabReport" IsForeignKey="true" />
       <Association Name="Test_LabReportsDetail" Member="Test" ThisKey="TestID" OtherKey="TestID" Type="Test" IsForeignKey="true" />
     </Type>

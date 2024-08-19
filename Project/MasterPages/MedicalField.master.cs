@@ -11,4 +11,17 @@ public partial class MasterPages_MedicalField : System.Web.UI.MasterPage
     {
 
     }
+    protected void btnSignOut_Click(object sender, EventArgs e)
+    {
+        // Clear the session
+        Session.Clear();
+        Session.Abandon();
+
+        // Optionally, clear authentication cookie
+        System.Web.Security.FormsAuthentication.SignOut();
+
+        // Redirect to the login page
+        Response.Redirect("MedicalFieldLoginPage.aspx");
+    }
+
 }

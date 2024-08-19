@@ -26,7 +26,10 @@ public partial class Pages_MedicalHome : System.Web.UI.Page
     private int GetMedicalFieldID()
     {
         // For testing purposes, return MFID as 1
-        return 1;
+        MedicalField obj_MedicalField = (MedicalField)Session["MedicalFieldAccount"];
+
+        
+        return obj_MedicalField.MFID;
     }
 
     private void LoadData(int medicalFieldID)

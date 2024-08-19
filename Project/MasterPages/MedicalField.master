@@ -48,53 +48,45 @@
                             </div>
                         </div>
                         <div class="sidebar-menu">
-                            <ul class="menu">
-                                <!-- Placeholder for sidebar title -->
-                                <li class="sidebar-title"></li>
-
-                                <!-- Home Page link -->
-                                <li class="sidebar-item active" id="Home-Page">
+                            <ul class="menu" id="menu1">
+                                <li class="sidebar-item <%: Request.Url.AbsolutePath.ToLower().Equals("/pages/medicalhome.aspx") ? "active" : "" %>">
                                     <a href="../pages/MedicalHome.aspx" class="sidebar-link">
                                         <i class="bi bi-grid-fill"></i>
                                         <span>Home Page</span>
                                     </a>
                                 </li>
 
-                                <!-- Time Table Management link -->
-                                <li class="sidebar-item active" id="Time-Table">
+                                <li class="sidebar-item <%: Request.Url.AbsolutePath.ToLower().Equals("/pages/timetable.aspx") ? "active" : "" %>">
                                     <a href="../pages/TimeTable.aspx" class="sidebar-link">
                                         <i class="bi bi-grid-fill"></i>
                                         <span>Time Table Management</span>
                                     </a>
                                 </li>
 
-                                <!-- Account Management section  -->
-                                <li class="sidebar-title">Account Management</li>
-
-                                <!-- New Doctor Account link -->
-                                <li class="sidebar-item active" id="Doctor-Account">
+                                <li class="sidebar-item <%: Request.Url.AbsolutePath.ToLower().Equals("/pages/newaccount.aspx") ? "active" : "" %>">
                                     <a href="../pages/NewAccount.aspx" class="sidebar-link">
                                         <i class="bi bi-grid-fill"></i>
                                         <span>New Doctor Account</span>
                                     </a>
                                 </li>
 
-                                <!-- Manage Accounts link -->
-                                <li class="sidebar-item active" id="Manage-Accounts">
+                                <li class="sidebar-item <%: Request.Url.AbsolutePath.ToLower().Equals("/pages/accountmanagement.aspx") ? "active" : "" %>">
                                     <a href="../pages/AccountManagement.aspx" class="sidebar-link">
                                         <i class="bi bi-grid-fill"></i>
                                         <span>Manage Doctors Accounts</span>
                                     </a>
                                 </li>
+
                             </ul>
                         </div>
                         <!-- Sidebar toggle button -->
                         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
                         <!--  Sign Out Button -->
                         <div class="sidebar-footer d-flex justify-content-center align-items-end me-3" style="margin-top: 50px; justify-content: space-around">
-                            <a href="#" class="btn btn-outline-danger w-50 ">Sign Out</a>
+                            <asp:LinkButton ID="btnSignOut" runat="server" CssClass="btn btn-outline-danger w-50" OnClick="btnSignOut_Click">Sign Out</asp:LinkButton>
                         </div>
-                    </div>
+
+                    </div>  
                 </div>
 
                 <div id="main">
@@ -131,34 +123,6 @@
 
     <!-- Placeholder for additional scripts from child pages -->
     <asp:ContentPlaceHolder ID="Script" runat="server">
-        <script>
-            // Function to set the active class
-            function setActiveLink() {
-                // Get the current URL path
-                var currentPath = window.location.pathname;
-                console.log("Current Path: " + currentPath); // Debugging
-
-                // Loop through all sidebar items
-                document.querySelectorAll('.sidebar-item').forEach(function (item) {
-                    // Remove active class from all items
-                    item.classList.remove('active');
-
-                    // Get the href of the sidebar link
-                    var linkPath = item.querySelector('a').getAttribute('href');
-                    console.log("Link Path: " + linkPath); // Debugging
-
-                    // Check if the item's link matches the current path
-                    if (linkPath === currentPath || currentPath.includes(linkPath)) {
-                        // Add active class to the matching item
-                        item.classList.add('active');
-                        console.log("Active Class Added: " + linkPath); // Debugging
-                    }
-                });
-            }
-
-            // Call the function when the page loads
-            window.onload = setActiveLink;
-        </script>
     </asp:ContentPlaceHolder>
 
 </body>

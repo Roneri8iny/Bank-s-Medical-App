@@ -62,16 +62,10 @@ public partial class Pages_NewAccount : System.Web.UI.Page
             db.Doctors.InsertOnSubmit(doctor_obj);
             db.SubmitChanges();
 
-            // Optionally, show a success message or clear the form fields
-            // Example: Display a success message using Toastify
             ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "Toastify({ text: 'Doctor added successfully!', duration: 3000 }).showToast();", true);
         }
         catch (Exception ex)
         {
-            // Handle any exceptions that occur during doctor insertion
-            // Log the error and optionally show a message to the user
-            Console.WriteLine("Error adding doctor: " + ex.Message);
-            // Example: Display an error message using Toastify
             ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "Toastify({ text: 'Error adding doctor. Please try again.', duration: 3000, backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)' }).showToast();", true);
         }
     }
