@@ -27,7 +27,7 @@
                                     <div class="form-group has-icon-left">
                                         <label for="doctor-name">Doctor Name</label>
                                         <div class="position-relative">
-                                            <asp:TextBox runat="server" CssClass="form-control" Placeholder="Doctor Name" ID="txt_doctor_name" />
+                                            <asp:TextBox runat="server" CssClass="form-control" Placeholder="Doctor Name" ID="txt_doctor_name" MaxLength="20" />
                                             <div class="form-control-icon">
                                                 <i class="bi bi-person"></i>
                                             </div>

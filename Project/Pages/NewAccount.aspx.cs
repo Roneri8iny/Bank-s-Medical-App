@@ -45,28 +45,50 @@ public partial class Pages_NewAccount : System.Web.UI.Page
     {
         try
         {
-            // Create a new doctor object
-            Doctor doctor_obj = new Doctor
+            // Retrieve MFID from session
+            int mfid = GetMedicalFieldID();
+
+            if (mfid > 0)
             {
-                DoctorName = txt_doctor_name.Text,
-                Price = Convert.ToDecimal(txt_price.Text),
-                Username = username.Text,
-                DoctorPassword = password.Text,
-                Mobile = Convert.ToInt64(txt_mobile.Text),
-                Position = ddl_postion.SelectedItem.Text,
-                DepartmentID = Convert.ToInt32(ddl_Departments.SelectedValue), // Get the selected department ID
-                MFID = 3 // Replace with actual logic to assign MFID as needed
-            };
+                // Create a new doctor object
+                Doctor doctor_obj = new Doctor
+                {
+                    DoctorName = txt_doctor_name.Text,
+                    Price = Convert.ToDecimal(txt_price.Text),
+                    Username = username.Text,
+                    DoctorPassword = password.Text,
+                    Mobile = Convert.ToInt64(txt_mobile.Text),
+                    Position = ddl_postion.SelectedItem.Text,
+                    DepartmentID = Convert.ToInt32(ddl_Departments.SelectedValue), // Get the selected department ID
+                    MFID = mfid // Use MFID retrieved from session
+                };
 
-            // Insert the new doctor into the database
-            db.Doctors.InsertOnSubmit(doctor_obj);
-            db.SubmitChanges();
+                // Insert the new doctor into the database
+                db.Doctors.InsertOnSubmit(doctor_obj);
+                db.SubmitChanges();
 
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "Toastify({ text: 'Doctor added successfully!', duration: 3000 }).showToast();", true);
+                // Show success message using Toastify
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "Toastify({ text: 'Doctor added successfully!', duration: 3000 }).showToast();", true);
+            }
+            else
+            {
+                // Show error message if MFID is not found
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "Toastify({ text: 'Error: Unable to retrieve Medical Field ID.', duration: 3000, backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)' }).showToast();", true);
+            }
         }
         catch (Exception ex)
         {
+            // Show error message using Toastify
             ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "Toastify({ text: 'Error adding doctor. Please try again.', duration: 3000, backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)' }).showToast();", true);
         }
+    }
+
+    private int GetMedicalFieldID()
+    {
+        // Retrieve the MFID from the session
+        MedicalField obj_MedicalField = (MedicalField)Session["MedicalFieldAccount"];
+
+
+            return obj_MedicalField.MFID;
     }
 }

@@ -17,7 +17,7 @@
         <div class="col-md-6 col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Search User Account</h4>
+                    <h4 class="card-title">Enter User Account</h4>
                 </div>
                 <div class="card-content">
                     <div class="card-body">
