@@ -9,8 +9,12 @@
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
                     <div class="auth-logo">
-                        <a href="HomePage.aspx">
-                            <asp:Image ID="Logo" runat="server" ImageUrl="../assets/images/logo/logo.png" /></a>
+                        <h1>NBE
+        <br />
+                                Healthcare
+        <br />
+                                Coverage 
+                            </h1>
                     </div>
                     <asp:Label ID="Login" runat="server" Text="Log in." CssClass="auth-title" Style="font-weight: 700; line-height: 1.2; color: #25396f; display: block;"></asp:Label>
                     <asp:Label ID="Label1" runat="server" Text="Log in with your data that you entered during registration." CssClass="auth-subtitle mb-5" Style="display: block;"></asp:Label>

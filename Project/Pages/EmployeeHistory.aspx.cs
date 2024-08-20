@@ -5,15 +5,61 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Pages_History : System.Web.UI.Page
+public partial class Pages_EmployeeHistory : System.Web.UI.Page
 {
+    Class_Appointments appointmentsInfo = new Class_Appointments();
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        var EmpAccount = Session["EmpAccount"] as Employee;
-        if (EmpAccount == null)
+        if (!Page.IsPostBack)
         {
-            Response.Redirect("Login.aspx");
+            ViewEmployeeHistory();
         }
+    }
 
+    public void ViewEmployeeHistory()
+    {
+        var EmpAccount = Session["EmpAccount"] as Employee;
+
+        int empID = EmpAccount.EmployeeID;
+
+        //List<Class_PastAppointments> employeePastAppointments = appointmentsInfo.getPastAppointments(empID);
+        List<int> PastAppointmentsIDs = new List<int>();
+        appointmentsInfo.getPastAppointments(rpt_pastAppointments, empID, ref PastAppointmentsIDs);
+        //foreach (var appointmentID in PastAppointmentsIDs)
+        //{
+            appointmentsInfo.getPastLabReports(TestRepeater, empID);
+            appointmentsInfo.getPastPrescriptionsByEmp(PrescriptionRepeater, empID);
+        //}
+
+
+    }
+
+    public void TestRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        if (e.CommandName == "ViewDetails")
+        {
+            // Get the ReportID from the CommandArgument
+            int reportId = Convert.ToInt32(e.CommandArgument);
+            Session["ReportID"] = reportId;
+            // Redirect to the details page, passing the ReportID as a query string parameter
+            string url = "LabReportDetails.aspx";
+            Response.Redirect(url);
+
+        }
+    }
+
+    public void PrescriptionRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        if (e.CommandName == "ViewDetails")
+        {
+            // Get the ReportID from the CommandArgument
+            int prescriptioID = Convert.ToInt32(e.CommandArgument);
+            Session["PrescriptionID"] = prescriptioID;
+            // Redirect to the details page, passing the ReportID as a query string parameter
+            string url = "PrescriptionDetails.aspx";
+            Response.Redirect(url);
+
+        }
     }
 }

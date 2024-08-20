@@ -146,17 +146,86 @@ public class Class_Employee
         try
         {
             var LabReports = (from app in db.Appointments
-                                  where app.EmployeeID == EmployeeID
-                                  select new{
-                                      DoctorName = app.Timetable.Doctor.DoctorName,
-                                      //Date has time in it
-                                      AppointmentDay = app.AppointmentDtae,
-                                      Diagnosis = app.Diagnosis
-                                      //Add tests
-                                  }).ToList();
+                              where app.EmployeeID == EmployeeID
+                              select new
+                              {
+                                  DoctorName = app.Timetable.Doctor.DoctorName,
+                                  //Date has time in it
+                                  AppointmentDay = app.AppointmentDtae,
+                                  Diagnosis = app.Diagnosis,
+                                  LabReportDetails = string.Join(", ", db.LabReports
+                                    .Where(lab => lab.AppointmentID == app.AppointmentID)
+                                    .SelectMany(lab => lab.LabReportsDetails)
+                                    .Select(detail => detail.Test.TestName))
+                              }).ToList();
             rpt.DataSource = LabReports;
             rpt.DataBind();
 
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+    public void GetMonthlyPrescriptions(Repeater rpt, int EmployeeID)
+    {
+        try
+        {
+            var monPres = (from app in db.Appointments
+                           where app.EmployeeID == EmployeeID
+                           select new
+                           {
+                               ApDepartment = app.Timetable.Doctor.Department.DepartmentName,
+                               ApDate = app.AppointmentDtae, // Corrected field name
+                               DoctorName = app.Timetable.Doctor.DoctorName,
+                               LastRenewalDate = db.Prescriptions
+                                   .Where(pre => pre.AppointmentID == app.AppointmentID)
+                                   .Select(pre => pre.SupplyDate)
+                                   .FirstOrDefault(),
+                               PreID = db.Prescriptions
+                                      .Where(pre => pre.AppointmentID == app.AppointmentID)
+                                      .Select(pre => (int?)pre.PrescriptionID)
+                                      .FirstOrDefault(),
+                               Medicines = db.PrescriptionsDetails
+                                   .Where(pd => pd.Prescription.AppointmentID == app.AppointmentID)
+                                   .Select(pd => new
+                                   {
+                                       Medicine = pd.Medicine.MedicineName,
+                                       Frequency = pd.Frequency,
+                                       Quantity = pd.Quantity,
+                                       Notes = pd.Notes
+                                   }).ToList()
+                           }).ToList();
+
+            rpt.DataSource = monPres;
+            rpt.DataBind();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+    public DateTime GetLastRenewalPrescriptionDate(int PrescriptionID)
+    {
+        try
+        {
+            DateTime? preDate = db.Prescriptions.Where(pre => pre.PrescriptionID == PrescriptionID).FirstOrDefault().SupplyDate;
+
+            return (DateTime)preDate;
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
+    }
+    public void UpdateRenewalStatus(int PrescriptionID)
+    {
+        try
+        {
+            var prescription = db.Prescriptions.Where(pre => pre.PrescriptionID == PrescriptionID).FirstOrDefault();
+            prescription.RenewalStatus = 1;
+            db.SubmitChanges();
 
         }
         catch (Exception ex)

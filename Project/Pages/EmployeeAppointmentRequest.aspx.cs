@@ -4,10 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
+
 
 public partial class Pages_EmployeeHome : System.Web.UI.Page
 {
     Class_Employee employee = new Class_Employee();
+    Class_Appointments appointment = new Class_Appointments();
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -54,6 +57,7 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
         {
             PopulateDepartmentsByMedicalField(MFID);
             DepartmentsPanel.Visible = true; // Show the departments panel
+            AvailableSlotsPanel.Visible = false;
             AvailableLabsPanel.Visible = false;
 
         }
@@ -103,10 +107,13 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
             PopulateDoctorDetails(departmentID);
 
             AvailableSlotsPanel.Visible = true;
+            AvailableLabsPanel.Visible = false;
         }
         else
         {
             AvailableSlotsPanel.Visible = false;
+            AvailableLabsPanel.Visible = false;
+
         }
     }
 
@@ -121,16 +128,120 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
             throw ex;
         }
     }
-    protected void AppRequestButton_Click(object sender, EventArgs e)
+
+    //public void AppRequestButton_Click(object sender, EventArgs e)
+    //{
+    //    try
+    //    {
+    //        var EmpAccount = Session["EmpAccount"] as Employee;
+
+    //        //Get DoctorName
+    //        Button button = (Button)sender;
+    //        RepeaterItem item = (RepeaterItem)button.NamingContainer;
+    //        Label doctorNameLabel = (Label)item.FindControl("DoctorName");
+    //        string doctorName = doctorNameLabel.Text;
+
+    //        string appDay = appointment.GetAppointmentDay(doctorName);
+    //        int slotId = appointment.GetAppointmentSlotID(doctorName);
+
+    //        DateTime selectedDate = DateTime.Parse(((TextBox)((Control)sender).FindControl("Calender")).Text);
+    //        // Get the day of the week from the selected date
+    //        DayOfWeek selectedDay = selectedDate.DayOfWeek;
+
+    //        string selectedField = MedicalFields.SelectedValue;
+    //        int MFID = employee.GetMedicalFieldID(selectedField);
+
+    //        bool check = employee.CheckMFType(MFID);
+
+    //        //Chech selectedDay = Slot day
+    //        if (selectedDay.ToString().Substring(0, 3) == appDay && check)
+    //        {
+    //            appointment.fun_AddAppointement(selectedDate, EmpAccount.EmployeeID, slotId, false);
+    //        }
+    //        else if (!check)
+    //        {
+    //            appointment.fun_AddAppointement(selectedDate, EmpAccount.EmployeeID, slotId, true, selectedField);
+    //        }
+    //        else
+    //        {
+    //            //alert wrong DATE
+    //        }
+    //        //ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "Manar();", true);
+    //        //ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "Success;", true);
+
+    //        //RequestButton.Enabled = false;
+    //        //requestSuccess_div.Visible = true;  // Shows the success message
+    //        //requestSuccess.Text = "Request Done";
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw ex;
+    //    }
+    //}
+    public void AppRequestButton_Click(object sender, EventArgs e)
     {
         try
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "Manar();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "Success;", true);
+            var EmpAccount = Session["EmpAccount"] as Employee;
+            if (EmpAccount != null)
+            {
+                Button button = (Button)sender;
+                RepeaterItem item = (RepeaterItem)button.NamingContainer;
 
-            //RequestButton.Enabled = false;
-            //requestSuccess_div.Visible = true;  // Shows the success message
-            //requestSuccess.Text = "Request Done";
+                Label lbl_error = (Label)item.FindControl("lbl_error");
+                HtmlGenericControl error_div = (HtmlGenericControl)item.FindControl("error_div");
+                Label lbl_success = (Label)item.FindControl("lbl_success");
+                HtmlGenericControl success_div = (HtmlGenericControl)item.FindControl("success_div");
+
+
+                string doctorName = ((Label)item.FindControl("DoctorName")).Text;
+                string appDay = appointment.GetAppointmentDay(doctorName);
+                int slotId = appointment.GetAppointmentSlotID(doctorName);
+
+                TextBox calendarTextBox = (TextBox)item.FindControl("Calender");
+                if (calendarTextBox == null || string.IsNullOrEmpty(calendarTextBox.Text))
+                {
+                    lbl_error.Text = "Please select a date";
+                    success_div.Visible = false;
+                    error_div.Visible = true;
+                    return;
+                }
+
+                string calendarText = calendarTextBox.Text;
+                DateTime selectedDate;
+                if (!DateTime.TryParse(calendarText, out selectedDate))
+                {
+                    //ShowErrorMessage(item, "Invalid date format");
+                    return;
+                }
+
+                DayOfWeek selectedDay = selectedDate.DayOfWeek;
+
+                string selectedField = MedicalFields.SelectedValue;
+                int MFID = employee.GetMedicalFieldID(selectedField);
+                bool check = employee.CheckMFType(MFID);
+
+                if (selectedDay.ToString().Substring(0, 3) == appDay && check)
+                {
+                    appointment.fun_AddAppointement(selectedDate, EmpAccount.EmployeeID, slotId, false);
+                    lbl_success.Text = "Appointment Requested Successfully";
+                    error_div.Visible = false;
+                    success_div.Visible = true;
+                }
+                else if (!check)
+                {
+                    appointment.fun_AddAppointement(selectedDate, EmpAccount.EmployeeID, slotId, true, selectedField);
+                    lbl_success.Text = "Appointment Requested Successfully";
+                    error_div.Visible = false;
+                    success_div.Visible = true;
+                }
+                else
+                {
+                    lbl_error.Text = "Please select a date on the same day as the available day";
+                    success_div.Visible = false;
+                    error_div.Visible = true;
+                }
+            }
         }
         catch (Exception ex)
         {

@@ -11,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/css/bootstrap.css" />
-    <link rel="stylesheet" href="../assets/vendors/sweetalert2/sweetalert2.min.css"/>
     <link rel="stylesheet" href="../assets/vendors/iconly/bold.css" />
     <link rel="stylesheet" href="../assets/vendors/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css" />
@@ -30,8 +29,12 @@
                         <div class="sidebar-header">
                             <div class="d-flex justify-content-between">
                                 <div class="logo">
-                                    <a href="index.html">
-                                        <img src="../assets/images/logo/logo.png" alt="Logo" srcset=""></a>
+                                    <h1>NBE
+        <br />
+                                Healthcare
+        <br />
+                                Coverage 
+                            </h1>
                                 </div>
                                 <div class="toggler">
                                     <a href="#" class="sidebar-hideJohn d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -115,8 +118,6 @@
     <script src="../assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/pages/dashboard.js"></script>
-    <script src="../assets/js/extensions/sweetalert2.js"></script>
-    <script src="../assets/vendors/sweetalert2/sweetalert2.all.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <asp:ContentPlaceHolder ID="Script" runat="server">
     </asp:ContentPlaceHolder>

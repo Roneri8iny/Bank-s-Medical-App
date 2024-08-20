@@ -19,56 +19,67 @@
                         <div class="card-body">
                             <form class="form">
                                 <div class="row">
-                                    <div class="col-md-6 col-12">
+                                    <div>
                                         <div class="form-group">
-                                            <p>Prescriptions</p>
+                                            <p>Monthly Prescriptions</p>
                                             <!--Monthly Prescriptions List-->
                                             <div class="list-group">
-                                                <span class="list-group-item">
-                                                    <asp:Label ID="Label3" runat="server" Text="Prescription 1" CssClass="mb-1" Style="font-size: 20px; color: #25396f; font-weight: bold; display: block;"></asp:Label>
+                                                <asp:Repeater ID="PrescriptionsRpt" runat="server" OnItemCommand="PrescriptionsRpt_ItemCommand">
+                                                    <ItemTemplate>
+                                                        <span class="list-group-item">
+                                                            <span style="display: block">
 
-                                                    <asp:Label ID="Label4" runat="server" Text="Date of Appointment:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label5" runat="server" Text="Time of Appointment:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label6" runat="server" Text="Doctor Name:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label1" runat="server" Text="Department:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label2" runat="server" Text="Medicine 1: --- Frequency: --- Quantity: --- Notes: ---" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label7" runat="server" Text="Medicine 2: --- Frequency: --- Quantity: --- Notes: ---" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label8" runat="server" Text="Last Renewal Date:" CssClass="mb-1" Style="display: block;"></asp:Label>
+                                                                <asp:Label ID="ApDeptLbl" runat="server" Text="Department: " Style="font-size: 18px; color: #333; font-weight: bold;"></asp:Label>
+                                                                <asp:Label ID="ApDept" runat="server" Text='<%# Eval("ApDepartment", "{0}") %>' CssClass="mb-1"></asp:Label>
+                                                            </span>
+                                                            <span style="display: block">
+                                                                <asp:Label ID="ApDateLbl" runat="server" Text="Appointment Date: " Style="font-size: 18px; color: #333; font-weight: bold;"></asp:Label>
+                                                                <asp:Label ID="ApDate" runat="server" Text='<%# Eval("ApDate", "{0}") %>' CssClass="mb-1"></asp:Label>
+                                                            </span>
+                                                            <asp:Label ID="DoctorName" runat="server" Text='<%# Eval("DoctorName", "{0}") %>' CssClass="mb-1" Style="display: block; font-size: 18px; color: #333; font-weight: bold;"></asp:Label>
 
-                                                    <div class="d-flex w-100 justify-content-end">
-                                                        <asp:Button ID="RequestButton" runat="server" Text="Renew" CssClass="btn btn-primary rounded-pill" />
-                                                    </div>
-                                                </span>
-                                                <span class="list-group-item">
-                                                    <asp:Label ID="Label9" runat="server" Text="Prescription 2" CssClass="mb-1" Style="font-size: 20px; color: #25396f; font-weight: bold; display: block;"></asp:Label>
+                                                            <asp:Repeater ID="MedicinesRpt" runat="server" DataSource='<%# Eval("Medicines") %>'>
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="MedicineLbl" runat="server" Text="Medicine: " Style="font-size: 18px; color: #333; font-weight: bold;"></asp:Label>
+                                                                    `       
+                                                                    <asp:Label ID="Medicine" runat="server" Text='<%# Eval("Medicine", "{0}") %>' CssClass="mb-1"></asp:Label>
 
-                                                    <asp:Label ID="Label10" runat="server" Text="Date of Appointment:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label11" runat="server" Text="Time of Appointment:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label12" runat="server" Text="Doctor Name:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label13" runat="server" Text="Department:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label14" runat="server" Text="Medicine 1: --- Frequency: --- Quantity: --- Notes: ---" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label15" runat="server" Text="Medicine 2: --- Frequency: --- Quantity: --- Notes: ---" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label16" runat="server" Text="Last Renewal Date:" CssClass="mb-1" Style="display: block;"></asp:Label>
+                                                                    <asp:Label ID="FrequencyLbl" runat="server" Text=", Frequency: " Style="font-size: 18px; color: #333; font-weight: bold;"></asp:Label>
+                                                                    <asp:Label ID="Frequency" runat="server" Text='<%# Eval("Frequency", "{0}") %>' CssClass="mb-1"></asp:Label>
 
-                                                    <div class="d-flex w-100 justify-content-end">
-                                                        <asp:Button ID="Button1" runat="server" Text="Renew" CssClass="btn btn-primary rounded-pill" />
-                                                    </div>
-                                                </span>
-                                                <span class="list-group-item">
-                                                    <asp:Label ID="Label17" runat="server" Text="Prescription 3" CssClass="mb-1" Style="font-size: 20px; color: #25396f; font-weight: bold; display: block;"></asp:Label>
+                                                                    <asp:Label ID="QuantityLbl" runat="server" Text=", Quantity: " Style="font-size: 18px; color: #333; font-weight: bold;"></asp:Label>
+                                                                    <asp:Label ID="Quantity" runat="server" Text='<%# Eval("Quantity", "{0}") %>' CssClass="mb-1"></asp:Label>
 
-                                                    <asp:Label ID="Label18" runat="server" Text="Date of Appointment:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label19" runat="server" Text="Time of Appointment:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label20" runat="server" Text="Doctor Name:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label21" runat="server" Text="Department:" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label22" runat="server" Text="Medicine 1: --- Frequency: --- Quantity: --- Notes: ---" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label23" runat="server" Text="Medicine 2: --- Frequency: --- Quantity: --- Notes: ---" CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                    <asp:Label ID="Label24" runat="server" Text="Last Renewal Date:" CssClass="mb-1" Style="display: block;"></asp:Label>
+                                                                    <asp:Label ID="NotesLbl" runat="server" Text=", Notes: " Style="font-size: 18px; color: #333; font-weight: bold;"></asp:Label>
+                                                                    <asp:Label ID="ApDate" runat="server" Text='<%# Eval("Notes", "{0}") %>' CssClass="mb-1"></asp:Label>
 
-                                                    <div class="d-flex w-100 justify-content-end">
-                                                        <asp:Button ID="Button2" runat="server" Text="Renew" CssClass="btn btn-primary rounded-pill" />
-                                                    </div>
-                                                </span>
+
+                                                                </ItemTemplate>
+                                                            </asp:Repeater>
+
+                                                            <span style="display: block">
+                                                                <asp:Label ID="LstRenewalDateLbl" runat="server" Text="Last Renewal Date: " Style="font-size: 18px; color: #333; font-weight: bold;"></asp:Label>
+                                                                <asp:Label ID="LstRenewalDate" runat="server" Text='<%# Eval("LastRenewalDate", "{0}") %>' CssClass="mb-1"></asp:Label>
+                                                            </span>
+
+                                                            <div class="d-flex w-100 justify-content-end">
+                                                                <asp:LinkButton ID="RenewButton" runat="server"
+                                                                    CommandName="RenewPrescription"
+                                                                    CommandArgument='<%# Eval("PreID") %>'
+                                                                    CssClass="btn btn-primary rounded-pill">
+                                                            Renew
+                                                        </asp:LinkButton>
+                                                            </div>
+                                                            <div class="alert alert-success" runat="server" id="success_div" visible="false">
+                                                                <asp:Label ID="lbl_success" runat="server"></asp:Label>
+                                                            </div>
+                                                            <div class="alert alert-danger" runat="server" id="error_div" visible="false">
+                                                                <asp:Label ID="lbl_error" runat="server"></asp:Label>
+
+                                                            </div>
+                                                        </span>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
                                             </div>
                                         </div>
                                     </div>
