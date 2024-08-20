@@ -9,8 +9,8 @@
       <Column Name="Diagnosis" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="FinanceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SLDStart" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="SLDEndd" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="AppointmentDtae" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="SLDEnd" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="AppointmentDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Association Name="Appointment_LabReport" Member="LabReports" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="LabReport" />
       <Association Name="Appointment_Prescription" Member="Prescriptions" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="Prescription" />
       <Association Name="Timetable_Appointment" Member="Timetable" ThisKey="SlotID" OtherKey="SlotID" Type="Timetable" IsForeignKey="true" />

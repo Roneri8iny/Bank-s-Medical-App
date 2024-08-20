@@ -236,9 +236,9 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 	
 	private System.Nullable<System.DateTime> _SLDStart;
 	
-	private System.Nullable<System.DateTime> _SLDEndd;
+	private System.Nullable<System.DateTime> _SLDEnd;
 	
-	private System.Nullable<System.DateTime> _AppointmentDtae;
+	private System.Nullable<System.DateTime> _AppointmentDate;
 	
 	private EntitySet<LabReport> _LabReports;
 	
@@ -268,10 +268,10 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
     partial void OnFinanceIDChanged();
     partial void OnSLDStartChanging(System.Nullable<System.DateTime> value);
     partial void OnSLDStartChanged();
-    partial void OnSLDEnddChanging(System.Nullable<System.DateTime> value);
-    partial void OnSLDEnddChanged();
-    partial void OnAppointmentDtaeChanging(System.Nullable<System.DateTime> value);
-    partial void OnAppointmentDtaeChanged();
+    partial void OnSLDEndChanging(System.Nullable<System.DateTime> value);
+    partial void OnSLDEndChanged();
+    partial void OnAppointmentDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnAppointmentDateChanged();
     #endregion
 	
 	public Appointment()
@@ -436,42 +436,42 @@ public partial class Appointment : INotifyPropertyChanging, INotifyPropertyChang
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SLDEndd", DbType="Date")]
-	public System.Nullable<System.DateTime> SLDEndd
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SLDEnd", DbType="Date")]
+	public System.Nullable<System.DateTime> SLDEnd
 	{
 		get
 		{
-			return this._SLDEndd;
+			return this._SLDEnd;
 		}
 		set
 		{
-			if ((this._SLDEndd != value))
+			if ((this._SLDEnd != value))
 			{
-				this.OnSLDEnddChanging(value);
+				this.OnSLDEndChanging(value);
 				this.SendPropertyChanging();
-				this._SLDEndd = value;
-				this.SendPropertyChanged("SLDEndd");
-				this.OnSLDEnddChanged();
+				this._SLDEnd = value;
+				this.SendPropertyChanged("SLDEnd");
+				this.OnSLDEndChanged();
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AppointmentDtae", DbType="Date")]
-	public System.Nullable<System.DateTime> AppointmentDtae
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AppointmentDate", DbType="Date")]
+	public System.Nullable<System.DateTime> AppointmentDate
 	{
 		get
 		{
-			return this._AppointmentDtae;
+			return this._AppointmentDate;
 		}
 		set
 		{
-			if ((this._AppointmentDtae != value))
+			if ((this._AppointmentDate != value))
 			{
-				this.OnAppointmentDtaeChanging(value);
+				this.OnAppointmentDateChanging(value);
 				this.SendPropertyChanging();
-				this._AppointmentDtae = value;
-				this.SendPropertyChanged("AppointmentDtae");
-				this.OnAppointmentDtaeChanged();
+				this._AppointmentDate = value;
+				this.SendPropertyChanged("AppointmentDate");
+				this.OnAppointmentDateChanged();
 			}
 		}
 	}

@@ -18,6 +18,8 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
             PopulateMedicalFields();
             DepartmentsPanel.Visible = false;
             AvailableSlotsPanel.Visible = false;
+            AvailableLabsPanel.Visible = false;
+
         }
 
         var EmpAccount = Session["EmpAccount"] as Employee;
@@ -59,6 +61,7 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
             DepartmentsPanel.Visible = true; // Show the departments panel
             AvailableSlotsPanel.Visible = false;
             AvailableLabsPanel.Visible = false;
+            RequestedLabReportsPanel.Visible = false;
 
         }
         else if (selectedField != "0" && !check)
@@ -68,12 +71,15 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
             DepartmentsPanel.Visible = false;
             AvailableSlotsPanel.Visible = false;
 
+
         }
         else
         {
             DepartmentsPanel.Visible = false; 
             AvailableSlotsPanel.Visible = false;
             AvailableLabsPanel.Visible = false;
+            RequestedLabReportsPanel.Visible = false;
+
         }
     }
     public void PopulateDepartmentsByMedicalField(int medicalFieldID)

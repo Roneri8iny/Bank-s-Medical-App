@@ -149,19 +149,19 @@ public class Class_Appointments
 
             var query = (from x in db.Appointments
                          where x.EmployeeID == empID
-                         &&
-                         x.ApStatus == (int)ApplicationStatuses.DONE
                          select new
                          {
                              AppointmentID = x.AppointmentID,
                              //SlotID = x.SlotID.Value,
                              DoctorName = x.Timetable.Doctor.DoctorName,
                              DepartmentName = x.Timetable.Doctor.Department.DepartmentName,
-                             ApStatus = "Attended",
+                             ApStatus = x.ApStatus == (int)Class_Appointments.ApplicationStatuses.DONE ? "Attended" :
+                             x.ApStatus == (int)Class_Appointments.ApplicationStatuses.PENDING ? "Soon..." :
+                             x.ApStatus == (int)Class_Appointments.ApplicationStatuses.CANCELED ? "Cancelled" : "Unknown",
                              Diagnosis = x.Diagnosis,
                              //SLDStart = x.SLDStart,
                              //SLDEndd = x.SLDEndd,
-                             sickLeaveCount = (Convert.ToDateTime(x.SLDEndd.HasValue ? x.SLDEndd.Value : DateTime.Today) - Convert.ToDateTime(x.SLDStart.HasValue ? x.SLDStart.Value : DateTime.Today)).Days
+                             sickLeaveCount = (Convert.ToDateTime(x.SLDEnd.HasValue ? x.SLDEnd.Value : DateTime.Today) - Convert.ToDateTime(x.SLDStart.HasValue ? x.SLDStart.Value : DateTime.Today)).Days
                          }).ToList();
 
 
@@ -196,8 +196,11 @@ public class Class_Appointments
         try
         {
 
+
             var query = (from x in db.LabReports
                          where appointmentID == x.AppointmentID
+                         &&
+                         x.Appointment.ApStatus == (int)ApplicationStatuses.DONE
                          select new
                          {
                              ReportDate = Convert.ToDateTime(x.ReportDate),
@@ -354,7 +357,7 @@ public class Class_Appointments
         , string _labName = "")
     {
         Appointment obj_Appointment = new Appointment();
-        obj_Appointment.AppointmentDtae = _appDate;
+        obj_Appointment.AppointmentDate = _appDate;
         obj_Appointment.ApStatus = (int)ApplicationStatuses.PENDING;
         obj_Appointment.EmployeeID = _empId;
         obj_Appointment.SlotID = _slotId;
@@ -485,6 +488,8 @@ public class Class_Appointments
         {
             var query = (from x in db.Prescriptions
                          where empId == x.Appointment.EmployeeID
+                         &&
+                         x.Appointment.ApStatus == (int)ApplicationStatuses.DONE
                          select new
                          {
                              PrescriptionID = x.PrescriptionID,

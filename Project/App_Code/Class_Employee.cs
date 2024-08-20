@@ -10,7 +10,6 @@ using System.Web.UI.WebControls;
 public class Class_Employee
 {
     DataClasses_MedicalAppDataContext db = new DataClasses_MedicalAppDataContext();
-
 	public Class_Employee()
 	{
 		//
@@ -22,7 +21,7 @@ public class Class_Employee
         try
         {
             // Query to get all Medical Fields (MFNames)
-            var medicalFields = db.MedicalFields.Select(mf => mf.MFName).ToList();
+            var medicalFields = db.MedicalFields.Where(mf => mf.MFType != "Pharmacy").Select(mf => mf.MFName).ToList();
             return medicalFields;
         }
         catch (Exception ex)
@@ -151,7 +150,7 @@ public class Class_Employee
                               {
                                   DoctorName = app.Timetable.Doctor.DoctorName,
                                   //Date has time in it
-                                  AppointmentDay = app.AppointmentDtae,
+                                  AppointmentDay = app.AppointmentDate,
                                   Diagnosis = app.Diagnosis,
                                   LabReportDetails = string.Join(", ", db.LabReports
                                     .Where(lab => lab.AppointmentID == app.AppointmentID)
@@ -174,21 +173,22 @@ public class Class_Employee
         {
             var monPres = (from app in db.Appointments
                            where app.EmployeeID == EmployeeID
+                           && app.ApStatus == (int)Class_Appointments.ApplicationStatuses.DONE
                            select new
                            {
                                ApDepartment = app.Timetable.Doctor.Department.DepartmentName,
-                               ApDate = app.AppointmentDtae, // Corrected field name
+                               ApDate = app.AppointmentDate, 
                                DoctorName = app.Timetable.Doctor.DoctorName,
                                LastRenewalDate = db.Prescriptions
                                    .Where(pre => pre.AppointmentID == app.AppointmentID)
                                    .Select(pre => pre.SupplyDate)
                                    .FirstOrDefault(),
                                PreID = db.Prescriptions
-                                      .Where(pre => pre.AppointmentID == app.AppointmentID)
+                                      .Where(pre => pre.AppointmentID == app.AppointmentID && pre.Monthly == true)
                                       .Select(pre => (int?)pre.PrescriptionID)
                                       .FirstOrDefault(),
                                Medicines = db.PrescriptionsDetails
-                                   .Where(pd => pd.Prescription.AppointmentID == app.AppointmentID)
+                                   .Where(pd => pd.Prescription.AppointmentID == app.AppointmentID && pd.Prescription.Monthly == true)
                                    .Select(pd => new
                                    {
                                        Medicine = pd.Medicine.MedicineName,
