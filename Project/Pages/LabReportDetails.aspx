@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/Employee.master" AutoEventWireup="true" CodeFile="LabReportDetails.aspx.cs" Inherits="Pages_LabReportDetails" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/DoctorMaster.master" AutoEventWireup="true" CodeFile="LabReportDetails.aspx.cs" Inherits="Pages_LabReportDetails" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <title>Lab Report Details</title>
@@ -12,7 +12,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Previous Prescriptions</h4>
+                        <h4 class="card-title">Previous Lab Reports</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body">

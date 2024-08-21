@@ -44,10 +44,12 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
                         Response.Redirect("EmployeeHomePage.aspx");
                         break;
                     case "Doctor":
+                        Session["DoctorAccount"] = account;
                         Response.Redirect("DoctorHomePage.aspx");
                         break;
                     case "Lab Doctor":
-                        Response.Redirect("LabDoctorHomePage.aspx");
+                        Session["LabDoctorAccount"] = account;
+                        Response.Redirect("AnalysisDocHomePage.aspx");
                         break;
                     case "Middle Man":
                         Response.Redirect("MiddleManHomePage.aspx");
