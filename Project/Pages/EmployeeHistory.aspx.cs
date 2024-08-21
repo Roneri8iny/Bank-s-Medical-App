@@ -66,6 +66,7 @@ public partial class Pages_EmployeeHistory : System.Web.UI.Page
         RepeaterItem item = (RepeaterItem)btn.NamingContainer;
         Label lbl_success = (Label)item.FindControl("lbl_success");
         HtmlGenericControl success_div = (HtmlGenericControl)item.FindControl("success_div");
+        Label lbl_status = (Label)item.FindControl("lbl_status");
         lbl_success.Text = "Appointment Cancelled";
         success_div.Visible = true;
 
@@ -73,6 +74,8 @@ public partial class Pages_EmployeeHistory : System.Web.UI.Page
         if (int.TryParse(btn.CommandArgument, out appointmentID))
         {
             appointmentsInfo.CancelAppointment(appointmentID);
+            lbl_status.Text = "Appointment Status: Cancelled";
+
         }
         btn.Visible = false; 
     }

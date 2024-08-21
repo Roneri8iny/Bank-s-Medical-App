@@ -162,7 +162,7 @@ INSERT INTO Prescriptions(AppointmentID, RenewalStatus , Monthly , SupplyDate)
 VALUES (5, 0 , 1 , '2024-08-19');
 
 INSERT INTO Prescriptions(AppointmentID, RenewalStatus , Monthly , SupplyDate)
-VALUES (2, 0 , 0 , '2024-08-13');
+VALUES (2, 0 , 1 , '2024-08-13');
 
 INSERT INTO Prescriptions(AppointmentID, RenewalStatus , Monthly , SupplyDate)
 VALUES (6, 0 , 1 , '2024-08-18');

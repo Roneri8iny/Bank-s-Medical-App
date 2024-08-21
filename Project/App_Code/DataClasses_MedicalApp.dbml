@@ -25,6 +25,7 @@
       <Column Name="TTDay" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="StartTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
       <Column Name="EndTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="MFID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Timetable_Appointment" Member="Appointments" ThisKey="SlotID" OtherKey="SlotID" Type="Appointment" />
       <Association Name="Doctor_Timetable" Member="Doctor" ThisKey="DoctorID" OtherKey="DoctorID" Type="Doctor" IsForeignKey="true" />
     </Type>

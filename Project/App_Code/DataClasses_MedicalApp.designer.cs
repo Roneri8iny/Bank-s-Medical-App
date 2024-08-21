@@ -665,6 +665,8 @@ public partial class Timetable : INotifyPropertyChanging, INotifyPropertyChanged
 	
 	private System.TimeSpan _EndTime;
 	
+	private int _MFID;
+	
 	private EntitySet<Appointment> _Appointments;
 	
 	private EntityRef<Doctor> _Doctor;
@@ -683,6 +685,8 @@ public partial class Timetable : INotifyPropertyChanging, INotifyPropertyChanged
     partial void OnStartTimeChanged();
     partial void OnEndTimeChanging(System.TimeSpan value);
     partial void OnEndTimeChanged();
+    partial void OnMFIDChanging(int value);
+    partial void OnMFIDChanged();
     #endregion
 	
 	public Timetable()
@@ -792,6 +796,26 @@ public partial class Timetable : INotifyPropertyChanging, INotifyPropertyChanged
 				this._EndTime = value;
 				this.SendPropertyChanged("EndTime");
 				this.OnEndTimeChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MFID", DbType="Int NOT NULL")]
+	public int MFID
+	{
+		get
+		{
+			return this._MFID;
+		}
+		set
+		{
+			if ((this._MFID != value))
+			{
+				this.OnMFIDChanging(value);
+				this.SendPropertyChanging();
+				this._MFID = value;
+				this.SendPropertyChanged("MFID");
+				this.OnMFIDChanged();
 			}
 		}
 	}
