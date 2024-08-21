@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MedicalFieldLogin.master" AutoEventWireup="true" CodeFile="MedicalFieldLoginPage.aspx.cs" Inherits="Pages_MedicalFieldLoginPage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MedicalFieldLogin.master" AutoEventWireup="true" CodeFile="LoginPage.aspx.cs" Inherits="Pages_LoginPage" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <!-- Additional content for the head section can go here -->

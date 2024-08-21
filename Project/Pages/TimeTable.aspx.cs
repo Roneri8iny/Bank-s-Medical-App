@@ -1,15 +1,14 @@
-﻿using System;
-using System.Data;
+﻿using System.Configuration;
 using System.Data.SqlClient;
-using System.Web.UI;
-using System.Configuration;
-using System.Web.Services;
-using System.Web.UI.WebControls;
+using System.Data;
 using System.Linq;
+using System.Web.UI.WebControls;
+using System.Web.UI;
+using System;
 
 public partial class Pages_TimeTable : System.Web.UI.Page
 {
-    public string connectionString; // Variable to store the connection string for the database
+    public string connectionString;
     NewAccountDataClassesDataContext db = new NewAccountDataClassesDataContext("");
 
     protected void Page_Load(object sender, EventArgs e)
@@ -17,150 +16,208 @@ public partial class Pages_TimeTable : System.Web.UI.Page
         connectionString = ConfigurationManager.ConnectionStrings["Bank_Medical_DBConnectionString"].ConnectionString;
         if (!IsPostBack)
         {
-            BindTimeTableGrid(); // Bind the data to the grid on initial page load
+            BindTimeTableGrid();
         }
     }
 
     private void BindTimeTableGrid()
     {
-        DataTable dt = GetTimeTableData(); // Retrieve the time table data
-        timeTableGrid.DataSource = dt; // Set the data source of the grid
-        timeTableGrid.DataBind(); // Bind the data to the grid
+        try
+        {
+            DataTable dt = GetTimeTableData();
+            timeTableGrid.DataSource = dt;
+            timeTableGrid.DataBind();
+        }
+        catch (Exception)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('An error occurred while loading the timetable.');", true);
+        }
     }
 
     private DataTable GetTimeTableData()
     {
-        DataTable dt = new DataTable(); // Create a DataTable to hold the query results
-        int mfid = GetMedicalFieldID(); // Retrieve the MFID from the session
+        DataTable dt = new DataTable();
+        int mfid = GetMedicalFieldID();
 
         string query = @"
             SELECT SlotID, TimeTable.DoctorID, Doctor.DoctorName, TTDay, StartTime, EndTime
             FROM TimeTable
             INNER JOIN Doctor ON Doctor.DoctorID = TimeTable.DoctorID
-            WHERE Doctor.MFID = @MFID"; // SQL query to get time table data and doctor names filtered by MFID
+            WHERE Doctor.MFID = @MFID";
 
-        using (SqlConnection conn = new SqlConnection(connectionString)) // Create a new SQL connection using the connection string
+        using (SqlConnection conn = new SqlConnection(connectionString))
         {
-            using (SqlCommand cmd = new SqlCommand(query, conn)) // Create a SQL command with the query and connection
+            using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                cmd.Parameters.AddWithValue("@MFID", mfid); // Add MFID as a parameter
+                cmd.Parameters.AddWithValue("@MFID", mfid);
 
-                using (SqlDataAdapter da = new SqlDataAdapter(cmd)) // Create a data adapter to fill the DataTable
+                try
                 {
-                    da.Fill(dt); // Fill the DataTable with data from the database
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(dt);
+                    }
+                }
+                catch (Exception)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('An error occurred while retrieving the timetable data.');", true);
                 }
             }
         }
 
-        return dt; // Return the populated DataTable
+        return dt;
     }
 
     private int GetMedicalFieldID()
     {
-        // Retrieve the MFID from the session
         MedicalField obj_MedicalField = (MedicalField)Session["MedicalFieldAccount"];
-
+        if (obj_MedicalField != null)
+        {
             return obj_MedicalField.MFID;
+        }
+        else
+        {
+            return 0;
+        }
     }
+
 
     private static int GetDoctorID(string doctorName)
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["Bank_Medical_DBConnectionString"].ConnectionString; // Retrieve connection string
-        int doctorID = 0; // Default value for DoctorID
+        string connectionString = ConfigurationManager.ConnectionStrings["Bank_Medical_DBConnectionString"].ConnectionString;
+        int doctorID = 0;
 
-        using (SqlConnection conn = new SqlConnection(connectionString)) // Create a new SQL connection
+        using (SqlConnection conn = new SqlConnection(connectionString))
         {
-            string query = "SELECT DoctorID FROM Doctor WHERE Username = @DoctorName"; // SQL query to get DoctorID for a given doctor name
+            string query = "SELECT DoctorID FROM Doctor WHERE Username = @DoctorName";
 
-            using (SqlCommand cmd = new SqlCommand(query, conn)) // Create a SQL command with the query and connection
+            using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                cmd.Parameters.AddWithValue("@DoctorName", doctorName); // Add parameter for doctor name
-                conn.Open(); // Open the SQL connection
-                object result = cmd.ExecuteScalar(); // Execute the query and get the result
-                if (result != null) // Check if result is not null
+                cmd.Parameters.AddWithValue("@DoctorName", doctorName);
+
+                try
                 {
-                    int.TryParse(result.ToString(), out doctorID); // Convert result to integer
+                    conn.Open();
+                    object result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        int.TryParse(result.ToString(), out doctorID);
+                    }
+                }
+                catch (Exception)
+                {
+                    // Handle or log the error appropriately
                 }
             }
         }
 
-        return doctorID; // Return the DoctorID
+        return doctorID;
     }
 
     private static bool IsTimeSlotExisting(int doctorId, string day, TimeSpan startTime, TimeSpan endTime, string connectionString)
     {
-        using (SqlConnection conn = new SqlConnection(connectionString)) // Create a new SQL connection
+        try
         {
-            string query = @"
-                SELECT COUNT(*)
-                FROM TimeTable
-                WHERE DoctorID = @DoctorID
-                  AND TTDay = @TTDay    
-                  AND StartTime = @StartTime
-                  AND EndTime = @EndTime"; // SQL query to check if the time slot already exists
-
-            using (SqlCommand cmd = new SqlCommand(query, conn)) // Create a SQL command with the query and connection
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                // Add parameters to prevent SQL injection
-                cmd.Parameters.AddWithValue("@DoctorID", doctorId);
-                cmd.Parameters.AddWithValue("@TTDay", day);
-                cmd.Parameters.AddWithValue("@StartTime", startTime);
-                cmd.Parameters.AddWithValue("@EndTime", endTime);
+                string query = @"
+                    SELECT COUNT(*)
+                    FROM TimeTable
+                    WHERE DoctorID = @DoctorID
+                      AND TTDay = @TTDay
+                      AND StartTime = @StartTime
+                      AND EndTime = @EndTime";
 
-                conn.Open(); // Open the SQL connection
-                int count = (int)cmd.ExecuteScalar(); // Execute the query and get the count of existing slots
-                return count > 0; // Return true if the slot exists
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@DoctorID", doctorId);
+                    cmd.Parameters.AddWithValue("@TTDay", day);
+                    cmd.Parameters.AddWithValue("@StartTime", startTime);
+                    cmd.Parameters.AddWithValue("@EndTime", endTime);
+
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
+                }
             }
+        }
+        catch (Exception)
+        {
+            // Handle or log the error appropriately
+            return false;
         }
     }
 
     protected void deleteRow_Click(object sender, EventArgs e)
     {
-        GridViewRow row = (GridViewRow)(sender as Control).Parent.Parent;
-        int ID = row.RowIndex;
-        int Final = int.Parse(timeTableGrid.DataKeys[ID].Value.ToString());
-
-        var Time = db.Timetables.SingleOrDefault(d => d.SlotID == Final);
-
-        if (Time != null)
+        try
         {
-            try
+            GridViewRow row = (GridViewRow)(sender as Control).Parent.Parent;
+            int ID = row.RowIndex;
+            int Final = int.Parse(timeTableGrid.DataKeys[ID].Value.ToString());
+
+            var Time = db.Timetables.SingleOrDefault(d => d.SlotID == Final);
+
+            if (Time != null)
             {
                 db.Timetables.DeleteOnSubmit(Time);
                 db.SubmitChanges();
-
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Time slot deleted successfully.');", true);
             }
-            catch (Exception ex)
+            else
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('An error occurred while deleting the time slot.');", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Time slot not found.');", true);
             }
         }
-        else
+        catch (Exception)
         {
-            ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Time slot not found.');", true);
+            ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('An error occurred while deleting the time slot.');", true);
         }
-        BindTimeTableGrid();
+        finally
+        {
+            BindTimeTableGrid();
+        }
     }
 
     protected void addRow_Click(object sender, EventArgs e)
     {
-        bool check = IsTimeSlotExisting(GetDoctorID(txt_doctorName.Text.Trim()), ddl_days.SelectedValue, TimeSpan.Parse(txt_startTime.Text.ToString()), TimeSpan.Parse(txt_endTime.Text.ToString()), connectionString);
-
-        if (!check)
+        try
         {
-            Timetable Time = new Timetable
+            int doctorID = GetDoctorID(txt_doctorName.Text.Trim());
+            if (doctorID == 0)
             {
-                DoctorID = GetDoctorID(txt_doctorName.Text.Trim()),
-                TTDay = ddl_days.SelectedValue,
-                StartTime = TimeSpan.Parse(txt_startTime.Text.ToString()),
-                EndTime = TimeSpan.Parse(txt_endTime.Text.ToString()),
-                // Ensure MFID is correctly associated
-                MFID = GetMedicalFieldID()
-            };
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Doctor not found.');", true);
+                return;
+            }
 
-            db.Timetables.InsertOnSubmit(Time);
-            db.SubmitChanges();
+            bool check = IsTimeSlotExisting(doctorID, ddl_days.SelectedValue, TimeSpan.Parse(txt_startTime.Text), TimeSpan.Parse(txt_endTime.Text), connectionString);
+
+            if (!check)
+            {
+                Timetable Time = new Timetable
+                {
+                    DoctorID = doctorID,
+                    TTDay = ddl_days.SelectedValue,
+                    StartTime = TimeSpan.Parse(txt_startTime.Text),
+                    EndTime = TimeSpan.Parse(txt_endTime.Text),
+                    MFID = GetMedicalFieldID()
+                };
+
+                db.Timetables.InsertOnSubmit(Time);
+                db.SubmitChanges();
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Time slot added successfully.');", true);
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Time slot already exists.');", true);
+            }
+        }
+        catch (Exception)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('An error occurred while adding the time slot.');", true);
+        }
+        finally
+        {
             BindTimeTableGrid();
         }
     }

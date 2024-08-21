@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Pages_MedicalFieldLoginPage : System.Web.UI.Page
+public partial class Pages_LoginPage : System.Web.UI.Page
 {
     Class_Login obj_login = new Class_Login(); // Ensure LoginData is properly referenced
     NewAccountDataClassesDataContext db = new NewAccountDataClassesDataContext("");
@@ -59,7 +59,7 @@ public partial class Pages_MedicalFieldLoginPage : System.Web.UI.Page
                         break;
                     case "Finance":
                         Session["FinanceAccount"] = account;
-                        Response.Redirect("FinanceHomePage.aspx");
+                        Response.Redirect("Finance_home.aspx");
                         break;
                     default:
                         DisplayError("Unknown account type");

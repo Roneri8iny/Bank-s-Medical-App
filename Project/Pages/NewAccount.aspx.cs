@@ -68,18 +68,18 @@ public partial class Pages_NewAccount : System.Web.UI.Page
                 db.SubmitChanges();
 
                 // Show success message using Toastify
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "Toastify({ text: 'Doctor added successfully!', duration: 3000 }).showToast();", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Doctor Add successfully.');", true);
             }
             else
             {
                 // Show error message if MFID is not found
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "Toastify({ text: 'Error: Unable to retrieve Medical Field ID.', duration: 3000, backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)' }).showToast();", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Error: Unable to retrieve Medical Field ID.');", true);
             }
         }
         catch (Exception ex)
         {
             // Show error message using Toastify
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "toast", "Toastify({ text: 'Error adding doctor. Please try again.', duration: 3000, backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)' }).showToast();", true);
+            ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Error adding doctor. Please try again.');", true);
         }
     }
 

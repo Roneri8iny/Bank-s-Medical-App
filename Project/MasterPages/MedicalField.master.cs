@@ -21,7 +21,7 @@ public partial class MasterPages_MedicalField : System.Web.UI.MasterPage
         System.Web.Security.FormsAuthentication.SignOut();
 
         // Redirect to the login page
-        Response.Redirect("MedicalFieldLoginPage.aspx");
+        Response.Redirect("LoginPage.aspx");
     }
 
 }

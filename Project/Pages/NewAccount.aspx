@@ -25,9 +25,9 @@
                                 <!-- Doctor Name Field -->
                                 <div class="col-12">
                                     <div class="form-group has-icon-left">
-                                        <label for="doctor-name">Doctor Name</label>
+                                        <label for="doctor-name">Doctor Name:</label>
                                         <div class="position-relative">
-                                            <asp:TextBox runat="server" CssClass="form-control" Placeholder="Doctor Name" ID="txt_doctor_name" MaxLength="20" />
+                                            <asp:TextBox runat="server" CssClass="form-control" Placeholder="Doctor Name" ID="txt_doctor_name" MaxLength="20" MinLenght="5" />
                                             <div class="form-control-icon">
                                                 <i class="bi bi-person"></i>
                                             </div>
@@ -41,7 +41,7 @@
                                 <!-- Price Field -->
                                 <div class="col-12">
                                     <div class="form-group has-icon-left">
-                                        <label for="price">Price</label>
+                                        <label for="price">Price:</label>
                                         <div class="position-relative">
                                             <asp:TextBox runat="server" CssClass="form-control" Placeholder="Price" ID="txt_price" TextMode="SingleLine" />
                                             <div class="form-control-icon">
@@ -57,7 +57,7 @@
                                 <!-- Mobile Number Field -->
                                 <div class="col-12">
                                     <div class="form-group has-icon-left">
-                                        <label for="mobile">Mobile Number</label>
+                                        <label for="mobile">Mobile Number:</label>
                                         <div class="position-relative">
                                             <asp:TextBox runat="server" CssClass="form-control" Placeholder="Mobile Number" ID="txt_mobile" />
                                             <div class="form-control-icon">
@@ -73,7 +73,7 @@
                                 <!-- Username Field -->
                                 <div class="col-12">
                                     <div class="form-group has-icon-left">
-                                        <label for="username">Username</label>
+                                        <label for="username">Username:</label>
                                         <div class="position-relative">
                                             <asp:TextBox runat="server" CssClass="form-control" Placeholder="Username" ID="username" />
                                             <div class="form-control-icon">
@@ -89,7 +89,7 @@
                                 <!-- Password Field -->
                                 <div class="col-12">
                                     <div class="form-group has-icon-left">
-                                        <label for="password">Password</label>
+                                        <label for="password">Password (8 characters minimum):</label>
                                         <div class="position-relative">
                                             <asp:TextBox runat="server" CssClass="form-control" Placeholder="Password" ID="password" TextMode="Password" />
                                             <div class="form-control-icon">
@@ -161,47 +161,20 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="Script" runat="Server">
     <!-- Include SweetAlert and Toastify scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
     <script>
-        function showSuccessToast(message) {
-            Toastify({
-                text: message,
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "#4fbe87",
-            }).showToast();
-        }
+            (function () {
+                'use strict'
+        var form = document.querySelector('.needs-validation')
 
-        function showErrorToast(message) {
-            Toastify({
-                text: message,
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "#e74c3c",
-            }).showToast();
-        }
+            form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
 
-        // Form validation script
-        (function () {
-            'use strict'
-            var forms = document.querySelectorAll('.needs-validation')
-
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
+            form.classList.add('was-validated')
+        }, false)
+    })()
     </script>
 </asp:Content>
 

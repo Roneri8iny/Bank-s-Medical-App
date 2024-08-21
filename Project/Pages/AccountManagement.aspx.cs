@@ -19,7 +19,10 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
     {
         try
         {
+            // Fetch departments from the database
             var departments = db.Departments.ToList();
+
+            // Bind departments to the dropdown list
             ddlDepartments.DataSource = departments;
             ddlDepartments.DataTextField = "DepartmentName";
             ddlDepartments.DataValueField = "DepartmentID";
@@ -33,10 +36,21 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
         }
     }
 
+    private int GetMedicalFieldID()
+    {
+        // Retrieve the MFID from the session
+        MedicalField obj_MedicalField = (MedicalField)Session["MedicalFieldAccount"];
+
+        return obj_MedicalField.MFID;
+    }
+
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         string username = txtSearchUsername.Text.Trim();
-        var doctor = db.Doctors.SingleOrDefault(d => d.Username == username);
+        int mfid = GetMedicalFieldID(); // Use the function to get the MFID
+
+        // Query the database for the doctor based on username and MFID
+        var doctor = db.Doctors.FirstOrDefault(d => d.Username == username && d.MFID == mfid);
 
         if (doctor != null)
         {
@@ -57,7 +71,7 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
         string username = txtUsername.Text.Trim();
-        var doctor = db.Doctors.SingleOrDefault(d => d.Username == username);
+        var doctor = db.Doctors.FirstOrDefault(d => d.Username == username);
 
         if (doctor != null)
         {
@@ -75,6 +89,7 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
 
                 if (doctor.DoctorName != txtDoctorName.Text)
                     doctor.DoctorName = txtDoctorName.Text;
+
                 // Price
                 decimal price;
                 if (decimal.TryParse(txtPrice.Text, out price) && doctor.Price != price)
@@ -86,6 +101,7 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
                     ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Please enter a valid price.');", true);
                     return;
                 }
+
                 // Mobile
                 long mobile;
                 if (long.TryParse(txtMobile.Text, out mobile) && doctor.Mobile != mobile)
@@ -97,12 +113,15 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
                     ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Please enter a valid mobile number.');", true);
                     return;
                 }
+
                 // Position
                 if (doctor.Position != ddlPosition.SelectedItem.Text)
                     doctor.Position = ddlPosition.SelectedItem.Text;
+
                 // Department
                 if (doctor.DepartmentID != Convert.ToInt32(ddlDepartments.SelectedValue))
                     doctor.DepartmentID = Convert.ToInt32(ddlDepartments.SelectedValue);
+
                 // Password
                 if (!string.IsNullOrEmpty(txtPassword.Text))
                 {
@@ -124,6 +143,7 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
         }
     }
 
+
     protected void btnDelete_Click(object sender, EventArgs e)
     {
         string username = txtUsername.Text.Trim();
@@ -133,7 +153,7 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
         {
             try
             {
-                db.Doctors.DeleteOnSubmit(doctor);  
+                db.Doctors.DeleteOnSubmit(doctor);
                 db.SubmitChanges();
 
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Doctor deleted successfully.');", true);
