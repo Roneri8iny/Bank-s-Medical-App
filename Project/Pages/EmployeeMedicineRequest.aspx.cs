@@ -40,6 +40,8 @@ public partial class Pages_MedicineRequest : System.Web.UI.Page
                     lbl_success.Text = "Prescription Renewal Requested";
                     HtmlGenericControl success_div = (HtmlGenericControl)e.Item.FindControl("success_div");
                     success_div.Visible = true;
+                    LinkButton btn = (LinkButton)e.Item.FindControl("RenewButton");
+                    btn.Visible = false;
                 }
                 else
                 {

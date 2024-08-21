@@ -1,10 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/Employee.master" AutoEventWireup="true" CodeFile="EmployeeHistory.aspx.cs" Inherits="Pages_EmployeeHistory" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <title>Employee Medical History</title>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="PageHeader" Runat="Server">
-    
+<asp:Content ID="Content2" ContentPlaceHolderID="PageHeader" runat="Server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Body" runat="Server">
     <section id="multiple-column-form">
@@ -27,6 +26,17 @@
                                             <asp:Label ID="lbl_status" runat="server" Text='<%# Eval("ApStatus", "Appointment Status: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
                                             <asp:Label ID="lbl_diagnosis" runat="server" Text='<%# Eval("Diagnosis", "Diagnosis: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
                                             <asp:Label ID="lbl_sickLeaves" runat="server" Text='<%# Eval("sickLeaveCount", "Sick Leave Days: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
+
+                                            <div class="d-flex w-100 justify-content-end">
+                                                <asp:Button ID="CancelButton" OnClick="Cancel_Click" runat="server" Text="Cancel"
+                                                    Visible='<%# Convert.ToBoolean(Eval("IsCancelable")) %>'
+                                                    CommandArgument='<%# Eval("AppointmentID") %>'
+                                                    CssClass="btn btn-primary rounded-pill" />
+                                            </div>
+                                            <div class="alert alert-success" runat="server" id="success_div" visible="false">
+                                                                <asp:Label ID="lbl_success" runat="server"></asp:Label>
+                                                            </div>
+                                                                    
                                         </span>
                                     </ItemTemplate>
                                 </asp:Repeater>
@@ -49,7 +59,7 @@
                                             <div class="buttons">
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CommandName="ViewDetails" CommandArgument='<%# Eval("ReportID") %>' Text="View Details" CssClass="btn btn-primary rounded-pill" />
                                             </div>
-                                            
+
 
                                         </span>
                                     </ItemTemplate>
@@ -87,5 +97,5 @@
         </div>
     </section>
 </asp:Content>
-<asp:Content ID="Content4" ContentPlaceHolderID="Script" Runat="Server">
+<asp:Content ID="Content4" ContentPlaceHolderID="Script" runat="Server">
 </asp:Content>

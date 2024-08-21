@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
+
 
 public partial class Pages_EmployeeHistory : System.Web.UI.Page
 {
@@ -23,15 +25,11 @@ public partial class Pages_EmployeeHistory : System.Web.UI.Page
 
         int empID = EmpAccount.EmployeeID;
 
-        //List<Class_PastAppointments> employeePastAppointments = appointmentsInfo.getPastAppointments(empID);
         List<int> PastAppointmentsIDs = new List<int>();
-        appointmentsInfo.getPastAppointments(rpt_pastAppointments, empID, ref PastAppointmentsIDs);
-        //foreach (var appointmentID in PastAppointmentsIDs)
-        //{
-            appointmentsInfo.getPastLabReports(TestRepeater, empID);
-            appointmentsInfo.getPastPrescriptionsByEmp(PrescriptionRepeater, empID);
-        //}
+        appointmentsInfo.getPastAppointmentsforEmp(rpt_pastAppointments, empID, ref PastAppointmentsIDs);
 
+        appointmentsInfo.getPastLabReportsforEmp(TestRepeater, empID);
+        appointmentsInfo.getPastPrescriptionsByEmp(PrescriptionRepeater, empID);
 
     }
 
@@ -62,4 +60,22 @@ public partial class Pages_EmployeeHistory : System.Web.UI.Page
 
         }
     }
+    public void Cancel_Click(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        RepeaterItem item = (RepeaterItem)btn.NamingContainer;
+        Label lbl_success = (Label)item.FindControl("lbl_success");
+        HtmlGenericControl success_div = (HtmlGenericControl)item.FindControl("success_div");
+        lbl_success.Text = "Appointment Cancelled";
+        success_div.Visible = true;
+
+        int appointmentID;
+        if (int.TryParse(btn.CommandArgument, out appointmentID))
+        {
+            appointmentsInfo.CancelAppointment(appointmentID);
+        }
+        btn.Visible = false; 
+    }
+
+
 }

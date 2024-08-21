@@ -122,7 +122,6 @@ public class Class_Appointments
             throw ex;
         }
     }
-    
 
     //public List<Class_PastAppointments> getPastAppointments(int empID)
     public void getPastAppointments(Repeater rpt, int empID, ref List<int> PastAppointmentsIDs)
@@ -149,15 +148,15 @@ public class Class_Appointments
 
             var query = (from x in db.Appointments
                          where x.EmployeeID == empID
+                         &&
+                         x.ApStatus == (int)ApplicationStatuses.DONE
                          select new
                          {
                              AppointmentID = x.AppointmentID,
                              //SlotID = x.SlotID.Value,
                              DoctorName = x.Timetable.Doctor.DoctorName,
                              DepartmentName = x.Timetable.Doctor.Department.DepartmentName,
-                             ApStatus = x.ApStatus == (int)Class_Appointments.ApplicationStatuses.DONE ? "Attended" :
-                             x.ApStatus == (int)Class_Appointments.ApplicationStatuses.PENDING ? "Soon..." :
-                             x.ApStatus == (int)Class_Appointments.ApplicationStatuses.CANCELED ? "Cancelled" : "Unknown",
+                             ApStatus = "Attended",
                              Diagnosis = x.Diagnosis,
                              //SLDStart = x.SLDStart,
                              //SLDEndd = x.SLDEndd,
@@ -169,16 +168,6 @@ public class Class_Appointments
             {
                 PastAppointmentsIDs.Add(row.AppointmentID);
             }
-            //if (query != null)
-            //{
-            //    //return query;
-
-            //}
-            //else
-            //{
-            //    return null;
-
-            //}
             rpt.DataSource = query;
             rpt.DataBind();
 
@@ -190,17 +179,15 @@ public class Class_Appointments
         }
     }
 
+
     public void getPastLabReports(Repeater rpt, int appointmentID)
     {
 
         try
         {
 
-
             var query = (from x in db.LabReports
                          where appointmentID == x.AppointmentID
-                         &&
-                         x.Appointment.ApStatus == (int)ApplicationStatuses.DONE
                          select new
                          {
                              ReportDate = Convert.ToDateTime(x.ReportDate),
@@ -220,6 +207,7 @@ public class Class_Appointments
             throw ex;
         }
     }
+
     public Appointment getAppointmentByID(int appointmentID)
     {
         try
@@ -443,41 +431,57 @@ public class Class_Appointments
             throw ex;
         }
     }
-    ////Past Appointments for Employee Account
-    //public void getPastAppointmentsEmpAccount(Repeater rpt, int empID, ref List<int> PastAppointmentsIDs)
-    //{
+    public void getPastAppointmentsforEmp(Repeater rpt, int empID, ref List<int> PastAppointmentsIDs)
+    {
 
-    //    try
-    //    {
-    //        var query = (from x in db.Appointments
-    //                     where x.EmployeeID == empID
-    //                     &&
-    //                     x.ApStatus == (int)ApplicationStatuses.DONE
-    //                     select new
-    //                     {
-    //                         AppointmentID = x.AppointmentID,
-    //                         DoctorName = x.Timetable.Doctor.DoctorName,
-    //                         DepartmentName = x.Timetable.Doctor.Department.DepartmentName,
-    //                         ApStatus = x.ApStatus,
-    //                         Diagnosis = x.Diagnosis,
-    //                         sickLeaveCount = (Convert.ToDateTime(x.SLDEndd.HasValue ? x.SLDEndd.Value : DateTime.Today) - Convert.ToDateTime(x.SLDStart.HasValue ? x.SLDStart.Value : DateTime.Today)).Days
-    //                     }).ToList();
+        try
+        {
+
+            var query = (from x in db.Appointments
+                         where x.EmployeeID == empID
+                         select new
+                         {
+                             AppointmentID = x.AppointmentID,
+                             DoctorName = x.Timetable.Doctor.DoctorName,
+                             DepartmentName = x.Timetable.Doctor.Department.DepartmentName,
+                             ApStatus = x.ApStatus == (int)Class_Appointments.ApplicationStatuses.DONE ? "Attended" :
+                                        x.ApStatus == (int)Class_Appointments.ApplicationStatuses.PENDING ? "Soon..." :
+                                        x.ApStatus == (int)Class_Appointments.ApplicationStatuses.CANCELED ? "Cancelled" : "Unknown",
+                             Diagnosis = x.Diagnosis,
+                             sickLeaveCount = (Convert.ToDateTime(x.SLDEnd.HasValue ? x.SLDEnd.Value : DateTime.Today) - Convert.ToDateTime(x.SLDStart.HasValue ? x.SLDStart.Value : DateTime.Today)).Days,
+                             IsCancelable = x.ApStatus == 1
+                         }).ToList();
 
 
-    //        foreach (var row in query)
-    //        {
-    //            PastAppointmentsIDs.Add(row.AppointmentID);
-    //        }
-    //        rpt.DataSource = query;
-    //        rpt.DataBind();
+            foreach (var row in query)
+            {
+                PastAppointmentsIDs.Add(row.AppointmentID);
+            }
+            rpt.DataSource = query;
+            rpt.DataBind();
 
-    //    }
-    //    catch (Exception ex)
-    //    {
+        }
+        catch (Exception ex)
+        {
 
-    //        throw ex;
-    //    }
-    //}
+            throw ex;
+        }
+    }
+    public void CancelAppointment(int appointmentID)
+    {
+        try
+        {
+            var app = db.Appointments.Where(a => a.AppointmentID == appointmentID).FirstOrDefault();
+            app.ApStatus = (int)ApplicationStatuses.CANCELED;
+            db.SubmitChanges();
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     #endregion
 
 
@@ -509,7 +513,7 @@ public class Class_Appointments
     }
 
 
-    public void getPastLabReportsByEmp(Repeater rpt, int empId)
+    public void getPastLabReportsforEmp(Repeater rpt, int empId)
     {
 
         try
@@ -517,6 +521,8 @@ public class Class_Appointments
 
             var query = (from x in db.LabReports
                          where empId == x.Appointment.EmployeeID
+                         &&
+                         x.Appointment.ApStatus == (int)ApplicationStatuses.DONE
                          select new
                          {
                              ReportDate = Convert.ToDateTime(x.ReportDate),
