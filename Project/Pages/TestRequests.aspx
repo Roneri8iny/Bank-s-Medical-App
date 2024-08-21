@@ -39,7 +39,7 @@
                                                     <div class="buttons">
                                                         <asp:LinkButton ID="btnViewDetails" runat="server"
                                                             CommandName="ViewTestDetails"
-                                                            CommandArgument='<%# Eval("EmployeeID") %>'
+                                                            CommandArgument='<%# string.Format("{0}, {1}",Eval("EmployeeID"), Eval("ReportID")) %>'
                                                             CssClass="btn btn-primary rounded-pill">
                                                             View Details
                                                         </asp:LinkButton>

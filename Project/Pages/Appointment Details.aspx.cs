@@ -19,6 +19,7 @@ public class MedicineInfo
 public class TestInfo
 {
     public string TestName { get; set; }
+    public int TestID { get; set; }
 }
 
 public partial class Pages_Appointment_Details : System.Web.UI.Page
@@ -27,6 +28,7 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
     //private List<> prescriptionRows = new List<TableRow>();
     private List<MedicineInfo> medicines;
     private List<TestInfo> tests;
+    Class_Appointments app = new Class_Appointments();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -36,7 +38,11 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
 
             BindMedicines();
             BindTests();
-
+            int employeeId = Convert.ToInt32(Session["Employee_ID"]);
+            Employee emp = app.getEmployeeInfo(employeeId);
+            string imageUrl = string.Format("~/assets/images/samples/{0}", emp.Photo);
+            employeeImage.Src = imageUrl;
+            employeeNameLabel.InnerText = emp.EmployeeName;
             // Initialize the list of medicines
             medicines = new List<MedicineInfo>();
             ViewState["medicines"] = medicines;
@@ -74,7 +80,7 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
         
         ddlTests.DataSource = tests;
         ddlTests.DataTextField = "TestName";
-        ddlTests.DataValueField = "TestName";
+        ddlTests.DataValueField = "TestID";
         ddlTests.DataBind();
     }
     //protected void SubmitForm_Click(object sender, EventArgs e)
@@ -194,11 +200,12 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
     protected void Button4_Click(object sender, EventArgs e)
     {
         string testName = ddlTests.SelectedItem.Text;
-
+        int testId = int.Parse(ddlTests.SelectedValue);
 
         TestInfo test = new TestInfo
         {
-            TestName = testName
+            TestName = testName,
+            TestID = testId
         };
 
         // Add the new Medicine object to the list
@@ -216,36 +223,134 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
         ViewState["tests"] = tests;
     }
 
-    protected void FinishButton_Click(object sender, EventArgs e)
+    //public void FinishButton_Click(object sender, EventArgs e)
+    //{
+    //    string diagnosisText = Request.Form["Diagnosis"];
+
+    //    DateTime startDate = DateTime.Parse(TextBoxStart.Text);
+    //    DateTime endDate = DateTime.Parse(TextBoxEnd.Text);
+
+    //    //Session["Appointment_ID"]
+    //    updateAppointmentInfo(diagnosisText, startDate, endDate);
+
+    //    bool monthlyCheckBbox = monthlyCheckBox.Checked;
+
+    //    int lastPrescriptionID = db.Prescriptions.Max(t => t.PrescriptionID);
+    //    int newPrescriptionID = lastPrescriptionID++;
+    //    insertPrescription(monthlyCheckBbox, newPrescriptionID);
+
+    //    int lastReportID = db.LabReports.Max(t => t.ReportID);
+    //    int newReportID = lastReportID++;
+    //    insertLabReport(newReportID);
+
+    //    insertPrescriptionDetails(newPrescriptionID);
+    //    insertReportDetails(newReportID);
+    //}
+
+    public void updateAppointmentInfo(string diagnosis, DateTime startDate, DateTime endDate)
     {
-        string diagnosisText = Request.Form["Diagnosis"];
+        int appointmentID = Convert.ToInt32(Session["Appointment_ID"]); 
 
-        DateTime startDate = DateTime.Parse(TextBoxStart.Text);
-        DateTime endDate = DateTime.Parse(TextBoxEnd.Text);
+        var rowToUpdate = db.Appointments.FirstOrDefault(r => r.AppointmentID == appointmentID);
 
-
+        if (rowToUpdate != null)
+        {
+            rowToUpdate.Diagnosis = diagnosis;
+            rowToUpdate.SLDStart = startDate;
+            rowToUpdate.SLDEndd = endDate;
+            rowToUpdate.ApStatus = (int)Class_Appointments.ApplicationStatuses.DONE;
+            rowToUpdate.AppointmentDate = DateTime.Today;
+            db.SubmitChanges();
+        }
     }
 
-    public void insertPrescription()
+    public void insertPrescription(bool monthlyCheck, int newPrescriptionID)
     {
-        int lastPrescriptionID = db.Prescriptions.Max(t => t.PrescriptionID);
+        
         int appointmentID = Convert.ToInt32(Session["Appointment_ID"]);
 
         //Prescription newPrescription = new 
         Prescription newPrescription = new Prescription
         {
-            PrescriptionID = lastPrescriptionID++,
+            PrescriptionID = newPrescriptionID,
             AppointmentID = appointmentID,
-            //PayStatus = 
+            RenewalStatus = (int)Class_Appointments.AppointmentPayStatus.PENDING,
+            Monthly = monthlyCheck,
+            SupplyDate = null
         };
 
         // Add the new instance to the database
-        //db.TestTables.InsertOnSubmit(test);
+        db.Prescriptions.InsertOnSubmit(newPrescription);
 
         // Save the changes to the database
-        //db.SubmitChanges();
+        db.SubmitChanges();
     }
 
+    public void insertLabReport( int newReportID)
+    {
+        
+        int appointmentID = Convert.ToInt32(Session["Appointment_ID"]);
+
+        //Prescription newPrescription = new 
+        LabReport newReport = new LabReport
+        {
+            ReportID = newReportID,
+            AppointmentID = appointmentID,
+            PayStatus = (int)Class_Appointments.AppointmentPayStatus.PENDING,
+            LabName = null,
+            ReportDate = DateTime.Today
+        };
+
+        // Add the new instance to the database
+        db.LabReports.InsertOnSubmit(newReport);
+
+        // Save the changes to the database
+        db.SubmitChanges();
+    }
+
+    public void insertPrescriptionDetails(int prescriptionID)
+    {
+        // FinanceApprovalStatus -->  1 Pending 2 Accepted 3 Rejected
+        List<MedicineInfo> newDetails = (List<MedicineInfo>)ViewState["medicines"];
+        foreach (var detail in newDetails)
+        {
+            // Create a new instance of the entity class
+            PrescriptionsDetail newDetail = new PrescriptionsDetail
+            {
+                PrescriptionID = prescriptionID,
+                FinanceApprovalStatus = 1,
+                Quantity = detail.Quantity,
+                Frequency = detail.Frequency,
+                Notes = detail.Notes,
+                MedicineID = detail.MedicineID
+            };
+
+            // Add the new instance to the database
+            db.PrescriptionsDetails.InsertOnSubmit(newDetail);
+        }
+        db.SubmitChanges();
+
+    }
+
+    public void insertReportDetails(int reportID)
+    {
+        List<TestInfo> newDetails = (List<TestInfo>)ViewState["tests"];
+        foreach (var detail in newDetails)
+        {
+            // Create a new instance of the entity class
+            LabReportsDetail newDetail = new LabReportsDetail
+            {
+                ReportID = reportID,
+                FinancialApprovalStatus = 1,
+                TestID = detail.TestID,
+                ResultPDF = null
+            };
+
+            // Add the new instance to the database
+            db.LabReportsDetails.InsertOnSubmit(newDetail);
+        }
+        db.SubmitChanges();
+    }
 //    List<MyObject> myList = (List<MyObject>)ViewState["MyList"];
 
 //using (MyDataContext db = new MyDataContext())
@@ -266,4 +371,27 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
 
 //    // Save the changes to the database
 //    db.SubmitChanges();
+    protected void FinishButton_Click1(object sender, EventArgs e)
+    {
+        string diagnosisText = Diagnosis.InnerText;
+
+        DateTime startDate = DateTime.Parse(TextBoxStart.Text);
+        DateTime endDate = DateTime.Parse(TextBoxEnd.Text);
+
+        //Session["Appointment_ID"]
+        updateAppointmentInfo(diagnosisText, startDate, endDate);
+
+        bool monthlyCheckBbox = monthlyCheckBox.Checked;
+
+        int lastPrescriptionID = db.Prescriptions.Max(t => t.PrescriptionID);
+        int newPrescriptionID = lastPrescriptionID++;
+        insertPrescription(monthlyCheckBbox, newPrescriptionID);
+
+        int lastReportID = db.LabReports.Max(t => t.ReportID);
+        int newReportID = lastReportID++;
+        insertLabReport(newReportID);
+
+        insertPrescriptionDetails(newPrescriptionID);
+        insertReportDetails(newReportID);
+    }
 }

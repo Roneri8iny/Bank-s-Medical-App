@@ -5,8 +5,16 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+public class ReportEmployee
+{
+    public int EmployeeID { get; set; }
+    public string EmployeeName { get; set; }
+    public string Email { get; set; }
+    public int ReportID { get; set; }
+}
 public partial class Pages_TestRequests : System.Web.UI.Page
 {
+    DataClasses_MedicalAppDataContext db = new DataClasses_MedicalAppDataContext();
     Class_Appointments obj = new Class_Appointments();
 
     protected void Page_Load(object sender, EventArgs e)
@@ -30,17 +38,25 @@ public partial class Pages_TestRequests : System.Web.UI.Page
             listOfAppointments.AddRange(obj.getAppointment(slot.SlotID));
         }
 
-        List<Employee> listOfEmployees = new List<Employee>();
+        List<ReportEmployee> listOfReportEmployees = new List<ReportEmployee>();
 
         foreach (var appointment in listOfAppointments)
         {
             var employee = obj.getEmployeeInfo(Convert.ToInt32(appointment.EmployeeID));
             if (employee != null)
             {
-                listOfEmployees.Add(employee);
+                int reportID = db.LabReports.Where(lab => lab.AppointmentID == appointment.AppointmentID).Select(lab => lab.ReportID).FirstOrDefault();
+                listOfReportEmployees.Add(new ReportEmployee
+                {
+                    EmployeeID = employee.EmployeeID,
+                    EmployeeName = employee.EmployeeName,
+                    Email = employee.Email,
+                    ReportID = reportID
+
+                });
             }
         }
-        TestRequestsRepeater.DataSource = listOfEmployees;
+        TestRequestsRepeater.DataSource = listOfReportEmployees;
         TestRequestsRepeater.DataBind();
     }
 
@@ -49,10 +65,12 @@ public partial class Pages_TestRequests : System.Web.UI.Page
         if (e.CommandName == "ViewTestDetails")
         {
             // Get the EmployeeID from CommandArgument
-            int employeeID = Convert.ToInt32(e.CommandArgument);
-
+            string[] ids = e.CommandArgument.ToString().Split(',');
+            int employeeID = Convert.ToInt32(ids[0]);
+            int reportID = Convert.ToInt32(ids[1]);
             // Redirect to the AppointmentDetails page with the EmployeeID as a query string parameter
             Session["Employee_ID"] = employeeID;
+            Session["ReportID"] = reportID;
             //Response.Redirect("Home Page.aspx");
             string url = "Test Details.aspx";
             Response.Redirect(url);

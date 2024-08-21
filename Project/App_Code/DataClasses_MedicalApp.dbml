@@ -13,17 +13,20 @@
       <Column Name="AppointmentDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Association Name="Appointment_LabReport" Member="LabReports" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="LabReport" />
       <Association Name="Appointment_Prescription" Member="Prescriptions" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="Prescription" />
+      <Association Name="Timetable_Appointment" Member="Timetable" ThisKey="SlotID" OtherKey="SlotID" Type="Timetable" IsForeignKey="true" />
       <Association Name="Employee_Appointment" Member="Employee" ThisKey="EmployeeID" OtherKey="EmployeeID" Type="Employee" IsForeignKey="true" />
       <Association Name="Finance_Appointment" Member="Finance" ThisKey="FinanceID" OtherKey="FinanceID" Type="Finance" IsForeignKey="true" />
-      <Association Name="Timetable_Appointment" Member="Timetable" ThisKey="SlotID" OtherKey="SlotID" Type="Timetable" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Tests" Member="Tests">
-    <Type Name="Test">
-      <Column Name="TestID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="TestName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Association Name="Test_LabReportsDetail" Member="LabReportsDetails" ThisKey="TestID" OtherKey="TestID" Type="LabReportsDetail" />
+  <Table Name="dbo.Timetable" Member="Timetables">
+    <Type Name="Timetable">
+      <Column Name="SlotID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DoctorID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TTDay" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StartTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="EndTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Association Name="Timetable_Appointment" Member="Appointments" ThisKey="SlotID" OtherKey="SlotID" Type="Appointment" />
+      <Association Name="Doctor_Timetable" Member="Doctor" ThisKey="DoctorID" OtherKey="DoctorID" Type="Doctor" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Departments" Member="Departments">
@@ -73,7 +76,7 @@
       <Column Name="ReportID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="AppointmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PayStatus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="LabName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LabName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="ReportDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Association Name="LabReport_LabReportsDetail" Member="LabReportsDetails" ThisKey="ReportID" OtherKey="ReportID" Type="LabReportsDetail" />
       <Association Name="Appointment_LabReport" Member="Appointment" ThisKey="AppointmentID" OtherKey="AppointmentID" Type="Appointment" IsForeignKey="true" />
@@ -127,7 +130,7 @@
     <Type Name="Prescription">
       <Column Name="PrescriptionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="AppointmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PayStatus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RenewalStatus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Monthly" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="SupplyDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Association Name="Prescription_PrescriptionsDetail" Member="PrescriptionsDetails" ThisKey="PrescriptionID" OtherKey="PrescriptionID" Type="PrescriptionsDetail" />
@@ -147,15 +150,12 @@
       <Association Name="Medicine_PrescriptionsDetail" Member="Medicine" ThisKey="MedicineID" OtherKey="MedicineID" Type="Medicine" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Timetable" Member="Timetables">
-    <Type Name="Timetable">
-      <Column Name="SlotID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="DoctorID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="TTDay" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="StartTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
-      <Column Name="EndTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
-      <Association Name="Timetable_Appointment" Member="Appointments" ThisKey="SlotID" OtherKey="SlotID" Type="Appointment" />
-      <Association Name="Doctor_Timetable" Member="Doctor" ThisKey="DoctorID" OtherKey="DoctorID" Type="Doctor" IsForeignKey="true" />
+  <Table Name="dbo.Tests" Member="Tests">
+    <Type Name="Test">
+      <Column Name="TestID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TestName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Association Name="Test_LabReportsDetail" Member="LabReportsDetails" ThisKey="TestID" OtherKey="TestID" Type="LabReportsDetail" />
     </Type>
   </Table>
 </Database>

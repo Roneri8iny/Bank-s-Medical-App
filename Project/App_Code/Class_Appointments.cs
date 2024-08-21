@@ -20,7 +20,12 @@ public class Class_Appointments
         CANCELED = 3
 
     };
-
+    public enum AppointmentPayStatus
+    {
+        PENDING = 1,
+        ACCEPTED = 2,
+        DECLINED = 3
+    };
 	public Class_Appointments()
 	{
 		//
@@ -67,6 +72,8 @@ public class Class_Appointments
             var query = (from appointments in db.Appointments
                          where
                          appointments.SlotID == slotID
+                         &&
+                         appointments.ApStatus == 1
                          select appointments).ToList();
 
 

@@ -52,4 +52,40 @@ public class Class_LabTests
             throw ex;
         }
     }
+
+    public void getReportDetails(Repeater rpt, int reportID)
+    {
+        try
+        {
+            var query = (from x in db.LabReportsDetails
+                         where
+                         x.ReportID == reportID
+                         select new
+                         {
+
+                             TestName = x.Test.TestName
+
+                         }).ToList();
+
+            //select new
+            //             {
+            //                 ReportDate = Convert.ToDateTime(x.ReportDate) ,
+            //                 LabName = x.LabName,
+            //                 ReportID = x.ReportID
+
+            //             }).ToList();
+
+            rpt.DataSource = query;
+            rpt.DataBind();
+
+
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
+    }
+
+    
 }

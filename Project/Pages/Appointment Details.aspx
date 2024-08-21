@@ -49,18 +49,20 @@
                             <div class="card-group">
                                 <div class="card">
                                     <div class="card-content">
-                                        <img class="card-img-top img-fluid" src="../assets/images/samples/images.jpeg"
-                                            alt="Card image cap" style="width: 250px; height: auto; margin-right: 15px;"/>
+                                        <img id="employeeImage" class="card-img-top img-fluid" src=""
+                                            alt="Card image cap" style="width: 250px; height: auto; margin-right: 15px;" runat="server"/>
 
                                         <div class="card-body">
-                                            <h4 class="card-title"; style="padding-left: 45px">Employee Name</h4>
+                                            <h4 class="card-title" style="padding-left: 45px" runat="server" id="employeeNameLabel"> </h4>
                                             <div class="col-12 d-flex justify-content-start">
                                                   <asp:Button ID="Button2" runat="server" Text="View Employee History" CssClass="btn btn-primary me-1 mb-1" style="margin-left: 45px;" OnClick="btnRedirect_Click"/>
                                             </div>
                                             <div class="card-body">
                                                 <div id="editor" class="d-flex align-items-center" >
-                                                    <textarea id="Diagnosis" class="form-control" cols="70" ></textarea>
-                                                    <asp:Button ID="Submit_Diagnosis" runat="server" Text="Submit Diagnosis" class="btn btn-primary rounded-pill" />
+                                                    <div style="display:flexbox; flex-direction:column;">
+                                                        <asp:Label ID="Label4" runat="server"  Text="Enter Diagnosis"></asp:Label>
+                                                        <textarea id="Diagnosis" runat="server" class="form-control" cols="70" ></textarea>
+                                                    </div>
                                                 </div>
 
                                                 <div id="Prescription" class="container-fluid">
@@ -116,9 +118,15 @@
                                                                                             </div>
                                                                                         </div>
 
+                                                                                        <div  class="col-12">
+                                                                                            <div class="form-group">
+                                                                                                <asp:Label ID="LabelCheckBox" runat="server" AssociatedControlID="monthlyCheckBox" Text="Monthly"></asp:Label>
+                                                                                                <asp:CheckBox ID="monthlyCheckBox" runat="server" Text="" />
+                                                                                            </div>
+                                                                                        </div>
                                                                                         <!-- Submit Button -->
                                                                                         <div class="col-12 d-flex justify-content-start">
-                                                                                            <asp:Button ID="SubmitButton" runat="server" Text="Submit" CssClass="btn btn-primary me-1 mb-1" OnClick="SubmitButton_Click"/>
+                                                                                            <asp:Button ID="SubmitButton" runat="server" Text="Enter" CssClass="btn btn-primary me-1 mb-1" OnClick="SubmitButton_Click"/>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -134,7 +142,7 @@
                                                         <div class="col-md-6 col-12">
                                                             <div class="card">
                                                                 <div class="card-header">
-                                                                    <h4 class="card-title">Prescriped Medicines</h4>
+                                                                    <h4 class="card-title">Prescribed Medicines</h4>
                                                                 </div>
                                                                 <div class="card-content">
                                                                     <div class="card-body">
@@ -197,7 +205,7 @@
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="card-body">
-                                                                <form class="form form-vertical">
+                                                                <div class="form form-vertical">
                                                                     <div class="form-body">
                                                                         <div class="row">
                                                                             <!-- Test Name Dropdown -->
@@ -218,11 +226,11 @@
 
                                                                             <!-- Submit Button -->
                                                                             <div class="col-12 d-flex justify-content-start">
-                                                                                <asp:Button ID="Button4" runat="server" Text="Submit" CssClass="btn btn-primary me-1 mb-1" OnClick="Button4_Click"/>
+                                                                                <asp:Button ID="Button4" runat="server" Text="Enter" CssClass="btn btn-primary me-1 mb-1" OnClick="Button4_Click"/>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -293,7 +301,7 @@
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="card-body">
-                                                                <form class="form form-vertical">
+                                                                <div class="form form-vertical">
                                                                     <div class="form-body">
                                                                         <div class="row">
                                                                             <!-- Sick Leave Reason Text Box -->
@@ -321,11 +329,11 @@
 
                                                                             <!-- Finish Button -->
                                                                             <div class="col-12 d-flex justify-content-start">
-                                                                                <asp:Button ID="FinishButton" runat="server" Text="Submit" CssClass="btn btn-primary me-1 mb-1" style="margin-top: 50px;" OnClick="FinishButton_Click"/>
+                                                                                <asp:Button ID="FinishButton" runat="server" Text="Submit" CssClass="btn btn-primary me-1 mb-1" style="margin-top: 50px;" OnClick="FinishButton_Click1" AutoPostBack="false"/>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
