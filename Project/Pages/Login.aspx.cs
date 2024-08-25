@@ -34,6 +34,7 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
             if(account != null)
             {
                 error_div.Visible = false;
+                Session["SelectedAccountType"] = selectedAccountType;
                 //success_div.Visible = true;
                 //lbl_success.Text = "Successfully logged in";
 

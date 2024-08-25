@@ -59,7 +59,7 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
 
     protected void btnRedirect_Click(object sender, EventArgs e)
     {
-        Response.Redirect("EmployeeHistory.aspx");
+        Response.Redirect("DoctorEmployeeHistory.aspx");
     }
 
     private void BindMedicines()

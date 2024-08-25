@@ -24,7 +24,7 @@
     <form id="form1" runat="server">
         <div>
             <div id="app">
-                <div id="sidebar" class="active">
+                <div id="sidebar" class="active" runat="server">
                     <div class="sidebar-wrapper active">
                         <div class="sidebar-header">
                             <div class="d-flex justify-content-between">
