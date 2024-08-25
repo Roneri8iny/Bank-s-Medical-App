@@ -110,9 +110,9 @@
                                             <asp:DropDownList ID="ddl_postion" runat="server" CssClass="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                                 data-reference="parent">
-                                                <asp:ListItem Text="Specialized Doctor" Value="1"></asp:ListItem>
-                                                <asp:ListItem Text="Pharmacy Doctor" Value="2"></asp:ListItem>
-                                                <asp:ListItem Text="Analysis Doctor" Value="3"></asp:ListItem>
+                                                <asp:ListItem Text="Specialized" Value="1"></asp:ListItem>
+<%--                                                <asp:ListItem Text="Pharmacy Doctor" Value="2"></asp:ListItem>--%>
+                                                <asp:ListItem Text="Analysis" Value="2"></asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
                                         <div class="form-control-icon">

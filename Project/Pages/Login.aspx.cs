@@ -37,6 +37,8 @@ public partial class Pages_Login : System.Web.UI.Page
             if (account != null)
             {
                 error_div.Visible = false;
+                Session["SelectedAccountType"] = selectedAccountType;
+
                 //success_div.Visible = true;
                 //lbl_success.Text = "Successfully logged in";
 

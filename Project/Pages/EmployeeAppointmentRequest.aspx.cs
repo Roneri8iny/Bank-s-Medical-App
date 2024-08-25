@@ -40,7 +40,7 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
             MedicalFields.DataBind();
 
             // Default Item
-            MedicalFields.Items.Insert(0, new ListItem(" Select a Medical Field ", "0"));
+            MedicalFields.Items.Insert(0, new ListItem("Select a Medical Field ", "0"));
         }
         catch (Exception ex)
         {

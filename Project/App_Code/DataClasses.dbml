@@ -1,17 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Bank Medical DB" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=LAPTOP-NBC2SOFE\MSSQLSERVER01;Initial Catalog=&quot;Bank Medical DB&quot;;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Bank_Medical_DBConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Timetable" Member="Timetables">
-    <Type Name="Timetable">
-      <Column Name="SlotID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="DoctorID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="TTDay" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="StartTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
-      <Column Name="EndTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
-      <Column Name="MFID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Timetable_Appointment" Member="Appointments" ThisKey="SlotID" OtherKey="SlotID" Type="Appointment" />
-      <Association Name="Doctor_Timetable" Member="Doctor" ThisKey="DoctorID" OtherKey="DoctorID" Type="Doctor" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Appointments" Member="Appointments">
     <Type Name="Appointment">
       <Column Name="AppointmentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -28,6 +16,18 @@
       <Association Name="Timetable_Appointment" Member="Timetable" ThisKey="SlotID" OtherKey="SlotID" Type="Timetable" IsForeignKey="true" />
       <Association Name="Employee_Appointment" Member="Employee" ThisKey="EmployeeID" OtherKey="EmployeeID" Type="Employee" IsForeignKey="true" />
       <Association Name="Finance_Appointment" Member="Finance" ThisKey="FinanceID" OtherKey="FinanceID" Type="Finance" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Timetable" Member="Timetables">
+    <Type Name="Timetable">
+      <Column Name="SlotID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DoctorID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TTDay" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StartTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="EndTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="MFID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Timetable_Appointment" Member="Appointments" ThisKey="SlotID" OtherKey="SlotID" Type="Appointment" />
+      <Association Name="Doctor_Timetable" Member="Doctor" ThisKey="DoctorID" OtherKey="DoctorID" Type="Doctor" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Departments" Member="Departments">
