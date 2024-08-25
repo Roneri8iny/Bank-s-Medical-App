@@ -60,9 +60,9 @@
 
                         </div>
                     </div>
-                    <div class="text-center mt-5 text-lg fs-4">
+                    <%--<div class="text-center mt-5 text-lg fs-4">
                         <asp:HyperLink runat="server" NavigateUrl="#" CssClass="font-bold">Forgot password?</asp:HyperLink>
-                    </div>
+                    </div>--%>
                 </div>
             </div>
             <div class="col-lg-7 d-none d-lg-block">
