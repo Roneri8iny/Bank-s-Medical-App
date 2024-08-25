@@ -3,7 +3,7 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Pages_FinanceHome : System.Web.UI.Page
+public partial class Pages_Veiwrequests : System.Web.UI.Page
 {
     private DataClassesDataContext db;
 
@@ -20,115 +20,118 @@ public partial class Pages_FinanceHome : System.Web.UI.Page
 
     private void LoadRequests()
     {
-        var query = db.Appointments.AsQueryable();
+        var query = db.LabReportsDetails.AsQueryable();
 
-        RequestsGridView.DataSource = query.Select(ap => new
+        AppointmentsGridView.DataSource = query.Where(pr => pr.FinancialApprovalStatus == 1).Select(lab => new
         {
-            ap.EmployeeID,
-            ApStatus = ap.ApStatus == 1 ? "Accepted" :
-                       ap.ApStatus == 0 ? "Declined" :
-                       ap.ApStatus == 2 ? "Pending" : "Unknown",
-            ap.Diagnosis,
-            ap.FinanceID,
-        }).Where(x => x.ApStatus == "Pending").ToList();
-        RequestsGridView.DataBind();
+            // ReportId , Lab Name, Test Name , Diagnosis, Price 
+            lab.ReportID,
+            //ApStatus = ap.ApStatus == 2 ? "Accepted" :
+            //           ap.ApStatus == 3 ? "Declined" :
+            //           ap.ApStatus == 1 ? "Pending" : "Unknown",
+            lab.LabReport.LabName,
+            lab.Test.TestName,
+            Diagnosis = (from app in db.Appointments
+                        where app.AppointmentID == lab.LabReport.AppointmentID
+                        select app.Diagnosis).FirstOrDefault(),
+            lab.Test.Price
+        }).ToList();
+        AppointmentsGridView.DataBind();
     }
 
     private void LoadPrescriptions()
     {
-        var query = db.Prescriptions.AsQueryable();
+        var query = db.PrescriptionsDetails.AsQueryable();
+        //var medicineName = (from preD in db.PrescriptionsDetails
+        //                           where  )
+        //PrescriptionsGridView.DataSource = query.Select(pr => new
+        //{
+        //    pr.AppointmentID,
+        //    RenewalStatus = pr.RenewalStatus == 2 ? "Renewed" :
+        //                    pr.RenewalStatus == 3 ? "Not Renewed" :
+        //                    pr.RenewalStatus == 1 ? "Pending" : "Unknown",
+        //    pr.Monthly
+        //}).Where(x => x.RenewalStatus == "Pending").ToList();
+        //var quantity = (from preD in db.PrescriptionsDetails
+        //                    where  )
 
-        PrescriptionsGridView.DataSource = query.Select(pr => new
+        PrescriptionsGridView.DataSource = query.Where(pr => pr.FinanceApprovalStatus == 1).Select(pr => new
         {
-            pr.AppointmentID,
-            PayStatus = pr.PayStatus == 1 ? "Paid" :
-                        pr.PayStatus == 0 ? "Unpaid" :
-                        pr.PayStatus == 2 ? "Pending" : "Unknown",
-            pr.Monthly,
-            pr.SupplyDate
-        }).Where(x => x.PayStatus == "Pending").ToList();
+            pr.PrescriptionID,
+            
+            //preID  preDetailMedName  quantity  totalPrice  diagnosis
+
+            //int DID = (from department in db.Departments
+            //            where department.DepartmentName == selectedDepartment
+            //            select department.DepartmentID).FirstOrDefault();
+            pr.Medicine.MedicineName,
+            pr.Quantity,
+            TotalPrice = (pr.Quantity * pr.Medicine.Price),
+            Diagnosis = (from app in db.Appointments
+                        where app.AppointmentID == pr.Prescription.AppointmentID
+                        select app.Diagnosis).FirstOrDefault()
+            //pr.Medicine.MedicineName
+            //RenewalStatus = pr.RenewalStatus == 2 ? "Renewed" :
+            //                pr.RenewalStatus == 3 ? "Not Renewed" :"Unknown",
+            //pr.Monthly
+        }).ToList();
         PrescriptionsGridView.DataBind();
     }
 
-    protected void RequestsGridView_RowCommand(object sender, GridViewCommandEventArgs e)
+    protected void AppointmentsGridView_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         if (e.CommandName == "Accept" || e.CommandName == "Decline")
         {
-            int employeeId = Convert.ToInt32(e.CommandArgument);
-            UpdateRequestStatus(employeeId, e.CommandName);
+            int reportID = Convert.ToInt32(e.CommandArgument);
+            UpdateRequestStatus(reportID, e.CommandName);
 
             // Send JavaScript to hide the row
             LinkButton button = e.CommandSource as LinkButton;
             if (button != null)
             {
-                string script = "handleAction(this, '" + e.CommandName + "');";
+                string script = string.Format("handleAction(this, '{0}');", e.CommandName);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "hideRow", script, true);
             }
         }
     }
 
-    private void UpdateRequestStatus(int employeeId, string action)
+    private void UpdateRequestStatus(int reportID, string action)
     {
         try
         {
-            var appointment = db.Appointments.SingleOrDefault(ap => ap.EmployeeID == employeeId);
+            var report = db.LabReportsDetails.FirstOrDefault(lab => lab.ReportID == reportID);
 
-            if (appointment != null)
+            if (report != null)
             {
-                appointment.ApStatus = action == "Accept" ? 1 :
-                                       action == "Decline" ? 0 : 2; // 1 for accepted, 0 for declined, 2 for pending
+                //string newStatus = action == "Accept" ? "2" :
+                //                action == "Decline" ? "3" : "1"; // 1 for pending
 
-                db.SubmitChanges();
 
-                // Reload the grid after updating
-                LoadRequests();
+                //var query = db.PrescriptionsDetails.Where(pre => pre.Prescription.Appointment == appointment).FirstOrDefault();
+                //query.FinanceApprovalStatus = action == "Accept" ? 2:
+                //                              action == "Decline" ? 3 : 1; // 1 for pending
 
-                // Display a simple JavaScript alert
-                string message = "Request " + action + "d successfully!";
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showSuccess", "alert('" + message + "');", true);
-            }
-        }
-        catch (Exception ex)
-        {
-            // Display a simple JavaScript alert
-            string errorMessage = "Error updating request: " + ex.Message;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "showError", "alert('" + errorMessage + "');", true);
-        }
-    }
 
-    protected void PrescriptionsGridView_RowCommand(object sender, GridViewCommandEventArgs e)
-    {
-        if (e.CommandName == "AcceptPrescription" || e.CommandName == "DeclinePrescription")
-        {
-            int appointmentId = Convert.ToInt32(e.CommandArgument);
-            UpdatePrescriptionStatus(appointmentId, e.CommandName);
+                ////appointment.ApStatus = action == "Accept" ? 2 :
+                ////                       action == "Decline" ? 3 : 1; // 1 for pending
 
-            // Send JavaScript to hide the row
-            LinkButton button = e.CommandSource as LinkButton;
-            if (button != null)
-            {
-                string script = "handleAction(this, '" + e.CommandName + "');";
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "hideRow", script, true);
-            }
-        }
-    }
+                //db.SubmitChanges();
 
-    private void UpdatePrescriptionStatus(int appointmentId, string action)
-    {
-        try
-        {
-            var prescription = db.Prescriptions.SingleOrDefault(pr => pr.AppointmentID == appointmentId);
+                //// Reload the grid after updating
+                //LoadRequests();
 
-            if (prescription != null)
-            {
-                if (action == "AcceptPrescription")
+                //// Display a simple JavaScript alert
+                //string message = string.Format("Request {0}d successfully!", action);
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "showSuccess", "alert('" + message.Replace("'", "\\'") + "');", true);
+
+                if (action == "Accept")
                 {
-                    prescription.PayStatus = 1; // 1 for paid
-                    prescription.SupplyDate = DateTime.Now; // Set SupplyDate to the current date
+                    report.FinancialApprovalStatus = 2; // 2 for renewed
+
                 }
-                else if (action == "DeclinePrescription")
+                else if (action == "Decline")
                 {
-                    prescription.PayStatus = 0; // 0 for unpaid
+                    report.FinancialApprovalStatus = 3; // 3 for not renewed
                 }
 
                 db.SubmitChanges();
@@ -137,15 +140,101 @@ public partial class Pages_FinanceHome : System.Web.UI.Page
                 LoadPrescriptions();
 
                 // Display a simple JavaScript alert
-                string message = "Prescription " + action + "d successfully!";
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showSuccess", "alert('" + message + "');", true);
+                string message = string.Format("Lab Report {0}d successfully!", action);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "showSuccess", "alert('" + message.Replace("'", "\\'") + "');", true);
+
+                //        var prescription = db.PrescriptionsDetails.SingleOrDefault(pr => pr.PrescriptionID == prescriptionId);
+
+                //    if (prescription != null)
+                //    {
+                //        if (action == "AcceptPrescription")
+                //        {
+                //            prescription.FinanceApprovalStatus = 2; // 2 for renewed
+
+                //        }
+                //        else if (action == "DeclinePrescription")
+                //        {
+                //            prescription.FinanceApprovalStatus = 3; // 3 for not renewed
+                //        }
+
+                //        db.SubmitChanges();
+
+                //        // Reload the grid after updating
+                //        LoadPrescriptions();
+
+                //        // Display a simple JavaScript alert
+                //        string message = string.Format("Prescription {0}d successfully!", action);
+                //        ScriptManager.RegisterStartupScript(this, this.GetType(), "showSuccess", "alert('" + message.Replace("'", "\\'") + "');", true);
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    // Display a simple JavaScript alert
+                //    string errorMessage = string.Format("Error updating request: {0}", ex.Message);
+                //    ScriptManager.RegisterStartupScript(this, this.GetType(), "showError", "alert('" + errorMessage.Replace("'", "\\'") + "');", true);
+                //}
             }
         }
         catch (Exception ex)
         {
             // Display a simple JavaScript alert
-            string errorMessage = "Error updating prescription: " + ex.Message;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "showError", "alert('" + errorMessage + "');", true);
+            string errorMessage = string.Format("Error updating lab reports: {0}", ex.Message);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "showError", "alert('" + errorMessage.Replace("'", "\\'") + "');", true);
         }
     }
+
+    protected void PrescriptionsGridView_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        if (e.CommandName == "AcceptPrescription" || e.CommandName == "DeclinePrescription")
+    {
+        int prescriptionId = Convert.ToInt32(e.CommandArgument);
+        UpdatePrescriptionStatus(prescriptionId, e.CommandName);
+
+        // Send JavaScript to hide the row
+        LinkButton button = e.CommandSource as LinkButton;
+        if (button != null)
+        {
+            string script = string.Format("handleAction(this, '{0}');", e.CommandName);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "hideRow", script, true);
+        }
+        }
+    }
+
+    private void UpdatePrescriptionStatus(int prescriptionId, string action)
+    {
+        try
+        {
+            var prescription = db.PrescriptionsDetails.SingleOrDefault(pr => pr.PrescriptionID == prescriptionId);
+
+            if (prescription != null)
+            {
+                if (action == "AcceptPrescription")
+                {
+                    prescription.FinanceApprovalStatus = 2; // 2 for renewed
+                    
+                }
+                else if (action == "DeclinePrescription")
+                {
+                    prescription.FinanceApprovalStatus = 3; // 3 for not renewed
+                }
+
+                db.SubmitChanges();
+
+                // Reload the grid after updating
+                LoadPrescriptions();
+
+                // Display a simple JavaScript alert
+                string message = string.Format("Prescription {0}d successfully!", action);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "showSuccess", "alert('" + message.Replace("'", "\\'") + "');", true);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Display a simple JavaScript alert
+            string errorMessage = string.Format("Error updating prescription: {0}", ex.Message);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "showError", "alert('" + errorMessage.Replace("'", "\\'") + "');", true);
+        }
+    }
+
+    public int? employeeId { get; set; }
 }

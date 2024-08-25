@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Data;
 using System.Web;
 using System.Web.UI;
@@ -7,7 +9,7 @@ using System.Web.UI.WebControls;
 public partial class Pages_Login : System.Web.UI.Page
 {
     Class_Login obj_login = new Class_Login(); // Ensure LoginData is properly referenced
-    DataClassesDataContext db = new DataClassesDataContext("");
+    DataClassesDataContext db = new DataClassesDataContext("Data Source=LAPTOP-NBC2SOFE\\MSSQLSERVER01;Initial Catalog=Bank Medical DB;Integrated Security=True");
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -18,23 +20,26 @@ public partial class Pages_Login : System.Web.UI.Page
     {
         try
         {
+            //Check for empty fields
             string username = Username.Text.Trim();
             string password = Password.Text.Trim();
             string selectedAccountType = AccountType.SelectedValue;
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || selectedAccountType == "---")
             {
-                DisplayError("Please fill in all fields before logging in.");
+                error_div.Visible = true;
+                lbl_error.Text = "Please fill in all fields before logging in.";
+                ClearFields();
                 return;
             }
-
-            // Check user validity
+            //Check if account exists
             var account = obj_login.CheckUserValidity(username, password, selectedAccountType);
             if (account != null)
             {
                 error_div.Visible = false;
+                //success_div.Visible = true;
+                //lbl_success.Text = "Successfully logged in";
 
-                // Redirect based on account type
                 switch (selectedAccountType)
                 {
                     case "Employee":
@@ -47,11 +52,11 @@ public partial class Pages_Login : System.Web.UI.Page
                         break;
                     case "Lab Doctor":
                         Session["LabDoctorAccount"] = account;
-                        Response.Redirect("LabDoctorHomePage.aspx");
+                        Response.Redirect("AnalysisDocHomePage.aspx");
                         break;
                     case "Middle Man":
                         Session["MiddleManAccount"] = account;
-                        Response.Redirect("Home.aspx");
+                        Response.Redirect("middlemanHome.aspx");
                         break;
                     case "Medical Field":
                         Session["MedicalFieldAccount"] = account;
@@ -59,31 +64,35 @@ public partial class Pages_Login : System.Web.UI.Page
                         break;
                     case "Finance":
                         Session["FinanceAccount"] = account;
-                        Response.Redirect("Finance_home.aspx");
+                        Response.Redirect("Finance_Home.aspx");
                         break;
                     default:
-                        DisplayError("Unknown account type");
+                        lbl_error.Text = "Unknown account type";
+                        error_div.Visible = true;
                         break;
                 }
             }
             else
             {
-                DisplayError("Invalid credentials! Please try again.");
+                error_div.Visible = true;
+                lbl_error.Text = "Invalid credentials! Please try again.";
+                ClearFields();
+
             }
+            ///Forgot Password and Password Hashing and strong password policy????????????????
+
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            DisplayError("An error occurred. Please try again later.");
-            // You can log the exception here if necessary
+
+            throw;
         }
     }
 
-    protected void DisplayError(string message)
+    private void ClearFields()
     {
-        error_div.Visible = true;
-        lbl_error.Text = message;
-        Username.Text = "";
-        Password.Text = "";
+        Username.Text = string.Empty;
+        Password.Text = string.Empty;
         AccountType.SelectedIndex = 0;
     }
 }

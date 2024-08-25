@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-public partial class Pages_Home : System.Web.UI.Page
+public partial class Pages_middlemanHome : System.Web.UI.Page
 {
     private string connectionString = @"Data Source=LAPTOP-NBC2SOFE\MSSQLSERVER01;Initial Catalog='Bank Medical DB';Integrated Security=True";
 

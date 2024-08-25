@@ -28,15 +28,21 @@ public class Class_Login
             {
                 case "Employee":
                     return (from tbl in db.Employees
-                            where tbl.EmployeeName == UserName
+                            where tbl.Email == UserName
                             && tbl.Password == Password
                             select tbl).FirstOrDefault();
                 case "Doctor":
                     return (from tbl in db.Doctors
-                            where tbl.DoctorName == UserName
+                            where tbl.Username == UserName
                             && tbl.DoctorPassword == Password
+                            && tbl.Position == "Specialized"
                             select tbl).FirstOrDefault();
-                //case  "Lab Doctor"
+                case "Lab Doctor":
+                    return (from tbl in db.Doctors
+                            where tbl.Username == UserName
+                            && tbl.DoctorPassword == Password
+                            && tbl.Position == "Analysis"
+                            select tbl).FirstOrDefault();
                 case "Middle Man":
                     return (from tbl in db.MiddleMans
                             where tbl.Username == UserName

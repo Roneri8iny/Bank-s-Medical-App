@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/Finance.master" AutoEventWireup="true" CodeFile="viewhistory.aspx.cs" Inherits="Pages_FinanceHome" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/Finance.master" AutoEventWireup="true" CodeFile="viewhistory.aspx.cs" Inherits="Pages_viewhistory" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css" rel="stylesheet" />
@@ -55,16 +55,18 @@
     <div class="history-tables">
         <!-- Appointment History Section -->
         <div class="history-table">
-            <h4 class="card-title text-center mb-4">View Appointment History</h4>
+            <h4 class="card-title text-center mb-4">View Lab Reports History</h4>
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
                         <asp:GridView ID="RequestsHistoryGridView" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered table-hover">
                             <Columns>
-                                <asp:BoundField DataField="EmployeeID" HeaderText="Employee ID" />
-                                <asp:BoundField DataField="ApStatus" HeaderText="Status" />
+                                <asp:BoundField DataField="ReportID" HeaderText="Report ID" />
+                                <asp:BoundField DataField="TestName" HeaderText="Test Name" />
                                 <asp:BoundField DataField="Diagnosis" HeaderText="Diagnosis" />
-                                <asp:BoundField DataField="FinanceID" HeaderText="Finance ID" />
+                                <asp:BoundField DataField="Price" HeaderText="Price" />
+                                <asp:BoundField DataField="PayStatus" HeaderText="Status" />
+                                <asp:BoundField DataField="AppointmentDate" HeaderText="Appointment Date" DataFormatString="{0:yyyy-MM-dd}" HtmlEncode="false" />
                               
                             </Columns>
                         </asp:GridView>
@@ -81,11 +83,12 @@
                     <div class="table-responsive">
                         <asp:GridView ID="PrescriptionsHistoryGridView" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered table-hover">
                             <Columns>
-                                <asp:BoundField DataField="AppointmentID" HeaderText="Appointment ID" />
-                                <asp:BoundField DataField="PayStatus" HeaderText="Payment Status" />
-                                <asp:BoundField DataField="Monthly" HeaderText="Monthly" />
-                                <asp:BoundField DataField="SupplyDate" HeaderText="Supply Date" DataFormatString="{0:yyyy-MM-dd}" HtmlEncode="false" />
-                               
+                                <asp:BoundField DataField="PrescriptionID" HeaderText="Prescription ID" />
+                                <asp:BoundField DataField="MedicineName" HeaderText="Medicine Name" />
+                                <asp:BoundField DataField="Quantity" HeaderText="Quantity" />
+                                <asp:BoundField DataField="TotalPrice" HeaderText="Total Price" />
+                                <asp:BoundField DataField="PayStatus" HeaderText="Status" />
+                                <asp:BoundField DataField="Diagnosis" HeaderText="Diagnosis" />
                             </Columns>
                         </asp:GridView>
                     </div>
