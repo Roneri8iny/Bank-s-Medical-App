@@ -150,9 +150,9 @@
                                     <div class="btn-group mb-1">
                                         <asp:DropDownList ID="ddlPosition" runat="server" CssClass="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                            <asp:ListItem Text="Specialized Doctor" Value="Specialized Doctor"></asp:ListItem>
-                                            <asp:ListItem Text="Pharmacy Doctor" Value="Pharmacy Doctor"></asp:ListItem>
-                                            <asp:ListItem Text="Analysis Doctor" Value="Analysis Doctor"></asp:ListItem>
+                                            <asp:ListItem Text="Specialized" Value="Specialized Doctor"></asp:ListItem>
+                                            <%--<asp:ListItem Text="Pharmacy Doctor" Value="Pharmacy Doctor"></asp:ListItem>--%>
+                                            <asp:ListItem Text="Analysis" Value="Analysis Doctor"></asp:ListItem>
                                         </asp:DropDownList>
                                     </div>
                                     <div class="form-control-icon">

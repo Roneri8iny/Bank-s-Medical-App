@@ -179,7 +179,7 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
                 int MFID = employee.GetMedicalFieldID(selectedField);
                 bool check = employee.CheckMFType(MFID);
 
-                if (selectedDay.ToString().Substring(0, 3) == appDay && check)
+                if (selectedDay.ToString() == appDay && check)
                 {
                     appointment.fun_AddAppointement(selectedDate, EmpAccount.EmployeeID, slotId, false);
                     lbl_success.Text = "Appointment Requested Successfully";

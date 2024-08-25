@@ -54,14 +54,16 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
                         Response.Redirect("AnalysisDocHomePage.aspx");
                         break;
                     case "Middle Man":
-                        Response.Redirect("MiddleManHomePage.aspx");
+                        Session["MiddleManAccount"] = account;
+                        Response.Redirect("middlemanHome.aspx");
                         break;
                     case "Medical Field":
                         Session["MedicalFieldAccount"] = account;
                         Response.Redirect("MedicalHome.aspx");
                         break;
                     case "Finance":
-                        Response.Redirect("FinanceHomePage.aspx");
+                        Session["FinanceAccount"] = account;
+                        Response.Redirect("Finance_Home.aspx");
                         break;
                     default:
                         lbl_error.Text = "Unknown account type";
