@@ -50,7 +50,7 @@ public class Class_Login
                             select tbl).FirstOrDefault();
                 case "Medical Field":
                     return (from tbl in db.MedicalFields
-                            where tbl.MFName == UserName
+                            where tbl.Username == UserName
                             && tbl.MFPassword == Password
                             select tbl).FirstOrDefault();
                 case "Finance":

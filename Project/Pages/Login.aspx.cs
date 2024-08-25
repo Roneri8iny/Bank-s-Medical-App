@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -56,7 +57,8 @@ public partial class Pages_EmployeeLoginPage : System.Web.UI.Page
                         Response.Redirect("MiddleManHomePage.aspx");
                         break;
                     case "Medical Field":
-                        Response.Redirect("MedicalFieldHomePage.aspx");
+                        Session["MedicalFieldAccount"] = account;
+                        Response.Redirect("MedicalHome.aspx");
                         break;
                     case "Finance":
                         Response.Redirect("FinanceHomePage.aspx");
