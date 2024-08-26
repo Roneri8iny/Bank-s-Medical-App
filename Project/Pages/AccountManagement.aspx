@@ -150,9 +150,8 @@
                                     <div class="btn-group mb-1">
                                         <asp:DropDownList ID="ddlPosition" runat="server" CssClass="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                            <asp:ListItem Text="Specialized Doctor" Value="Specialized Doctor"></asp:ListItem>
-                                            <asp:ListItem Text="Pharmacy Doctor" Value="Pharmacy Doctor"></asp:ListItem>
-                                            <asp:ListItem Text="Analysis Doctor" Value="Analysis Doctor"></asp:ListItem>
+                                            <asp:ListItem Text="Specialized" Value="Specialized"></asp:ListItem>
+                                            <asp:ListItem Text="Analysis" Value="Analysis"></asp:ListItem>
                                         </asp:DropDownList>
                                     </div>
                                     <div class="form-control-icon">
@@ -175,7 +174,6 @@
                                     <div class="btn-group mb-1">
                                         <asp:DropDownList ID="ddlDepartments" runat="server" CssClass="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                            <asp:ListItem Text="Surgery" Value="1"></asp:ListItem>
                                         </asp:DropDownList>
                                     </div>
                                     <div class="form-control-icon">
@@ -203,4 +201,15 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="Script" runat="Server">
+    <script>
+        document.getElementById('<%= ddlPosition.ClientID %>').addEventListener('change', function () {
+            var departmentDropdown = document.getElementById('<%= ddlDepartments.ClientID %>');
+            if (this.value === '3') { // Value '3' corresponds to "Analysis"
+                departmentDropdown.disabled = true; // Disable the dropdown
+                departmentDropdown.value = "-1"; // Optionally reset the dropdown value
+            } else {
+                departmentDropdown.disabled = false; // Enable the dropdown
+            }
+        });
+    </script>
 </asp:Content>

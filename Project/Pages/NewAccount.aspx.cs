@@ -59,9 +59,19 @@ public partial class Pages_NewAccount : System.Web.UI.Page
                     DoctorPassword = password.Text,
                     Mobile = Convert.ToInt64(txt_mobile.Text),
                     Position = ddl_postion.SelectedItem.Text,
-                    DepartmentID = Convert.ToInt32(ddl_Departments.SelectedValue), // Get the selected department ID
+                    //DepartmentID = Convert.ToInt32(ddl_Departments.SelectedValue), // Get the selected department ID
                     MFID = mfid // Use MFID retrieved from session
                 };
+
+                if (ddl_postion.SelectedValue != "3") // If the position is not "Analysis"
+                {
+                    doctor_obj.DepartmentID = Convert.ToInt32(ddl_Departments.SelectedValue);
+                }
+                else
+                {
+                    ddl_Departments.SelectedIndex = -1; // Clear the selection
+                    ddl_Departments.Enabled = false; // Disable the dropdown
+                }
 
                 // Insert the new doctor into the database
                 db.Doctors.InsertOnSubmit(doctor_obj);
@@ -82,6 +92,20 @@ public partial class Pages_NewAccount : System.Web.UI.Page
             ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Error adding doctor. Please try again.');", true);
         }
     }
+    protected void btn_reset_Click(object sender, EventArgs e)
+    {
+        // Clear all the TextBox and DropDownList fields
+        txt_doctor_name.Text = string.Empty;
+        txt_price.Text = string.Empty;
+        txt_mobile.Text = string.Empty;
+        username.Text = string.Empty;
+        password.Text = string.Empty;
+        ddl_postion.SelectedIndex = -1;  // Reset position dropdown
+        ddl_Departments.SelectedIndex = -1;  // Reset department dropdown
+
+        // Optional: Reset any additional form fields or variables if necessary
+    }
+
 
     private int GetMedicalFieldID()
     {
