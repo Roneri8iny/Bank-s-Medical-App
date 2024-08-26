@@ -252,12 +252,19 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
         int appointmentID = Convert.ToInt32(Session["Appointment_ID"]);
 
         var rowToUpdate = db.Appointments.FirstOrDefault(r => r.AppointmentID == appointmentID);
+        //DateTime today = DateTime.Today;
+        DateTime start_date = startDate !=default(DateTime) ? startDate : DateTime.Today;
+        DateTime end_date = endDate != default(DateTime) ? startDate : DateTime.Today;
 
         if (rowToUpdate != null)
         {
             rowToUpdate.Diagnosis = diagnosis;
-            rowToUpdate.SLDStart = startDate;
-            rowToUpdate.SLDEnd = endDate;
+            // If not working use the ones commented
+
+            //rowToUpdate.SLDStart = startDate ;
+            //rowToUpdate.SLDEnd = endDate;
+            rowToUpdate.SLDStart = start_date;
+            rowToUpdate.SLDEnd = end_date;
             rowToUpdate.ApStatus = (int)Class_Appointments.ApplicationStatuses.DONE;
             rowToUpdate.AppointmentDate = DateTime.Today;
             db.SubmitChanges();
@@ -284,6 +291,8 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
 
         // Save the changes to the database
         db.SubmitChanges();
+
+        
     }
 
     public void insertLabReport(int newReportID)
@@ -327,8 +336,9 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
 
             // Add the new instance to the database
             db.PrescriptionsDetails.InsertOnSubmit(newDetail);
+            db.SubmitChanges();
         }
-        db.SubmitChanges();
+        //db.SubmitChanges();
 
     }
 
@@ -382,16 +392,53 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
         updateAppointmentInfo(diagnosisText, startDate, endDate);
 
         bool monthlyCheckBbox = monthlyCheckBox.Checked;
-
-        int lastPrescriptionID = db.Prescriptions.Max(t => t.PrescriptionID);
+        int rowCountPrescriptions = db.Prescriptions.Count();
+        int rowCountLab = db.LabReports.Count();
+        int lastPrescriptionID;
+        int lastReportID;
+        //int newPrescriptionID;
+        if (rowCountPrescriptions == 0 )
+        {
+            lastPrescriptionID = 0;
+            
+        }
+        else
+        {
+            lastPrescriptionID = db.Prescriptions.Max(t => t.PrescriptionID);
+            
+        }
+        if (rowCountLab == 0)
+        {
+            lastReportID = 0;
+        }
+        else
+        {
+            lastReportID = db.LabReports.Max(t => t.ReportID);
+        }
+       
         int newPrescriptionID = lastPrescriptionID++;
         insertPrescription(monthlyCheckBbox, newPrescriptionID);
 
-        int lastReportID = db.LabReports.Max(t => t.ReportID);
+        
         int newReportID = lastReportID++;
         insertLabReport(newReportID);
 
         insertPrescriptionDetails(newPrescriptionID);
         insertReportDetails(newReportID);
+
+
+        var changeSet = db.GetChangeSet();
+
+        int rowsInserted = changeSet.Inserts.Count();
+
+        if (rowsInserted > 0)
+        {
+            //lbl_error.Text = "Invalid credentials! Please try again.";
+            lbl_success.Text = "Succeessfully Entered the Appointment's Details.";
+        }
+        else
+        {
+            lbl_error.Text = "Failed to Enter the Appointment's Details.";
+        }
     }
 }

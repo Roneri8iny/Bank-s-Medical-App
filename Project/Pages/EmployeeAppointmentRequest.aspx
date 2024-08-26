@@ -15,6 +15,32 @@
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
 
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Pick a date</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="CloseModal()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body d-flex justify-content-center">
+                            <asp:Calendar ID="Calendar1" runat="server"></asp:Calendar>
+                            <div class="alert alert-success" runat="server" id="success_div" visible="false">
+                                <asp:Label ID="lbl_success" runat="server"></asp:Label>
+                            </div>
+                            <div class="alert alert-danger" runat="server" id="error_div" visible="false">
+                                <asp:Label ID="lbl_error" runat="server"></asp:Label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseModal()">Close</button>
+                            <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClick="AppRequestButton_Click" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="multiple-column-form">
                 <div class="row match-height">
                     <div class="col-12">
@@ -60,30 +86,17 @@
                                                                     <span class="list-group-item">
                                                                         <asp:Label ID="DoctorName" runat="server" Text='<%# Eval("DoctorName", "{0}") %>' CssClass="mb-1" Style="font-size: 20px; color: #25396f; font-weight: bold; display: block;"></asp:Label>
                                                                         <asp:Label ID="Price" runat="server" Text='<%# Eval("DoctorPrice", "Price: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
-                                                                        <asp:Label ID="Date" runat="server" Text="Pick a Date: "></asp:Label>
-                                                                        <asp:TextBox ID="Calender" runat="server" TextMode="Date">
-                                                                            <asp:TextBox.SelectedDate>
-                                                                                <asp:CalendarDate Day="1" Month="1" Year="2024"></asp:CalendarDate>
-                                                                            </asp:TextBox.SelectedDate>
-                                                                        </asp:TextBox>
+
                                                                         <asp:Label ID="Day" runat="server" Text='<%# Eval("AppointmentDay", "Day: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
                                                                         <asp:Label ID="StartTime" runat="server" Text='<%# Eval("StartTime", "Start Time: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
                                                                         <asp:Label ID="EndTime" runat="server" Text='<%# Eval("Endtime", "End Time: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
                                                                         <div class="d-flex w-100 justify-content-end">
-                                                                            <asp:Button ID="RequestButton" OnClick="AppRequestButton_Click" runat="server" Text="Request" CssClass="btn btn-primary rounded-pill" />
+                                                                            <asp:LinkButton ID="btn_RequestSlot" CommandArgument='<%#Eval("SlotID") %>' OnCommand="btn_RequestSlot_Command" CssClass="btn btn-primary rounded-pill" runat="server">Request</asp:LinkButton>
                                                                         </div>
-                                                            <div class="alert alert-success" runat="server" id="success_div" visible="false">
-                                                                <asp:Label ID="lbl_success" runat="server"></asp:Label>
-                                                            </div>
-                                                                        <div class="alert alert-danger" runat="server" id="error_div" visible="false">
-                                                                            <asp:Label ID="lbl_error" runat="server"></asp:Label>
-
-                                                                        </div>
+                                                                        
                                                                     </span>
                                                                 </ItemTemplate>
                                                             </asp:Repeater>
-
-
                                                         </div>
                                                     </div>
                                                 </asp:Panel>
@@ -125,14 +138,7 @@
 
                                                                         <asp:Label ID="LabReportDetails" runat="server" Text='<%# Eval("LabReportDetails", "Test Name: {0}") %>' Style="display: block;"></asp:Label>
                                                                         <div class="d-flex w-100 justify-content-end">
-                                                                            <asp:Button ID="Button1" OnClick="AppRequestButton_Click" runat="server" Text="Request" CssClass="btn btn-primary rounded-pill" />
-
-                                                                        </div>
-                                                                        <div class="alert alert-success" runat="server" id="success_div" visible="false">
-                                                                <asp:Label ID="lbl_success" runat="server"></asp:Label>
-                                                            </div>
-                                                                        <div class="alert alert-danger" runat="server" id="error_div" visible="false">
-                                                                            <asp:Label ID="lbl_error" runat="server"></asp:Label>
+                                                                            <asp:Button ID="Button1" runat="server" Text="Request" CssClass="btn btn-primary rounded-pill" />
 
                                                                         </div>
                                                                     </span>
@@ -157,5 +163,14 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="Script" runat="Server">
-</asp:Content>
 
+    <script>
+        function OpenModal() {
+            $('#exampleModal').modal('show');
+        }
+
+        function CloseModal() {
+            $('#exampleModal').modal('hide');
+        }
+    </script>
+</asp:Content>

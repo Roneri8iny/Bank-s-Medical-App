@@ -7,7 +7,6 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
 {
     DataClasses_MedicalAppDataContext db = new DataClasses_MedicalAppDataContext();
 
-
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -61,7 +60,17 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
             txtMobile.Text = doctor.Mobile.ToString();
             txtPrice.Text = doctor.Price.ToString();
             ddlPosition.SelectedValue = doctor.Position.ToString();
-            ddlDepartments.SelectedValue = doctor.DepartmentID.ToString();
+
+            if (doctor.Position == "Analysis")
+            {
+                ddlDepartments.SelectedIndex = -1; // Clear the selection
+                ddlDepartments.Enabled = false; // Disable the dropdown
+            }
+            else
+            {
+                ddlDepartments.SelectedValue = doctor.DepartmentID.ToString();
+                ddlDepartments.Enabled = true; // Enable the dropdown
+            }
         }
         else
         {
@@ -78,20 +87,21 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
         {
             try
             {
-                // Name
+                // Validation
                 if (string.IsNullOrEmpty(txtDoctorName.Text) ||
                     string.IsNullOrEmpty(txtPrice.Text) ||
                     string.IsNullOrEmpty(txtMobile.Text) ||
-                    ddlDepartments.SelectedIndex == 0)
+                    (ddlPosition.SelectedValue != "Analysis" && ddlDepartments.SelectedIndex == 0))
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Please fill in all required fields.');", true);
                     return;
                 }
 
+                // DoctorName
                 if (doctor.DoctorName != txtDoctorName.Text)
                     doctor.DoctorName = txtDoctorName.Text;
 
-                // Price
+                //// Price
                 decimal price;
                 if (decimal.TryParse(txtPrice.Text, out price) && doctor.Price != price)
                 {
@@ -119,15 +129,16 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
                 if (doctor.Position != ddlPosition.SelectedItem.Text)
                     doctor.Position = ddlPosition.SelectedItem.Text;
 
-                // Department
-                if (doctor.DepartmentID != Convert.ToInt32(ddlDepartments.SelectedValue))
+                // Department (only if not "Analysis")
+                if (ddlPosition.SelectedValue != "Analysis" && doctor.DepartmentID != Convert.ToInt32(ddlDepartments.SelectedValue))
+                {
                     doctor.DepartmentID = Convert.ToInt32(ddlDepartments.SelectedValue);
+                }
 
                 // Password
                 if (!string.IsNullOrEmpty(txtPassword.Text))
                 {
-                    // Update the password (hashing may be necessary here)
-                    doctor.DoctorPassword = txtPassword.Text;
+                    doctor.DoctorPassword = txtPassword.Text; // Update password (consider hashing)
                 }
 
                 db.SubmitChanges();
@@ -143,7 +154,6 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
             ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Doctor not found.');", true);
         }
     }
-
 
     protected void btnDelete_Click(object sender, EventArgs e)
     {
@@ -180,5 +190,6 @@ public partial class Pages_AccountManagement : System.Web.UI.Page
         txtPrice.Text = string.Empty;
         ddlPosition.SelectedIndex = 0;
         ddlDepartments.SelectedIndex = 0;
+        ddlDepartments.Enabled = true; // Reset dropdown to enabled state
     }
 }

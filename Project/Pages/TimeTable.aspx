@@ -48,7 +48,7 @@
                 <!-- Data Table -->
                 <asp:GridView ID="timeTableGrid" CssClass="table table-striped" runat="server" AutoGenerateColumns="False" ShowHeaderWhenEmpty="True" DataKeyNames="SlotID">
                     <Columns>
-                        <asp:BoundField DataField="DoctorID" HeaderText="DoctorID" />
+<%--                        <asp:BoundField DataField="DoctorID" HeaderText="DoctorID" />--%>
                         <asp:BoundField DataField="DoctorName" HeaderText="Doctor Name" />
                         <asp:BoundField DataField="TTDay" HeaderText="Day" />
                         <asp:BoundField DataField="StartTime" HeaderText="From" />

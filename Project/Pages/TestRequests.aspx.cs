@@ -45,7 +45,7 @@ public partial class Pages_TestRequests : System.Web.UI.Page
             var employee = obj.getEmployeeInfo(Convert.ToInt32(appointment.EmployeeID));
             if (employee != null)
             {
-                int reportID = db.LabReports.Where(lab => lab.AppointmentID == appointment.AppointmentID).Select(lab => lab.ReportID).FirstOrDefault();
+                int reportID = db.LabReports.Where(lab => lab.AppointmentID == appointment.AppointmentID ).Select(lab => lab.ReportID).FirstOrDefault();
                 listOfReportEmployees.Add(new ReportEmployee
                 {
                     EmployeeID = employee.EmployeeID,

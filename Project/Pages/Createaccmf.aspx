@@ -1,7 +1,7 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/Middleman.master" AutoEventWireup="true" CodeFile="Createaccmf.aspx.cs" Inherits="Pages_Createaccmf"  %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/Middleman.master" AutoEventWireup="true" CodeFile="Createaccmf.aspx.cs" Inherits="Pages_Createaccmf" %>
 
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <style>
         /* Custom styling for the dropdown to match the template's color scheme */
         .custom-dropdown {
@@ -19,11 +19,11 @@
             background-size: 16px 12px;
         }
 
-        .custom-dropdown:focus {
-            border-color: #80bdff;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
+            .custom-dropdown:focus {
+                border-color: #80bdff;
+                outline: 0;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
 
         /* Positioning the button at the bottom left */
         .card-body {
@@ -43,7 +43,7 @@
     </style>
 </asp:Content>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="PageHeader" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="PageHeader" runat="Server">
     <h2>Middleman</h2>
 </asp:Content>
 
@@ -57,59 +57,60 @@
                     <ContentTemplate>
                         <asp:Panel ID="CreateAccountPanel" runat="server">
                             <!-- Username -->
-                            <asp:TextBox ID="UsernameTextBox" CssClass="form-control" runat="server" 
-                                         PlaceHolder="Enter Username" Name="username" />
-                            <asp:RequiredFieldValidator ID="UsernameRequired" ControlToValidate="UsernameTextBox" 
+                            <asp:TextBox ID="UsernameTextBox" CssClass="form-control" runat="server"
+                                PlaceHolder="Enter Username" Name="username" />
+                            <asp:RequiredFieldValidator ID="UsernameRequired" ControlToValidate="UsernameTextBox"
                                 ErrorMessage="Username is required." runat="server" ForeColor="Red" />
-                            
+
 
                             <!-- Name -->
-                            <asp:TextBox ID="NameTextBox" CssClass="form-control" runat="server" 
-                                         PlaceHolder="Enter Name" Name="name" />
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="NameTextBox" 
+                            <asp:TextBox ID="NameTextBox" CssClass="form-control" runat="server"
+                                PlaceHolder="Enter Name" Name="name" />
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="NameTextBox"
                                 ErrorMessage="Name is required." runat="server" ForeColor="Red" />
-                            
+
                             <!-- Password -->
-                            <asp:TextBox ID="PasswordTextBox" CssClass="form-control" TextMode="Password" runat="server" 
-                                         PlaceHolder="Enter Password" Name="password" />
-                            <asp:RequiredFieldValidator ID="PasswordRequired" ControlToValidate="PasswordTextBox" 
+                            <asp:TextBox ID="PasswordTextBox" CssClass="form-control" TextMode="Password" runat="server"
+                                PlaceHolder="Enter Password" Name="password" />
+                            <asp:RequiredFieldValidator ID="PasswordRequired" ControlToValidate="PasswordTextBox"
                                 ErrorMessage="Password is required." runat="server" ForeColor="Red" />
-                            
+
                             <!-- Email -->
-                            <asp:TextBox ID="EmailTextBox" CssClass="form-control" runat="server" 
-                                         PlaceHolder="Enter Email" Name="email" />
-                            <asp:RequiredFieldValidator ID="EmailRequired" ControlToValidate="EmailTextBox" 
+                            <asp:TextBox ID="EmailTextBox" CssClass="form-control" runat="server"
+                                PlaceHolder="Enter Email" Name="email" />
+                            <asp:RequiredFieldValidator ID="EmailRequired" ControlToValidate="EmailTextBox"
                                 ErrorMessage="Email is required." runat="server" ForeColor="Red" />
-                            <asp:RegularExpressionValidator ID="EmailRegex" ControlToValidate="EmailTextBox" 
-                                ErrorMessage="Invalid email format." runat="server" 
+                            <asp:RegularExpressionValidator ID="EmailRegex" ControlToValidate="EmailTextBox"
+                                ErrorMessage="Invalid email format." runat="server"
                                 ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ForeColor="Red" />
-                            
+
                             <!-- Medical Field -->
-                            <asp:DropDownList ID="MedicalFieldDropDown" CssClass="custom-dropdown" runat="server" 
-                                              Name="medicalField">
+                            <asp:DropDownList ID="MedicalFieldDropDown" CssClass="custom-dropdown" runat="server"
+                                Name="medicalField">
+                                <asp:ListItem Value="0">Choose Medical Field</asp:ListItem>
                                 <asp:ListItem Value="Hospital">Hospital</asp:ListItem>
                                 <asp:ListItem Value="Specialty Clinic">Specialty Clinic</asp:ListItem>
                                 <asp:ListItem Value="Lab">Lab</asp:ListItem>
                                 <asp:ListItem Value="Pharmacy">Pharmacy</asp:ListItem>
                             </asp:DropDownList>
-                            <asp:RequiredFieldValidator ID="MedicalFieldRequired" ControlToValidate="MedicalFieldDropDown" 
-                                ErrorMessage="Medical Field is required." runat="server" ForeColor="Red" />
-                            
+                            <asp:RequiredFieldValidator ID="MedicalFieldRequired" ControlToValidate="MedicalFieldDropDown"
+                                ErrorMessage="Medical Field is required." InitialValue="0" runat="server" ForeColor="Red" />
+
                             <!-- Hotline -->
-                            <asp:TextBox ID="HotlineTextBox" CssClass="form-control" runat="server" 
-                                         PlaceHolder="Enter Hotline" Name="hotline" />
-                            <asp:RequiredFieldValidator ID="HotlineRequired" ControlToValidate="HotlineTextBox" 
+                            <asp:TextBox ID="HotlineTextBox" CssClass="form-control" runat="server"
+                                PlaceHolder="Enter Hotline" Name="hotline" />
+                            <asp:RequiredFieldValidator ID="HotlineRequired" ControlToValidate="HotlineTextBox"
                                 ErrorMessage="Hotline is required." runat="server" ForeColor="Red" />
-                            
+
                             <!-- Address -->
-                            <asp:TextBox ID="AddressTextBox" CssClass="form-control" TextMode="MultiLine" Rows="3" 
-                                         runat="server" PlaceHolder="Enter Address" Name="address" />
-                            <asp:RequiredFieldValidator ID="AddressRequired" ControlToValidate="AddressTextBox" 
+                            <asp:TextBox ID="AddressTextBox" CssClass="form-control" TextMode="MultiLine" Rows="3"
+                                runat="server" PlaceHolder="Enter Address" Name="address" />
+                            <asp:RequiredFieldValidator ID="AddressRequired" ControlToValidate="AddressTextBox"
                                 ErrorMessage="Address is required." runat="server" ForeColor="Red" />
-                            
+
                             <!-- Create Account Button -->
                             <div class="btn-container">
-                                <asp:Button ID="CreateAccountButton" Text="Create Account" CssClass="btn btn-success" 
+                                <asp:Button ID="CreateAccountButton" Text="Create Account" CssClass="btn btn-success"
                                     OnClick="CreateAccountButton_Click" runat="server" />
                             </div>
                         </asp:Panel>
@@ -120,7 +121,7 @@
     </div>
 </asp:Content>
 
-<asp:Content ID="Content4" ContentPlaceHolderID="Script" Runat="Server">
+<asp:Content ID="Content4" ContentPlaceHolderID="Script" runat="Server">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>

@@ -111,7 +111,6 @@
                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                                 data-reference="parent">
                                                 <asp:ListItem Text="Specialized" Value="1"></asp:ListItem>
-<%--                                                <asp:ListItem Text="Pharmacy Doctor" Value="2"></asp:ListItem>--%>
                                                 <asp:ListItem Text="Analysis" Value="3"></asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
@@ -147,7 +146,7 @@
                                 <!-- Submit and Reset Buttons -->
                                 <div class="col-12 d-flex justify-content-end">
                                     <asp:Button ID="btn_addDoctor" runat="server" CssClass="btn btn-primary me-1 mb-1" Text="Add Doctor" OnClick="btn_addDoctor_Click" />
-                                    <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                    <asp:Button ID="btn_reset" runat="server" CssClass="btn btn-light-secondary me-1 mb-1" Text="Reset" OnClick="btn_reset_Click" />
                                 </div>
                             </div>
                         </div>
@@ -162,19 +161,27 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="Script" runat="Server">
     <!-- Include SweetAlert and Toastify scripts -->
     <script>
-            (function () {
-                'use strict'
-        var form = document.querySelector('.needs-validation')
+        (function () {
+            'use strict'
+            var form = document.querySelector('.needs-validation')
 
             form.addEventListener('submit', function (event) {
-            if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-            }
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
 
-            form.classList.add('was-validated')
-        }, false)
-    })()
+                form.classList.add('was-validated')
+            }, false)
+        })()
+        document.getElementById('<%= ddl_postion.ClientID %>').addEventListener('change', function () {
+            var departmentDropdown = document.getElementById('<%= ddl_Departments.ClientID %>');
+            if (this.value === '3') { // Value '3' corresponds to "Analysis"
+                departmentDropdown.disabled = true; // Disable the dropdown
+                departmentDropdown.value = "-1"; // Optionally reset the dropdown value
+            } else {
+                departmentDropdown.disabled = false; // Enable the dropdown
+            }
+        });
     </script>
 </asp:Content>
-

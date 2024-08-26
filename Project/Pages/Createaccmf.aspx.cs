@@ -50,6 +50,8 @@ public partial class Pages_Createaccmf : System.Web.UI.Page
             db.MedicalFields.InsertOnSubmit(medicalField_obj);
             db.SubmitChanges();
 
+            ClearFields();
+
             // Display success message
             SuccessMessage("Medical Field account created successfully!");
         }
@@ -74,6 +76,18 @@ public partial class Pages_Createaccmf : System.Web.UI.Page
         // Example:
         // SuccessLabel.Text = message;
         // SuccessLabel.Visible = true;
+    }
+
+
+    public void ClearFields()
+    {
+        UsernameTextBox.Text = "";
+        NameTextBox.Text = "";
+        PasswordTextBox.Text = "";
+        EmailTextBox.Text = "";
+        AddressTextBox.Text = "";
+        MedicalFieldDropDown.SelectedValue = "0";
+        HotlineTextBox.Text = "";
     }
 }
  
