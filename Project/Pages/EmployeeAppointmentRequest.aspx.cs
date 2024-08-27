@@ -44,7 +44,7 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
     {
         // Get the selected Medical Field ID (Hospital)
         string selectedField = MedicalFields.SelectedValue;
-        int MFID = employee.GetMedicalFieldID(selectedField);
+        int MFID = Convert.ToInt32(selectedField);
 
         bool check = employee.CheckMFType(MFID);
         // Ensure it's not the default "Select" option
@@ -109,54 +109,74 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
         }
     }
 
-    
-    public void AppRequestButton_Click(object sender, EventArgs e)
+    public void AppSaveButton_Click(object sender, EventArgs e)
     {
         try 
         {
             var EmpAccount = Session["EmpAccount"] as Employee;
             if(EmpAccount != null)
             {
+                Button button = (Button)sender;
+                
+                cal_1.Visible = false;
+                if (string.IsNullOrEmpty(cal_1.Text))
 
+                {
+                    lbl_error.Text = "Please pick a date";
+                    error_div.Visible = true;
+                    success_div.Visible = false;
+
+                }
+                else
+                {
+
+                    string selectedField = MedicalFields.SelectedValue;
+                    int MFID = Convert.ToInt32(selectedField);
+                    bool check = employee.CheckMFType(MFID);
+                    DateTime pickedDate = DateTime.Parse(cal_1.Text);
+                    string appDay = ViewState["AppointmentDay"].ToString();
+                    int slotId = Convert.ToInt32(ViewState["SlotID"]);
+
+                    if (pickedDate < DateTime.Today)
+                    {
+                        lbl_error.Text = "Please select a date that is today or later";
+                        error_div.Visible = true;
+                        success_div.Visible = false;
+                    }
+                    else if (pickedDate.DayOfWeek.ToString() != appDay && check)
+                    {
+                        lbl_error.Text = "Please select a date on the same day as the doctor day ";
+                        error_div.Visible = true;
+                        success_div.Visible = false;
+                    }
+                    else if (pickedDate.DayOfWeek.ToString() == appDay && check) 
+                    {
+                        appointment.fun_AddAppointement(pickedDate, EmpAccount.EmployeeID, slotId, false);
+                        lbl_success.Text = "Appointment Requested Successfully";
+                        error_div.Visible = false;
+                        success_div.Visible = true;
+                        cal_1.Text = "";
+                    }
+                    else if(!check)
+                    {
+                        appointment.fun_AddAppointement(pickedDate, EmpAccount.EmployeeID, slotId, true, selectedField);
+                        lbl_success.Text = "Appointment Requested Successfully";
+                        error_div.Visible = false;
+                        success_div.Visible = true;
+                        button.Visible = false;
+                    }
+                }
+                btnSave.Visible = false;
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "preventModalClose", "$('#exampleModal').modal('show');", true);
+
+                
             }
         }
         catch(Exception ex)
         {
             throw ex;
         }
-        //try
-        //{
-        //    var EmpAccount = Session["EmpAccount"] as Employee;
-        //    if (EmpAccount != null)
-        //    {
-        //        Button button = (Button)sender;
-        //        RepeaterItem item = SlotsRpt.Items.Cast<RepeaterItem>().FirstOrDefault(i => i.FindControl("btnSave") == button);
-        //        if (item == null)
-        //        {
-        //            // Handle the case where item is null
-        //            return;
-        //        }
-        //        Label lbl_error = (Label)Page.FindControl("lbl_error");
-        //        HtmlGenericControl error_div = (HtmlGenericControl)Page.FindControl("error_div");
-        //        Label lbl_success = (Label)Page.FindControl("lbl_success");
-        //        HtmlGenericControl success_div = (HtmlGenericControl)Page.FindControl("success_div");
-
-
-        //        string doctorName = ((Label)item.FindControl("DoctorName")).Text;
-        //        string appDay = appointment.GetAppointmentDay(doctorName);
-        //        int slotId = (int)ViewState["SlotID"];
-
-        //        Calendar calendarControl = (Calendar)item.FindControl("Calendar1");
-        //        if (calendarControl == null || calendarControl.SelectedDate == DateTime.MinValue)
-        //        {
-        //            lbl_error.Text = "Please select a date";
-        //            success_div.Visible = false;
-        //            error_div.Visible = true;
-        //            return;
-        //        }
-
-        //        DateTime selectedDate = calendarControl.SelectedDate;
-        //        DayOfWeek selectedDay = selectedDate.DayOfWeek;
 
         //        string selectedField = MedicalFields.SelectedValue;
         //        int MFID = employee.GetMedicalFieldID(selectedField);
@@ -212,8 +232,36 @@ public partial class Pages_EmployeeHome : System.Web.UI.Page
     }
     protected void btn_RequestSlot_Command(object sender, CommandEventArgs e)
     {
+        string selectedField = MedicalFields.SelectedValue;
+        int MFID = Convert.ToInt32(selectedField);
+        bool check = employee.CheckMFType(MFID);
+
+
         int SlotID = Convert.ToInt32(e.CommandArgument);
         ViewState["SlotID"] = SlotID;
+        
+        
+        LinkButton requestButton = (LinkButton)sender;
+        RepeaterItem item = (RepeaterItem)requestButton.NamingContainer;
+
+        Label DoctorNameLabel = (Label)item.FindControl("DoctorName");
+        Label AppointmentDayLabel = (Label)item.FindControl("Day");
+
+        ViewState["DoctorName"] = DoctorNameLabel.Text;
+        if(check)
+        {
+            ViewState["AppointmentDay"] = AppointmentDayLabel.Text;
+        }
+        
+        
+
+        cal_1.Visible = true;
+        cal_1.Text = "";
+        lbl_error.Text = "";
+        error_div.Visible = false;
+        success_div.Visible = false;
+        btnSave.Visible = true;
+
         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Script", "OpenModal();", true);
     }
 }

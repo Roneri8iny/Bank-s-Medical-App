@@ -42,7 +42,7 @@
                                 <li class="sidebar-title">Menu</li>
 
                                 <li class="sidebar-item active">
-                                    <a href="../Pages/Home Page.aspx" class='sidebar-link'>
+                                    <a href="../Pages/DoctorHomePage.aspx" class='sidebar-link'>
                                         <i class="bi bi-grid-fill"></i>
                                         <span>Home Page</span>
                                     </a>

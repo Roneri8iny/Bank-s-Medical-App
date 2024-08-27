@@ -44,6 +44,8 @@ public class Class_Employee
     {
         try
         {
+            ddl.Items.Clear();
+
             var departments = (from doc in db.Doctors
                                where doc.MFID == medicalFieldID
                                select doc).Distinct().ToList();
@@ -82,20 +84,20 @@ public class Class_Employee
             throw ex;
         }
     }
-    public int GetMedicalFieldID(string selectedMedicalField)
-    {
-        try
-        {
-            int mfID = (from mf in db.MedicalFields
-                        where mf.MFName == selectedMedicalField
-                        select mf.MFID).FirstOrDefault();
-            return mfID;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
+    //public int GetMedicalFieldID(string selectedMedicalField)
+    //{
+    //    try
+    //    {
+    //        int mfID = (from mf in db.MedicalFields
+    //                    where mf.MFName == selectedMedicalField
+    //                    select mf.MFID).FirstOrDefault();
+    //        return mfID;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw ex;
+    //    }
+    //}
     public bool CheckMFType(int MFID)
     {
         try
@@ -167,8 +169,11 @@ public class Class_Employee
         {
             var LabReports = (from app in db.Appointments
                               where app.EmployeeID == EmployeeID
+                              let labReports = db.LabReports.Where(lab => lab.AppointmentID == app.AppointmentID)
+                              where labReports.Any(lab => lab.LabReportsDetails.Any())
                               select new
                               {
+                                  app.SlotID,
                                   DoctorName = app.Timetable.Doctor.DoctorName,
                                   //Date has time in it
                                   AppointmentDay = app.AppointmentDate,
@@ -219,7 +224,19 @@ public class Class_Employee
                                    }).ToList()
                            }).ToList();
 
-            rpt.DataSource = monPres;
+            var processedPrescriptions = monPres.Select(p => new
+            {
+                p.ApDepartment,
+                p.ApDate,
+                p.DoctorName,
+                LastRenewalDate = p.LastRenewalDate.HasValue
+                    ? p.LastRenewalDate.Value.ToString("yyyy-MM-dd")
+                    : "not supplied yet",
+                p.PreID,
+                p.Medicines
+            }).ToList();
+
+            rpt.DataSource = processedPrescriptions;
             rpt.DataBind();
         }
         catch (Exception ex)
@@ -227,13 +244,17 @@ public class Class_Employee
             throw ex;
         }
     }
-    public DateTime GetLastRenewalPrescriptionDate(int PrescriptionID)
+    public DateTime? GetLastRenewalPrescriptionDate(int PrescriptionID)
     {
         try
         {
-            DateTime? preDate = db.Prescriptions.Where(pre => pre.PrescriptionID == PrescriptionID).FirstOrDefault().SupplyDate;
 
-            return (DateTime)preDate;
+            DateTime? preDate = db.Prescriptions
+            .Where(pre => pre.PrescriptionID == PrescriptionID)
+            .Select(pre => pre.SupplyDate) // Ensures only the required date is retrieved
+            .FirstOrDefault();
+
+            return preDate;
         }
         catch (Exception ex)
         {

@@ -253,8 +253,8 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
 
         var rowToUpdate = db.Appointments.FirstOrDefault(r => r.AppointmentID == appointmentID);
         //DateTime today = DateTime.Today;
-        DateTime start_date = startDate !=default(DateTime) ? startDate : DateTime.Today;
-        DateTime end_date = endDate != default(DateTime) ? startDate : DateTime.Today;
+        //DateTime start_date = startDate != default(DateTime) ? TextBoxStart.Text : DateTime.Today;
+        //DateTime end_date = endDate != default(DateTime) ? startDate : DateTime.Today;
 
         if (rowToUpdate != null)
         {
@@ -263,8 +263,17 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
 
             //rowToUpdate.SLDStart = startDate ;
             //rowToUpdate.SLDEnd = endDate;
-            rowToUpdate.SLDStart = start_date;
-            rowToUpdate.SLDEnd = end_date;
+            if (string.IsNullOrEmpty(TextBoxStart.Text) && string.IsNullOrEmpty(TextBoxEnd.Text))
+            {
+                rowToUpdate.SLDStart = DateTime.Today;
+                rowToUpdate.SLDEnd = DateTime.Today;
+            }
+            else
+            {
+                rowToUpdate.SLDStart = startDate;
+                rowToUpdate.SLDEnd = endDate;
+            }
+            
             rowToUpdate.ApStatus = (int)Class_Appointments.ApplicationStatuses.DONE;
             rowToUpdate.AppointmentDate = DateTime.Today;
             db.SubmitChanges();
@@ -384,9 +393,21 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
     protected void FinishButton_Click1(object sender, EventArgs e)
     {
         string diagnosisText = Diagnosis.InnerText;
+        DateTime startDate;
+        DateTime endDate;
+        if (!string.IsNullOrEmpty(TextBoxStart.Text) && !string.IsNullOrEmpty(TextBoxEnd.Text))
+        {
+            startDate = DateTime.Parse(TextBoxStart.Text);
+            endDate = DateTime.Parse(TextBoxEnd.Text);
+        }
+        else
+        {
+            startDate = DateTime.Today;
+            endDate = DateTime.Today;
+        }
 
-        DateTime startDate = DateTime.Parse(TextBoxStart.Text);
-        DateTime endDate = DateTime.Parse(TextBoxEnd.Text);
+        //DateTime startDate = DateTime.Parse(TextBoxStart.Text);
+        //DateTime endDate = DateTime.Parse(TextBoxEnd.Text);
 
         //Session["Appointment_ID"]
         updateAppointmentInfo(diagnosisText, startDate, endDate);
@@ -427,18 +448,30 @@ public partial class Pages_Appointment_Details : System.Web.UI.Page
         insertReportDetails(newReportID);
 
 
-        var changeSet = db.GetChangeSet();
+        //var changeSet = db.GetChangeSet();
 
-        int rowsInserted = changeSet.Inserts.Count();
+        //int rowsInserted = changeSet.Inserts.Count();
 
-        if (rowsInserted > 0)
-        {
-            //lbl_error.Text = "Invalid credentials! Please try again.";
-            lbl_success.Text = "Succeessfully Entered the Appointment's Details.";
-        }
-        else
-        {
-            lbl_error.Text = "Failed to Enter the Appointment's Details.";
-        }
+
+        lbl_success.Text = "Succeessfully Entered the Appointment's Details.";
+        success_div.Visible = true;
+        error_div.Visible = false;
+        FinishButton.Enabled = false;
+
+        //if (rowsInserted > 0)
+        //{
+        //    //lbl_error.Text = "Invalid credentials! Please try again.";
+        //    lbl_success.Text = "Succeessfully Entered the Appointment's Details.";
+        //    success_div.Visible = true;
+        //    error_div.Visible = false;
+        //    FinishButton.Enabled = false;
+
+        //}
+        //else
+        //{
+        //    lbl_error.Text = "Failed to Enter the Appointment's Details.";
+        //    success_div.Visible = false;
+        //    error_div.Visible = true;
+        //}
     }
 }

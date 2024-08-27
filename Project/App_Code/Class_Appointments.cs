@@ -511,6 +511,8 @@ public class Class_Appointments
                          where empId == x.Appointment.EmployeeID
                          &&
                          x.Appointment.ApStatus == (int)ApplicationStatuses.DONE
+                         &&
+                         x.LabReportsDetails.Any(detail => detail.ResultPDF != null)
                          select new
                          {
                              ReportDate = Convert.ToDateTime(x.ReportDate),
