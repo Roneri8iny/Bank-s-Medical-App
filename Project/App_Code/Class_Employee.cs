@@ -11,18 +11,28 @@ public class Class_Employee
 {
     NewAccountDataClassesDataContext db = new NewAccountDataClassesDataContext("");
     public Class_Employee()
-	{
-		//
-		// TODO: Add constructor logic here
-		//
-	}
-    public List<string> GetMedicalFields()
+    {
+        //
+        // TODO: Add constructor logic here
+        //
+    }
+    public void FillMedicalFields(DropDownList ddl)
     {
         try
         {
             // Query to get all Medical Fields (MFNames)
-            var medicalFields = db.MedicalFields.Where(mf => mf.MFType != "Pharmacy").Select(mf => mf.MFName).ToList();
-            return medicalFields;
+            var MedicalFieldQuery = (from tbl in db.MedicalFields
+                                     where tbl.MFType != "Pharmacy"
+                                     select tbl).Distinct().ToList();
+
+
+            ddl.Items.Add(new ListItem("Select Medical Field", "0"));
+
+            foreach (var item in MedicalFieldQuery)
+            {
+                ddl.Items.Add(new ListItem(item.MFName, item.MFID.ToString()));
+
+            }
         }
         catch (Exception ex)
         {
@@ -30,62 +40,72 @@ public class Class_Employee
         }
     }
 
-    public List<string> GetDepartmentsByMedicalField(int medicalFieldID)
+    public void FillDepartmentsByMedicalField(DropDownList ddl, int medicalFieldID)
     {
         try
         {
+            ddl.Items.Clear();
+
             var departments = (from doc in db.Doctors
                                where doc.MFID == medicalFieldID
-                               select doc.Department.DepartmentName).Distinct().ToList();
+                               select doc).Distinct().ToList();
 
-            return departments;
+
+            ddl.Items.Add(new ListItem("Select Departement", "0"));
+
+            foreach (var item in departments)
+            {
+                ddl.Items.Add(new ListItem(item.Department.DepartmentName, item.DepartmentID.ToString()));
+
+            }
+
         }
         catch (Exception ex)
         {
             throw ex;
         }
     }
-    public void GetLabs(int medicalFieldID , Label hotline , Label address , Label email)
+    public void GetLabs(int medicalFieldID, Label hotline, Label address, Label email)
     {
         try
         {
-            
-        // Query to retrieve lab details based on the medical field ID
-        var lab = (from mf in db.MedicalFields
-                   where mf.MFID == medicalFieldID && mf.MFType == "Lab"
-                   select mf).FirstOrDefault();
+
+            // Query to retrieve lab details based on the medical field ID
+            var lab = (from mf in db.MedicalFields
+                       where mf.MFID == medicalFieldID && mf.MFType == "Lab"
+                       select mf).FirstOrDefault();
             // Populate the controls with the lab data
-        hotline.Text = "Hotline: " + lab.Hotline;
-        address.Text = "Address: " + lab.MFAddress;
-        email.Text = "Email: " + lab.Email;
+            hotline.Text = "Hotline: " + lab.Hotline;
+            address.Text = "Address: " + lab.MFAddress;
+            email.Text = "Email: " + lab.Email;
         }
         catch (Exception ex)
         {
             throw ex;
         }
     }
-    public int GetMedicalFieldID (string selectedMedicalField)
-    {
-        try
-        {
-            int mfID = (from mf in db.MedicalFields
-                       where mf.MFName == selectedMedicalField
-                       select mf.MFID).FirstOrDefault();
-            return mfID;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
-    public bool CheckMFType (int MFID)
+    //public int GetMedicalFieldID(string selectedMedicalField)
+    //{
+    //    try
+    //    {
+    //        int mfID = (from mf in db.MedicalFields
+    //                    where mf.MFName == selectedMedicalField
+    //                    select mf.MFID).FirstOrDefault();
+    //        return mfID;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw ex;
+    //    }
+    //}
+    public bool CheckMFType(int MFID)
     {
         try
         {
             string mfType = (from mf in db.MedicalFields
                              where mf.MFID == MFID
                              select mf.MFType).FirstOrDefault();
-            if(mfType != "Lab")
+            if (mfType != "Lab")
             {
                 return true;
             }
@@ -104,8 +124,8 @@ public class Class_Employee
         try
         {
             int DID = (from department in db.Departments
-                        where department.DepartmentName == selectedDepartment
-                        select department.DepartmentID).FirstOrDefault();
+                       where department.DepartmentName == selectedDepartment
+                       select department.DepartmentID).FirstOrDefault();
             return DID;
         }
         catch (Exception ex)
@@ -114,20 +134,23 @@ public class Class_Employee
         }
     }
 
-    public void GetDoctorsByDepartment(Repeater rpt,int departmentID)
+    public void GetDoctorsByDepartment(Repeater rpt, int departmentID, int MedicalField)
     {
 
         try
         {
-            var doctors = (from doc in db.Doctors
-                           where doc.DepartmentID == departmentID
-                           select new 
+            var doctors = (from slot in db.Timetables
+                           where slot.Doctor.DepartmentID == departmentID
+                           && slot.Doctor.MFID == MedicalField
+                           select new
                            {
-                               DoctorName = doc.DoctorName,
-                               DoctorPrice = doc.Price,
-                               AppointmentDay = doc.Timetables.Select(t => t.TTDay).FirstOrDefault(),
-                               StartTime = doc.Timetables.Select(t => t.StartTime).FirstOrDefault(),
-                               Endtime = doc.Timetables.Select(t => t.EndTime).FirstOrDefault()
+                               slot.SlotID,
+                               AppointmentDay = slot.TTDay,
+                               StartTime = slot.StartTime,
+                               Endtime = slot.EndTime,
+                               DoctorName = slot.Doctor.DoctorName,
+                               DoctorPrice = slot.Doctor.Price
+
                            }).ToList();
             rpt.DataSource = doctors;
             rpt.DataBind();
@@ -146,8 +169,11 @@ public class Class_Employee
         {
             var LabReports = (from app in db.Appointments
                               where app.EmployeeID == EmployeeID
+                              let labReports = db.LabReports.Where(lab => lab.AppointmentID == app.AppointmentID)
+                              where labReports.Any(lab => lab.LabReportsDetails.Any())
                               select new
                               {
+                                  app.SlotID,
                                   DoctorName = app.Timetable.Doctor.DoctorName,
                                   //Date has time in it
                                   AppointmentDay = app.AppointmentDate,
@@ -177,7 +203,7 @@ public class Class_Employee
                            select new
                            {
                                ApDepartment = app.Timetable.Doctor.Department.DepartmentName,
-                               ApDate = app.AppointmentDate, 
+                               ApDate = app.AppointmentDate,
                                DoctorName = app.Timetable.Doctor.DoctorName,
                                LastRenewalDate = db.Prescriptions
                                    .Where(pre => pre.AppointmentID == app.AppointmentID)
@@ -198,7 +224,19 @@ public class Class_Employee
                                    }).ToList()
                            }).ToList();
 
-            rpt.DataSource = monPres;
+            var processedPrescriptions = monPres.Select(p => new
+            {
+                p.ApDepartment,
+                p.ApDate,
+                p.DoctorName,
+                LastRenewalDate = p.LastRenewalDate.HasValue
+                    ? p.LastRenewalDate.Value.ToString("yyyy-MM-dd")
+                    : "not supplied yet",
+                p.PreID,
+                p.Medicines
+            }).ToList();
+
+            rpt.DataSource = processedPrescriptions;
             rpt.DataBind();
         }
         catch (Exception ex)
@@ -206,15 +244,19 @@ public class Class_Employee
             throw ex;
         }
     }
-    public DateTime GetLastRenewalPrescriptionDate(int PrescriptionID)
+    public DateTime? GetLastRenewalPrescriptionDate(int PrescriptionID)
     {
         try
         {
-            DateTime? preDate = db.Prescriptions.Where(pre => pre.PrescriptionID == PrescriptionID).FirstOrDefault().SupplyDate;
 
-            return (DateTime)preDate;
+            DateTime? preDate = db.Prescriptions
+            .Where(pre => pre.PrescriptionID == PrescriptionID)
+            .Select(pre => pre.SupplyDate) // Ensures only the required date is retrieved
+            .FirstOrDefault();
+
+            return preDate;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw ex;
         }

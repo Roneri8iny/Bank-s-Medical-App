@@ -419,26 +419,6 @@ public class Class_Appointments
             throw ex;
         }
     }
-    public int GetAppointmentSlotID(string doctorName)
-    {
-
-        try
-        {
-            var DocID = (from doc in db.Doctors
-                         where doc.DoctorName == doctorName
-                         select doc.DoctorID).FirstOrDefault();
-
-            var slot = (from time in db.Timetables
-                        where time.DoctorID == DocID
-                        select time.SlotID).FirstOrDefault();
-
-            return slot;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
     public void getPastAppointmentsforEmp(Repeater rpt, int empID, ref List<int> PastAppointmentsIDs)
     {
 
@@ -531,6 +511,8 @@ public class Class_Appointments
                          where empId == x.Appointment.EmployeeID
                          &&
                          x.Appointment.ApStatus == (int)ApplicationStatuses.DONE
+                         &&
+                         x.LabReportsDetails.Any(detail => detail.ResultPDF != null)
                          select new
                          {
                              ReportDate = Convert.ToDateTime(x.ReportDate),

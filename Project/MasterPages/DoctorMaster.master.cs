@@ -13,6 +13,7 @@ public partial class MasterPages_DoctorMaster : System.Web.UI.MasterPage
         Response.Cache.SetCacheability(HttpCacheability.NoCache);
         Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
         Response.Cache.SetNoStore();
+
     }
     //Updated the sign out button
     protected void SignOutButton_Click(object sender, EventArgs e)
@@ -21,6 +22,6 @@ public partial class MasterPages_DoctorMaster : System.Web.UI.MasterPage
         Session.Clear();
         Session.Abandon();
 
-        Response.Redirect("../Pages/LoginPage.aspx");
+        Response.Redirect("../Pages/Login.aspx");
     }
 }

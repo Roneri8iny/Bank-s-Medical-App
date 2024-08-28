@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class MasterPages_MedicalField : System.Web.UI.MasterPage
+public partial class MasterPages_Finance : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -23,5 +23,4 @@ public partial class MasterPages_MedicalField : System.Web.UI.MasterPage
         // Redirect to the login page
         Response.Redirect("Login.aspx");
     }
-
 }

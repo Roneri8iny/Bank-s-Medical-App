@@ -24,7 +24,7 @@
     <form id="form1" runat="server">
         <div>
             <div id="app">
-                <div id="sidebar" class="active">
+                <div id="sidebar" class="active" runat="server">
                     <div class="sidebar-wrapper active">
                         <div class="sidebar-header">
                             <div class="d-flex justify-content-between">
@@ -115,6 +115,7 @@
             </div>
         </div>
     </form>
+    <script src="../assets/vendors/jquery/jquery.min.js"></script>
     <script src="../assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/pages/dashboard.js"></script>

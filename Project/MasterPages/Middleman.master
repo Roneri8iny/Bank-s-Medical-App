@@ -1,13 +1,11 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="DoctorMaster.master.cs" Inherits="MasterPages_DoctorMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Middleman.master.cs" Inherits="MasterPages_Middleman" %>
 
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <title>Middleman Home Page</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/css/bootstrap.css" />
@@ -16,48 +14,58 @@
     <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css" />
     <link rel="stylesheet" href="../assets/css/app.css" />
     <link rel="shortcut icon" href="../assets/images/favicon.svg" type="image/x-icon" />
-
-    <asp:ContentPlaceHolder id="head" runat="server">
-    </asp:ContentPlaceHolder>
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
         <div>
             <div id="app">
-                <div id="sidebar" class="active" runat="server">
+                <div id="sidebar" class="active">
                     <div class="sidebar-wrapper active">
                         <div class="sidebar-header">
                             <div class="d-flex justify-content-between">
-                                <div class="card-header">
-                                    
-                                    <p> NBE MEDICAL</p>
+                                <div class="logo">
+                                    <a href="~/Pages/Index.aspx">
+                                        <span style="font-weight: bold; font-size: 1.2em;">NBE Healthcare Coverage</span>
+                                    </a>
                                 </div>
                                 <div class="toggler">
-                                    <a href="#" class="sidebar-hideJohn d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                                    <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
                                 </div>
                             </div>
                         </div>
                         <div class="sidebar-menu">
                             <ul class="menu">
-                                <li class="sidebar-title">Menu</li>
+                                <li class="sidebar-title"></li>
 
-                                <li class="sidebar-item active">
-                                    <a href="../Pages/DoctorHomePage.aspx" class='sidebar-link'>
-                                        <i class="bi bi-grid-fill"></i>
+                                
+                                <li class="sidebar-item <%: Request.Url.AbsolutePath.ToLower().Contains("home.aspx") ? "active" : "" %>">
+                                    <a href="../Pages/middlemanHome.aspx" class="sidebar-link">
+                                        <i class="bi bi-house-fill"></i>
                                         <span>Home Page</span>
                                     </a>
                                 </li>
-                                 <li class="sidebar-item active ">
-                                    <a href="../Pages/Appointments.aspx" class='sidebar-link'>
+                                
+                                <li class="sidebar-item <%: Request.Url.AbsolutePath.ToLower().Contains("createaccmf.aspx") ? "active" : "" %>">
+                                    <a href="../Pages/Createaccmf.aspx" class="sidebar-link">
                                         <i class="bi bi-grid-fill"></i>
-                                        <span>Appointements</span>
+                                        <span>Create MedicalField Account</span>
+                                    </a>
+
+                                
+                                <li class="sidebar-item <%: Request.Url.AbsolutePath.ToLower().Contains("viewandedit.aspx") ? "active" : "" %>">
+                                    <a href="../Pages/Viewandedit.aspx" class="sidebar-link">
+                                        <i class="bi bi-grid-fill"></i>
+                                        <span>View and Edit</span>
                                     </a>
                                 </li>
-                                <div class="sidebar-footer d-flex justify-content-center align-items-end me-3" style="margin-top: 10px;">
-                                    <asp:Button ID="SignOutButton" runat="server" Text="Sign Out" OnClick="SignOutButton_Click" CssClass="btn btn-outline-danger w-50" />
-                                </div>
-
+                                
+                               
+                                </li>
                             </ul>
+                            <div class="sidebar-footer d-flex justify-content-center align-items-end me-3" style="margin-top: 50px; justify-content: space-around">
+                                <asp:LinkButton ID="btnSignOut" runat="server" CssClass="btn btn-outline-danger w-50" OnClick="btnSignOut_Click">Sign Out</asp:LinkButton>
+                            </div>
                         </div>
                         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
                     </div>
@@ -70,27 +78,23 @@
                     </header>
 
                     <div class="page-heading">
-                        <asp:ContentPlaceHolder ID="PageHeader" runat="server">
-                        </asp:ContentPlaceHolder>
-
+                        <asp:ContentPlaceHolder ID="PageHeader" runat="server"></asp:ContentPlaceHolder>
                     </div>
 
                     <div class="page-content">
                         <section class="row">
-
-                            <asp:ContentPlaceHolder ID="Body" runat="server">
-                            </asp:ContentPlaceHolder>
-
+                            <asp:ContentPlaceHolder ID="Body" runat="server"></asp:ContentPlaceHolder>
                         </section>
                     </div>
 
-
                     <footer>
                         <div class="footer clearfix mb-0 text-muted">
-                            <div class="float-end">
-                                <p>NBE Medical</p>
+                            <div class="float-start">
+                               
                             </div>
-                            
+                            <div class="float-end">
+                              
+                            </div>
                         </div>
                     </footer>
                 </div>
@@ -101,11 +105,6 @@
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/pages/dashboard.js"></script>
     <script src="../assets/js/main.js"></script>
-
-    <script src="assets/vendors/ckeditor/ckeditor.js"></script>
-
-
-    <asp:ContentPlaceHolder ID="Script" runat="server">
-    </asp:ContentPlaceHolder>
+    <asp:ContentPlaceHolder ID="Script" runat="server"></asp:ContentPlaceHolder>
 </body>
 </html>

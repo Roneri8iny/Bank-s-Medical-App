@@ -73,7 +73,7 @@
 
                                             
                                             <asp:Label ID="lbl_doctor" runat="server" Text='<%# Eval("DoctorName", "Doctor Name: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
-                                            <asp:Label ID="lbl_department" runat="server" Text='<%# Eval("Department", "Department: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
+                                            <asp:Label ID="Label2" runat="server" Text='<%# Eval("Department", "Department: {0}") %>' CssClass="mb-1" Style="display: block;"></asp:Label>
                                             <div class="buttons">
                                                 <asp:LinkButton ID="btnViewDetails" runat="server" CommandName="ViewDetails" CommandArgument='<%# Eval("PrescriptionID") %>' Text="View Details" CssClass="btn btn-primary rounded-pill" />
                                             </div>

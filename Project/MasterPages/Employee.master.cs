@@ -21,6 +21,6 @@ public partial class MasterPages_Employee : System.Web.UI.MasterPage
         Session.Clear();
         Session.Abandon();
 
-        Response.Redirect("../Pages/LoginPage.aspx");
+        Response.Redirect("../Pages/Login.aspx");
     }
 }

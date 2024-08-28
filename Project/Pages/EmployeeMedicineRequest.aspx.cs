@@ -27,36 +27,46 @@ public partial class Pages_MedicineRequest : System.Web.UI.Page
             var EmpAccount = Session["EmpAccount"] as Employee;
             if (EmpAccount != null)
             {
+                Label lbl_error = (Label)e.Item.FindControl("lbl_error");
+                HtmlGenericControl error_div = (HtmlGenericControl)e.Item.FindControl("error_div");
+                Label lbl_success = (Label)e.Item.FindControl("lbl_success");
+                HtmlGenericControl success_div = (HtmlGenericControl)e.Item.FindControl("success_div");
+
                 int prescriptionID = Convert.ToInt32(e.CommandArgument);
-                DateTime lastRenewalDate = employee.GetLastRenewalPrescriptionDate(prescriptionID);
+                DateTime? lastRenewalDate = employee.GetLastRenewalPrescriptionDate(prescriptionID);
+                if (!lastRenewalDate.HasValue)
+                {
+                    lbl_error.Text = "Less than 30 days have passed since last renewal";
+                    error_div.Visible = true;
+                    success_div.Visible = false;
+                    return;
+                }
                 DateTime today = DateTime.Today;
-                TimeSpan timeSpan = today - lastRenewalDate;
+                TimeSpan timeSpan = today - lastRenewalDate.Value;
                 int daysSinceLastRenewal = timeSpan.Days;
 
                 if (daysSinceLastRenewal >= 30)
                 {
                     employee.UpdateRenewalStatus(prescriptionID);
-                    Label lbl_success = (Label)e.Item.FindControl("lbl_success");
                     lbl_success.Text = "Prescription Renewal Requested";
-                    HtmlGenericControl success_div = (HtmlGenericControl)e.Item.FindControl("success_div");
                     success_div.Visible = true;
+                    error_div.Visible = false;
                     LinkButton btn = (LinkButton)e.Item.FindControl("RenewButton");
                     btn.Visible = false;
                 }
                 else
                 {
-                    Label lbl_error = (Label)e.Item.FindControl("lbl_error");
                     lbl_error.Text = "Less than 30 days have passed since last renewal";
-                    HtmlGenericControl error_div = (HtmlGenericControl)e.Item.FindControl("error_div");
                     error_div.Visible = true;
+                    success_div.Visible = false;
                 }
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw ex;
         }
     }
 
-    
+
 }
